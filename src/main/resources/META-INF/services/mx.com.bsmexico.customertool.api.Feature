@@ -1,0 +1,2 @@
+mx.com.bsmexico.customertool.beneficiarios.OpcionBeneficiarios
+mx.com.bsmexico.customertool.beneficiarios.OpcionDispersion
