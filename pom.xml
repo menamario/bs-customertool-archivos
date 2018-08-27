@@ -16,7 +16,17 @@
 			<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
 			<scope>system</scope>
 		</dependency>
-				<dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.17</version>
+		</dependency>
+<dependency>
+         <groupId>net.sourceforge.jexcelapi</groupId>
+         <artifactId>jxl</artifactId>
+         <version>2.6.12</version>
+   </dependency>
+		<dependency>
 			<groupId>mx.com.bsmexico</groupId>
 			<artifactId>bs-customertool-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>

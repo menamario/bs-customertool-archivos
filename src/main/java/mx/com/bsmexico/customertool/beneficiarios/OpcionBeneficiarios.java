@@ -1,8 +1,16 @@
 package mx.com.bsmexico.customertool.beneficiarios;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
@@ -13,24 +21,30 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
 import mx.com.bsmexico.customertool.api.Feature;
 import mx.com.bsmexico.customertool.api.Layout;
 import mx.com.bsmexico.customertool.api.NavRoute;
+import mx.com.bsmexico.customertool.api.layouts.GeneralLayoutFactory;
 
 public class OpcionBeneficiarios extends Feature {
 	
+	BeneficiarioTable t = null;
 
 	private InputStream getImageInput(final String file) throws FileNotFoundException {
-		final InputStream input = getClass().getResourceAsStream(file);		
+		final InputStream input = getClass().getResourceAsStream(file);
 		return input;
-		
+
 	}
 
 	@Override
@@ -39,8 +53,13 @@ public class OpcionBeneficiarios extends Feature {
 		final NavRoute.BuilderNavRoute navRuoteBuilder = new NavRoute.BuilderNavRoute("TEST");
 		NavRoute route = null;
 		try {
-			route = navRuoteBuilder.addNode("Generacion de Archivos de Entrada", "Generacion de Archivos de Entrada",0,false,getImageInput("/img/archivos.png")).addNode("Alta de Beneficiarios", "Alta de Beneficiarios",0,false,getImageInput("/img/beneficiarios.png")).build();
-					
+			route = navRuoteBuilder
+					.addNode("Generacion de Archivos de Entrada", "Generacion de Archivos de Entrada", 0, false,
+							getImageInput("/img/archivos.png"))
+					.addNode("Alta de Beneficiarios", "Alta de Beneficiarios", 0, false,
+							getImageInput("/img/beneficiarios.png"))
+					.build();
+
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,51 +72,56 @@ public class OpcionBeneficiarios extends Feature {
 
 	@Override
 	public void launch() {
-		
+
 		getMenuNavigator().hide();
-		
-		Pane pane = new BorderPane();
-		pane.setPadding(new Insets(0,20,0,20));
-		
-		
+
+		Pane mainPane = new BorderPane();
+		mainPane.setPadding(new Insets(0, 20, 0, 20));
+
 		HBox headerBox1 = new HBox();
 		HBox headerBox2 = new HBox();
-		
+
 		ImageView atras = null;
 		ImageView importarArchivo = null;
 		ImageView instrucciones = null;
-		
+
 		try {
-			atras = new ImageView (new Image(this.getImageInput("/img/atras.png")));
-			importarArchivo = new ImageView (new Image(this.getImageInput("/img/importarArchivo.png")));
-			instrucciones = new ImageView (new Image(this.getImageInput("/img/instrucciones.png")));
+			atras = new ImageView(new Image(this.getImageInput("/img/atras.png")));
+			importarArchivo = new ImageView(new Image(this.getImageInput("/img/importarArchivo.png")));
+			instrucciones = new ImageView(new Image(this.getImageInput("/img/instrucciones.png")));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
 		Button bAtras = new Button();
 		Button bInstrucciones = new Button();
 		Button bImportarArchivo = new Button();
-		
+
 		bAtras.setGraphic(atras);
 		bAtras.setStyle("-fx-background-color: transparent;");
 		bAtras.setTooltip(new Tooltip("Regresar"));
 		bInstrucciones.setGraphic(instrucciones);
 		bInstrucciones.setStyle("-fx-background-color: transparent;");
-		bInstrucciones.setTooltip(new Tooltip("Instrucciones"));
+		Tooltip ttInstrucciones = new Tooltip("Instrucciones");
+		ttInstrucciones.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 13px;");
+		bInstrucciones.setTooltip(ttInstrucciones);
 		bImportarArchivo.setGraphic(importarArchivo);
 		bImportarArchivo.setStyle("-fx-background-color: transparent;");
 		Tooltip ttImportarArchivo = new Tooltip("Importar Archivo");
 		ttImportarArchivo.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 13px;");
 		bImportarArchivo.setTooltip(ttImportarArchivo);
-		
+
 		bAtras.setOnMouseClicked(evt -> {
 			getMenuNavigator().show();
 		});
 
-		
+		final FileChooser fileChooser = new FileChooser();
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.xls");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+
+
 		headerBox1.getChildren().add(bAtras);
 		headerBox2.getChildren().add(bInstrucciones);
 		headerBox2.getChildren().add(bImportarArchivo);
@@ -105,10 +129,9 @@ public class OpcionBeneficiarios extends Feature {
 		HBox.setHgrow(headerBox2, Priority.ALWAYS);
 		headerBox2.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 		headerBox1.getChildren().add(headerBox2);
-		
-		
+
 		BorderPane borderpane = new BorderPane();
-		pane.setPadding(new Insets(0,30,0,30));
+		borderpane.setPadding(new Insets(0, 15, 0, 15));
 		Label lFormato = new Label("Formato");
 		lFormato.setTextFill(Color.WHITE);
 		RadioButton rbTxt = new RadioButton("txt");
@@ -118,52 +141,139 @@ public class OpcionBeneficiarios extends Feature {
 		ToggleGroup tgFormato = new ToggleGroup();
 		rbCsv.setToggleGroup(tgFormato);
 		rbTxt.setToggleGroup(tgFormato);
-				
 
 		HBox hb = new HBox();
-		//hb.setPadding(new Insets(0, 10, 10, 10));
 		hb.setSpacing(10);
 		hb.getChildren().addAll(lFormato, rbTxt, rbCsv);
 		hb.setAlignment(Pos.CENTER);
-		
+
 		borderpane.setCenter(hb);
-		
-		
+
 		Button bGuardar = new Button("Guardar");
-		bGuardar.setStyle("-fx-width: 139px;-fx-height: 39px;-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+		bGuardar.setStyle(
+				"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+		bGuardar.setPrefWidth(140);
 		bGuardar.setTextFill(Color.WHITE);
 		borderpane.setRight(bGuardar);
-		//borderpane.setPadding(new Insets(0,10,0,10));
+		
+		bGuardar.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(final ActionEvent e) {
+				//TODO validar campos, seleccionar archivo destino y escribirlo
+				
+				FileChooser saveFile = new FileChooser();
+				  
+	              //Set extension filter
+	              FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("csv files (*.csv)", "*.csv");
+	              saveFile.getExtensionFilters().add(sfFilter);
+	              
+	              //Show save file dialog
+	              File file = fileChooser.showSaveDialog(getDesktop().getStage());
+	              
+	              if(file != null){
+	                  //TODO Guardar el csv al File
+	              }
+				
+			}
+		});
 
 
+		VBox vbox = new VBox(headerBox1, borderpane);
+		vbox.setSpacing(20);
 
-		VBox vbox = new VBox(headerBox1,borderpane);
-		vbox.setSpacing(10);
+		((BorderPane) mainPane).setTop(vbox);
 
+		final ClassLoader classLoader = getClass().getClassLoader();
+		InputStream layout = null;
+		layout = getClass().getResourceAsStream("/xml/layouts/beneficiariosLayout.xml");
+
+		t = new BeneficiarioTable(new GeneralLayoutFactory(layout, false),
+				new ColumnBeneficiarioFactory());
 		
 		
 		
+		((BorderPane) mainPane).setCenter(t);
+		BorderPane.setMargin(t, new Insets(25, 0, 0, 25));
 		
-		((BorderPane)pane).setTop(vbox);
-		
-		//BorderPane.setMargin(headerBox1, new Insets(0,10,0,10));
-		
-		
-		//pane.setStyle("-fx-background-color: grey");
-//		pane.setMinSize(500, getMenuNavigator().getDesktop().getMinHeight());
-//		Label label = new Label("Estoy en la opcion de beneficiarios");
-//		label.setTextFill(Color.WHITE);
-//		Button hideMenu = new Button("Hide Menu");
-//		hideMenu.setOnMouseClicked(evt -> {
-//			getMenuNavigator().hide();
-//		});
-//		Button showMenu = new Button("Show Menu");
-//		showMenu.setOnMouseClicked(evt -> {
-//			getMenuNavigator().show();
-//		});
-//		HBox box = new HBox(label,hideMenu,showMenu);
-//		pane.getChildren().add(box);
-		getDesktop().setWorkArea(pane);
+
+		bImportarArchivo.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(final ActionEvent e) {
+				File file = fileChooser.showOpenDialog(getDesktop().getStage());
+				if (file != null) {
+					t.table.setItems(loadXls(file));
+				}
+			}
+		});
+
+		getDesktop().setWorkArea(mainPane);
 	}
 
+	
+	public ObservableList<Beneficiario> loadXls(File file)  {
+
+        Workbook w;
+        try {
+            w = Workbook.getWorkbook(file);
+            // Get the first sheet
+            Sheet sheet = w.getSheet(0);
+            // Loop over first 10 column and lines
+            List<Beneficiario> list = new ArrayList<Beneficiario>();
+
+            for (int j = 0; j < sheet.getRows(); j++) {
+            	int numColumna = 1;
+            	Beneficiario b = new Beneficiario();
+                for (int i = 0; i < sheet.getColumns(); i++) {
+                    Cell cell = sheet.getCell(i, j);
+                    String valorCelda = cell.getContents();
+                    switch (numColumna) {
+    				case 1:
+    					b.setCuenta(valorCelda);
+    					break;
+    				case 2:
+    					break;
+    				case 3:
+    					b.setBancoParticipante(valorCelda);
+    					break;
+    				case 4:
+    					b.setTipoCuenta(valorCelda);
+    					break;
+    				case 5:
+    					b.setMoneda(valorCelda);
+    					break;
+    				case 6:
+    					b.setImporteMaximo(valorCelda);
+    					break;
+    				case 7:
+    					b.setTipoPersona(valorCelda);
+    					break;
+    				case 8:
+    					b.setRazonSocial(valorCelda);
+    					break;
+    				case 9:
+    					b.setNombre(valorCelda);
+    					break;
+    				case 10:
+    					b.setApellidoPaterno(valorCelda);
+    					break;
+    				case 11:
+    					b.setApellidoMaterno(valorCelda);
+    					break;
+    				}
+                    numColumna++;
+
+                }
+               list.add(b);
+            }
+            ObservableList<Beneficiario> observableList = FXCollections.observableList(list);
+			return observableList;
+        } catch (BiffException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+    }
+	
 }
