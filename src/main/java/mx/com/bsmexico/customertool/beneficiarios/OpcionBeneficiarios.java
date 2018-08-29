@@ -181,9 +181,7 @@ public class OpcionBeneficiarios extends Feature {
 		VBox vbox = new VBox(headerBox1, borderpane);
 		vbox.setSpacing(20);
 
-		((BorderPane) mainPane).setTop(vbox);
-
-		final ClassLoader classLoader = getClass().getClassLoader();
+		((BorderPane) mainPane).setTop(vbox);		
 		InputStream layout = null;
 		layout = getClass().getResourceAsStream("/xml/layouts/beneficiariosLayout.xml");
 
