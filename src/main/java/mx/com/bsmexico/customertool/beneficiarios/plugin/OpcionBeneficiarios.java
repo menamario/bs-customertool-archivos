@@ -1,4 +1,4 @@
-package mx.com.bsmexico.customertool.beneficiarios;
+package mx.com.bsmexico.customertool.beneficiarios.plugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,9 +14,11 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -28,6 +30,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -36,6 +39,7 @@ import mx.com.bsmexico.customertool.api.Feature;
 import mx.com.bsmexico.customertool.api.Layout;
 import mx.com.bsmexico.customertool.api.NavRoute;
 import mx.com.bsmexico.customertool.api.layouts.GeneralLayoutFactory;
+
 
 public class OpcionBeneficiarios extends Feature {
 	
@@ -76,6 +80,7 @@ public class OpcionBeneficiarios extends Feature {
 		getMenuNavigator().hide();
 
 		Pane mainPane = new BorderPane();
+		
 		mainPane.setPadding(new Insets(0, 20, 0, 20));
 
 		HBox headerBox1 = new HBox();
@@ -131,16 +136,18 @@ public class OpcionBeneficiarios extends Feature {
 		headerBox1.getChildren().add(headerBox2);
 
 		BorderPane borderpane = new BorderPane();
-		borderpane.setPadding(new Insets(0, 15, 0, 15));
+		borderpane.setPadding(new Insets(0, 20, 0, 20));
 		Label lFormato = new Label("Formato");
 		lFormato.setTextFill(Color.WHITE);
 		RadioButton rbTxt = new RadioButton("txt");
 		rbTxt.setTextFill(Color.WHITE);
 		RadioButton rbCsv = new RadioButton("csv");
+		rbCsv.setSelected(true);
 		rbCsv.setTextFill(Color.WHITE);
 		ToggleGroup tgFormato = new ToggleGroup();
 		rbCsv.setToggleGroup(tgFormato);
 		rbTxt.setToggleGroup(tgFormato);
+		rbTxt.setDisable(true);
 
 		HBox hb = new HBox();
 		hb.setSpacing(10);
@@ -168,30 +175,61 @@ public class OpcionBeneficiarios extends Feature {
 	              saveFile.getExtensionFilters().add(sfFilter);
 	              
 	              //Show save file dialog
-	              File file = fileChooser.showSaveDialog(getDesktop().getStage());
+	              File file = saveFile.showSaveDialog(getDesktop().getStage());
 	              
 	              if(file != null){
-	                  //TODO Guardar el csv al File
+	            	  BeneficiariosExport exporter = new BeneficiariosExport();
+	            	  try {
+						exporter.export(t.table.getItems(), file);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 	              }
 				
 			}
+		});
+		
+		bInstrucciones.setOnAction(new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		        
+		        
+		            Stage stage = new Stage();
+		            stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+		            stage.setTitle("Archivos Bantotal - Beneficiarios - Instrucciones");
+		            TextArea textArea = new TextArea();
+		            textArea.setText("Aqui van las instrucciones\nPara Usar la Opcion de Captura de Beneficiarios\nPuede Contener texto e imagenes");
+
+		            VBox vbox = new VBox(textArea);
+		            textArea.prefHeightProperty().bind(vbox.prefHeightProperty());
+		            vbox.setPrefSize(800, 600);
+		            VBox.setVgrow(vbox, Priority.ALWAYS);
+
+		            stage.setScene(new Scene(vbox, 800, 600));
+		            stage.show();
+		            // Hide this current window (if this is what you want)
+		            //((Node)(event.getSource())).getScene().getWindow().hide();
+		        
+		    }
 		});
 
 
 		VBox vbox = new VBox(headerBox1, borderpane);
 		vbox.setSpacing(20);
 
-		((BorderPane) mainPane).setTop(vbox);		
+		((BorderPane) mainPane).setTop(vbox);
+
+		final ClassLoader classLoader = getClass().getClassLoader();
 		InputStream layout = null;
 		layout = getClass().getResourceAsStream("/xml/layouts/beneficiariosLayout.xml");
 
 		t = new BeneficiarioTable(new GeneralLayoutFactory(layout, false),
 				new ColumnBeneficiarioFactory());
 		
-		
+		t.table.prefWidthProperty().bind(mainPane.widthProperty().add(-60));
 		
 		((BorderPane) mainPane).setCenter(t);
-		BorderPane.setMargin(t, new Insets(25, 0, 0, 25));
+		BorderPane.setMargin(t, new Insets(25, 0, 0, 0));
 		
 
 		bImportarArchivo.setOnAction(new EventHandler<ActionEvent>() {

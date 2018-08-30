@@ -1,2 +1,2 @@
-mx.com.bsmexico.customertool.beneficiarios.OpcionBeneficiarios
-mx.com.bsmexico.customertool.beneficiarios.OpcionDispersion
+mx.com.bsmexico.customertool.beneficiarios.plugin.OpcionBeneficiarios
+mx.com.bsmexico.customertool.dispersion.plugin.OpcionDispersion

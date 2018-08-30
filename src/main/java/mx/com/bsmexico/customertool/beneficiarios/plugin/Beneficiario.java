@@ -1,4 +1,4 @@
-package mx.com.bsmexico.customertool.beneficiarios;
+package mx.com.bsmexico.customertool.beneficiarios.plugin;
 
 import javafx.beans.property.SimpleStringProperty;
 import mx.com.bsmexico.customertool.api.layouts.LayoutFieldModel;

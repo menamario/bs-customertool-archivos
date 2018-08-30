@@ -1,4 +1,4 @@
-package mx.com.bsmexico.customertool.beneficiarios;
+package mx.com.bsmexico.customertool.beneficiarios.plugin;
 
 import mx.com.bsmexico.customertool.api.layouts.control.ColumnTableFactoryAbstract;
 

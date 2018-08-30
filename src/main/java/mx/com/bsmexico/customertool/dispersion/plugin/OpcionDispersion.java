@@ -1,4 +1,4 @@
-package mx.com.bsmexico.customertool.beneficiarios;
+package mx.com.bsmexico.customertool.dispersion.plugin;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
