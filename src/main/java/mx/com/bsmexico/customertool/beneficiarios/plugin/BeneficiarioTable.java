@@ -6,7 +6,7 @@ import mx.com.bsmexico.customertool.api.layouts.control.LayoutTable;
 
 public class BeneficiarioTable extends LayoutTable<Beneficiario> {
 
-	private final int INITIAL_CAPACITY = 10;
+	private final int INITIAL_CAPACITY = 50;
 
 	public BeneficiarioTable(final LayoutFactoryAbstract layoutFactory,
 			final ColumnTableFactoryAbstract<Beneficiario> columnFactory)
@@ -19,6 +19,14 @@ public class BeneficiarioTable extends LayoutTable<Beneficiario> {
 		for (int idx = 0; idx <= INITIAL_CAPACITY; idx++) {
 			this.data.add(new Beneficiario());
 		}
+	}
+
+	@Override
+	protected void addRow() {
+		System.out.println("adding rows");
+		table.getItems().add(new Beneficiario());
+
+		
 	}
 
 }
