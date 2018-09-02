@@ -38,11 +38,9 @@ import jxl.read.biff.BiffException;
 import mx.com.bsmexico.customertool.api.Feature;
 import mx.com.bsmexico.customertool.api.Layout;
 import mx.com.bsmexico.customertool.api.NavRoute;
-import mx.com.bsmexico.customertool.api.layouts.GeneralLayoutFactory;
-
 
 public class OpcionBeneficiarios extends Feature {
-	
+
 	BeneficiarioTable t = null;
 
 	private InputStream getImageInput(final String file) throws FileNotFoundException {
@@ -80,7 +78,7 @@ public class OpcionBeneficiarios extends Feature {
 		getMenuNavigator().hide();
 
 		Pane mainPane = new BorderPane();
-		
+
 		mainPane.setPadding(new Insets(0, 20, 0, 20));
 
 		HBox headerBox1 = new HBox();
@@ -123,9 +121,7 @@ public class OpcionBeneficiarios extends Feature {
 
 		final FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.xls");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-
+		fileChooser.getExtensionFilters().add(extFilter);
 
 		headerBox1.getChildren().add(bAtras);
 		headerBox2.getChildren().add(bInstrucciones);
@@ -162,57 +158,56 @@ public class OpcionBeneficiarios extends Feature {
 		bGuardar.setPrefWidth(140);
 		bGuardar.setTextFill(Color.WHITE);
 		borderpane.setRight(bGuardar);
-		
+
 		bGuardar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(final ActionEvent e) {
-				//TODO validar campos, seleccionar archivo destino y escribirlo
-				
+				// TODO validar campos, seleccionar archivo destino y escribirlo
+
 				FileChooser saveFile = new FileChooser();
-				  
-	              //Set extension filter
-	              FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("csv files (*.csv)", "*.csv");
-	              saveFile.getExtensionFilters().add(sfFilter);
-	              
-	              //Show save file dialog
-	              File file = saveFile.showSaveDialog(getDesktop().getStage());
-	              
-	              if(file != null){
-	            	  BeneficiariosExport exporter = new BeneficiariosExport();
-	            	  try {
-						exporter.export(t.table.getItems(), file);
+
+				// Set extension filter
+				FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("csv files (*.csv)", "*.csv");
+				saveFile.getExtensionFilters().add(sfFilter);
+
+				// Show save file dialog
+				File file = saveFile.showSaveDialog(getDesktop().getStage());
+
+				if (file != null) {
+					BeneficiariosExport exporter = new BeneficiariosExport();
+					try {
+						exporter.export(t.getTable().getItems(), file);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-	              }
-				
+				}
+
 			}
 		});
-		
+
 		bInstrucciones.setOnAction(new EventHandler<ActionEvent>() {
-		    public void handle(ActionEvent event) {
-		        
-		        
-		            Stage stage = new Stage();
-		            stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
-		            stage.setTitle("Archivos Bantotal - Beneficiarios - Instrucciones");
-		            TextArea textArea = new TextArea();
-		            textArea.setText("Aqui van las instrucciones\nPara Usar la Opcion de Captura de Beneficiarios\nPuede Contener texto e imagenes");
+			public void handle(ActionEvent event) {
 
-		            VBox vbox = new VBox(textArea);
-		            textArea.prefHeightProperty().bind(vbox.prefHeightProperty());
-		            vbox.setPrefSize(800, 600);
-		            VBox.setVgrow(vbox, Priority.ALWAYS);
+				Stage stage = new Stage();
+				stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+				stage.setTitle("Archivos Bantotal - Beneficiarios - Instrucciones");
+				TextArea textArea = new TextArea();
+				textArea.setText(
+						"Aqui van las instrucciones\nPara Usar la Opcion de Captura de Beneficiarios\nPuede Contener texto e imagenes");
 
-		            stage.setScene(new Scene(vbox, 800, 600));
-		            stage.show();
-		            // Hide this current window (if this is what you want)
-		            //((Node)(event.getSource())).getScene().getWindow().hide();
-		        
-		    }
+				VBox vbox = new VBox(textArea);
+				textArea.prefHeightProperty().bind(vbox.prefHeightProperty());
+				vbox.setPrefSize(800, 600);
+				VBox.setVgrow(vbox, Priority.ALWAYS);
+
+				stage.setScene(new Scene(vbox, 800, 600));
+				stage.show();
+				// Hide this current window (if this is what you want)
+				// ((Node)(event.getSource())).getScene().getWindow().hide();
+
+			}
 		});
-
 
 		VBox vbox = new VBox(headerBox1, borderpane);
 		vbox.setSpacing(20);
@@ -223,21 +218,19 @@ public class OpcionBeneficiarios extends Feature {
 		InputStream layout = null;
 		layout = getClass().getResourceAsStream("/xml/layouts/beneficiariosLayout.xml");
 
-		t = new BeneficiarioTable(new GeneralLayoutFactory(layout, false),
-				new ColumnBeneficiarioFactory());
-		
-		t.table.prefWidthProperty().bind(mainPane.widthProperty().add(-60));
-		
+		t = new BeneficiarioTable(new ColumnBeneficiarioFactory());
+
+		t.getTable().prefWidthProperty().bind(mainPane.widthProperty().add(-60));
+
 		((BorderPane) mainPane).setCenter(t);
 		BorderPane.setMargin(t, new Insets(25, 0, 0, 0));
-		
 
 		bImportarArchivo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(final ActionEvent e) {
 				File file = fileChooser.showOpenDialog(getDesktop().getStage());
 				if (file != null) {
-					t.table.setItems(loadXls(file));
+					t.getTable().setItems(loadXls(file));
 				}
 			}
 		});
@@ -245,71 +238,70 @@ public class OpcionBeneficiarios extends Feature {
 		getDesktop().setWorkArea(mainPane);
 	}
 
-	
-	public ObservableList<Beneficiario> loadXls(File file)  {
+	public ObservableList<Beneficiario> loadXls(File file) {
 
-        Workbook w;
-        try {
-            w = Workbook.getWorkbook(file);
-            // Get the first sheet
-            Sheet sheet = w.getSheet(0);
-            // Loop over first 10 column and lines
-            List<Beneficiario> list = new ArrayList<Beneficiario>();
+		Workbook w;
+		try {
+			w = Workbook.getWorkbook(file);
+			// Get the first sheet
+			Sheet sheet = w.getSheet(0);
+			// Loop over first 10 column and lines
+			List<Beneficiario> list = new ArrayList<Beneficiario>();
 
-            for (int j = 0; j < sheet.getRows(); j++) {
-            	int numColumna = 1;
-            	Beneficiario b = new Beneficiario();
-                for (int i = 0; i < sheet.getColumns(); i++) {
-                    Cell cell = sheet.getCell(i, j);
-                    String valorCelda = cell.getContents();
-                    switch (numColumna) {
-    				case 1:
-    					b.setCuenta(valorCelda);
-    					break;
-    				case 2:
-    					break;
-    				case 3:
-    					b.setBancoParticipante(valorCelda);
-    					break;
-    				case 4:
-    					b.setTipoCuenta(valorCelda);
-    					break;
-    				case 5:
-    					b.setMoneda(valorCelda);
-    					break;
-    				case 6:
-    					b.setImporteMaximo(valorCelda);
-    					break;
-    				case 7:
-    					b.setTipoPersona(valorCelda);
-    					break;
-    				case 8:
-    					b.setRazonSocial(valorCelda);
-    					break;
-    				case 9:
-    					b.setNombre(valorCelda);
-    					break;
-    				case 10:
-    					b.setApellidoPaterno(valorCelda);
-    					break;
-    				case 11:
-    					b.setApellidoMaterno(valorCelda);
-    					break;
-    				}
-                    numColumna++;
+			for (int j = 0; j < sheet.getRows(); j++) {
+				int numColumna = 1;
+				Beneficiario b = new Beneficiario();
+				for (int i = 0; i < sheet.getColumns(); i++) {
+					Cell cell = sheet.getCell(i, j);
+					String valorCelda = cell.getContents();
+					switch (numColumna) {
+					case 1:
+						// b.setCuenta(valorCelda);
+						break;
+					case 2:
+						break;
+					case 3:
+						b.setBancoParticipante(valorCelda);
+						break;
+					case 4:
+						b.setTipoCuenta(valorCelda);
+						break;
+					case 5:
+						b.setMoneda(valorCelda);
+						break;
+					case 6:
+						// b.setImporteMaximo(valorCelda);
+						break;
+					case 7:
+						b.setTipoPersona(valorCelda);
+						break;
+					case 8:
+						b.setRazonSocial(valorCelda);
+						break;
+					case 9:
+						b.setNombre(valorCelda);
+						break;
+					case 10:
+						b.setApellidoPaterno(valorCelda);
+						break;
+					case 11:
+						b.setApellidoMaterno(valorCelda);
+						break;
+					}
+					numColumna++;
 
-                }
-               list.add(b);
-            }
-            ObservableList<Beneficiario> observableList = FXCollections.observableList(list);
+				}
+				list.add(b);
+			}
+			ObservableList<Beneficiario> observableList = FXCollections.observableList(list);
 			return observableList;
-        } catch (BiffException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+		} catch (BiffException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
-    }
-	
+	}
+
 }

@@ -1,41 +1,105 @@
 package mx.com.bsmexico.customertool.beneficiarios.plugin;
 
+import java.util.function.Predicate;
+
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
-import mx.com.bsmexico.customertool.api.layouts.LayoutFieldModel;
-import mx.com.bsmexico.customertool.api.layouts.LayoutModel;
+import mx.com.bsmexico.customertool.api.layouts.modell.LayoutField;
+import mx.com.bsmexico.customertool.api.layouts.modell.LayoutFieldConverter;
+import mx.com.bsmexico.customertool.api.layouts.modell.LayoutFieldWrapper;
+import mx.com.bsmexico.customertool.api.layouts.modell.LayoutModel;
+import mx.com.bsmexico.customertool.api.layouts.modell.LayoutModelType;
+import mx.com.bsmexico.customertool.api.layouts.modell.RestrictionLayoutField;
+import mx.com.bsmexico.customertool.api.layouts.modell.converter.SecureDoubleStringConverter;
+import mx.com.bsmexico.customertool.api.layouts.modell.converter.SecureLongStringConverter;
 
-public class Beneficiario implements LayoutModel {
+/**
+ * 
+ * Beneficiario Model
+ * 
+ * @author jchr
+ *
+ */
+@LayoutModel(type = LayoutModelType.PROPERTY_JAVABEANS)
+public class Beneficiario {
 
-	@LayoutFieldModel(field = "cuenta")
-	private SimpleStringProperty cuenta;
-	@LayoutFieldModel(field = "numeroLinea")
-	private SimpleStringProperty numLinea;
-	@LayoutFieldModel(field = "bancoParticipante")
+	public static final String FIELD_CUENTA_BENEFICIARIO = "CUENTA_BENEFICIARIO";
+	public static final String FIELD_NUMERO_LINEA_BENEFICIARIO = "NUMERO_LINEA_BENEFICIARIO";
+	public static final String FIELD_BANCO_PARTICIPANTE = "BANCO_PARTICIPANTE";
+	public static final String FIELD_TIPO_CUENTA = "TIPO_CUENTA";
+	public static final String FIELD_MONEDA = "MONEDA";
+	public static final String FIELD_IMPORTE_MAXIMO_PAGAR = "IMPORTE_MAXIMO_PAGAR";
+	public static final String FIELD_TIPO_PERSONA = "TIPO_PERSONA";
+	public static final String FIELD_RAZON_SOCIAL = "RAZON_SOCIAL";
+	public static final String FIELD_NOMBRE = "NOMBRE";
+	public static final String FIELD_APELLIDO_PATERNO = "APELLIDO_PATERNO";
+	public static final String FIELD_APELLIDO_MATERNO = "APELLIDO_MATERNO";
+
+	private static final Double MAX_IMPORTE = 9999999999999999.99D;
+
+	@LayoutFieldConverter(conversionClass = SecureLongStringConverter.class)
+	@LayoutFieldWrapper(wrappedClass = Long.class)
+	@LayoutField(name = FIELD_CUENTA_BENEFICIARIO, title = "Cuenta beneficiario", length = 18)
+	private SimpleLongProperty cuenta;
+
+	@LayoutFieldConverter(conversionClass = SecureLongStringConverter.class)
+	@LayoutFieldWrapper(wrappedClass = Long.class)
+	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "Número de línea de telefonía Móvil del Beneficiario", length = 10, disable = true, required = false)
+	private SimpleLongProperty numLinea;
+
+	@LayoutField(name = FIELD_BANCO_PARTICIPANTE, title = "Banco participante", length = 3, required = false)
 	private SimpleStringProperty bancoParticipante;
-	@LayoutFieldModel(field = "tipoCuenta")
+
+	@LayoutField(name = FIELD_TIPO_CUENTA, title = "Tipo de cuenta", length = 2)
 	private SimpleStringProperty tipoCuenta;
-	@LayoutFieldModel(field = "moneda")
+
+	@LayoutField(name = FIELD_MONEDA, title = "Moneda", length = 3)
 	private SimpleStringProperty moneda;
-	@LayoutFieldModel(field = "importeMaximo")
-	private SimpleStringProperty importeMaximo;
-	@LayoutFieldModel(field = "tipoPersona")
+
+	@LayoutFieldConverter(conversionClass = SecureDoubleStringConverter.class)
+	@LayoutFieldWrapper(wrappedClass = Double.class)
+	@LayoutField(name = FIELD_IMPORTE_MAXIMO_PAGAR, title = "Importe máximo a pagar", length = 19)
+	private SimpleDoubleProperty importeMaximo;
+
+	@LayoutField(name = FIELD_TIPO_PERSONA, title = "Tipo persona", length = 3)
 	private SimpleStringProperty tipoPersona;
-	@LayoutFieldModel(field = "razonSocial")
+
+	@LayoutField(name = FIELD_RAZON_SOCIAL, title = "Razón Social", length = 70)
 	private SimpleStringProperty razonSocial;
-	@LayoutFieldModel(field = "nombre")
+
+	@LayoutField(name = FIELD_NOMBRE, title = "Nombre", length = 25)
 	private SimpleStringProperty nombre;
-	@LayoutFieldModel(field = "apellidoPaterno")
+
+	@LayoutField(name = FIELD_APELLIDO_PATERNO, title = "Apellido paterno", length = 30)
 	private SimpleStringProperty apellidoPaterno;
-	@LayoutFieldModel(field = "apellidoMaterno")
+
+	@LayoutField(name = FIELD_APELLIDO_MATERNO, title = "Apellido materno", length = 30)
 	private SimpleStringProperty apellidoMaterno;
 
+	@RestrictionLayoutField(description = "00 Cuenta Banco Sabadell, 04 CLABE SPEI", fields = { FIELD_TIPO_CUENTA })
+	private static Predicate<String> tipoCuentaPredicate = t -> (t == null) ? false
+			: t.matches("00|04");
+
+	@RestrictionLayoutField(description = "00 Persona Física, 01 Persona Moral", fields = { FIELD_TIPO_PERSONA })
+	private static Predicate<String> tipoPersonaPredicate = t -> (t == null) ? false
+			: t.matches("00|01");
+
+	@RestrictionLayoutField(description = "Tipo de moneda : MXN, USD, EUR", fields = { FIELD_MONEDA })
+	private static Predicate<String> monedaPredicate = t -> (t == null) ? false
+			: t.matches("MXN|USD|EUR");
+
+	@RestrictionLayoutField(description = "Importe máximo no mayor a 9999999999999999.99", fields = {
+			FIELD_IMPORTE_MAXIMO_PAGAR })
+	private static Predicate<Double> importeMaximoPredicate = t -> (t != null && t <= MAX_IMPORTE);
+
 	public Beneficiario() {
-		cuenta = new SimpleStringProperty();
-		numLinea = new SimpleStringProperty();
+		cuenta = new SimpleLongProperty();
+		numLinea = new SimpleLongProperty();
 		bancoParticipante = new SimpleStringProperty();
 		tipoCuenta = new SimpleStringProperty();
 		moneda = new SimpleStringProperty();
-		importeMaximo = new SimpleStringProperty();
+		importeMaximo = new SimpleDoubleProperty();
 		tipoPersona = new SimpleStringProperty();
 		razonSocial = new SimpleStringProperty();
 		nombre = new SimpleStringProperty();
@@ -46,28 +110,28 @@ public class Beneficiario implements LayoutModel {
 	/**
 	 * @return the cuenta
 	 */
-	public String getCuenta() {
+	public Long getCuenta() {
 		return cuenta.get();
 	}
 
 	/**
 	 * @param cuenta the cuenta to set
 	 */
-	public void setCuenta(String cuenta) {
+	public void setCuenta(Long cuenta) {		
 		this.cuenta.set(cuenta);
 	}
 
 	/**
 	 * @return the numLinea
 	 */
-	public String getNumLinea() {
+	public Long getNumLinea() {
 		return numLinea.get();
 	}
 
 	/**
 	 * @param numLinea the numLinea to set
 	 */
-	public void setNumLinea(String numLinea) {
+	public void setNumLinea(Long numLinea) {
 		this.numLinea.set(numLinea);
 	}
 
@@ -116,14 +180,14 @@ public class Beneficiario implements LayoutModel {
 	/**
 	 * @return the importeMaximo
 	 */
-	public String getImporteMaximo() {
+	public Double getImporteMaximo() {
 		return importeMaximo.get();
 	}
 
 	/**
 	 * @param importeMaximo the importeMaximo to set
 	 */
-	public void setImporteMaximo(String importeMaximo) {
+	public void setImporteMaximo(Double importeMaximo) {
 		this.importeMaximo.set(importeMaximo);
 	}
 
