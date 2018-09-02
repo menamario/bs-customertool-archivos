@@ -1,5 +1,7 @@
 package mx.com.bsmexico.customertool.beneficiarios.plugin;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import javafx.beans.property.SimpleDoubleProperty;
@@ -45,7 +47,7 @@ public class Beneficiario {
 
 	@LayoutFieldConverter(conversionClass = SecureLongStringConverter.class)
 	@LayoutFieldWrapper(wrappedClass = Long.class)
-	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "N√∫mero de l√≠nea de telefon√≠a M√≥vil del Beneficiario", length = 10, disable = true, required = false)
+	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "N˙mero de l√≠nea de telefono MÛvil del Beneficiario", length = 10, disable = true, required = false)
 	private SimpleLongProperty numLinea;
 
 	@LayoutField(name = FIELD_BANCO_PARTICIPANTE, title = "Banco participante", length = 3, required = false)
@@ -59,13 +61,13 @@ public class Beneficiario {
 
 	@LayoutFieldConverter(conversionClass = SecureDoubleStringConverter.class)
 	@LayoutFieldWrapper(wrappedClass = Double.class)
-	@LayoutField(name = FIELD_IMPORTE_MAXIMO_PAGAR, title = "Importe m√°ximo a pagar", length = 19)
+	@LayoutField(name = FIELD_IMPORTE_MAXIMO_PAGAR, title = "Importe m·ximo a pagar", length = 19)
 	private SimpleDoubleProperty importeMaximo;
 
 	@LayoutField(name = FIELD_TIPO_PERSONA, title = "Tipo persona", length = 3)
 	private SimpleStringProperty tipoPersona;
 
-	@LayoutField(name = FIELD_RAZON_SOCIAL, title = "Raz√≥n Social", length = 70)
+	@LayoutField(name = FIELD_RAZON_SOCIAL, title = "RazÛn Social", length = 70)
 	private SimpleStringProperty razonSocial;
 
 	@LayoutField(name = FIELD_NOMBRE, title = "Nombre", length = 25)
@@ -81,7 +83,7 @@ public class Beneficiario {
 	private static Predicate<String> tipoCuentaPredicate = t -> (t == null) ? false
 			: t.matches("00|04");
 
-	@RestrictionLayoutField(description = "00 Persona F√≠sica, 01 Persona Moral", fields = { FIELD_TIPO_PERSONA })
+	@RestrictionLayoutField(description = "00 Persona FÌsica, 01 Persona Moral", fields = { FIELD_TIPO_PERSONA })
 	private static Predicate<String> tipoPersonaPredicate = t -> (t == null) ? false
 			: t.matches("00|01");
 
@@ -89,22 +91,44 @@ public class Beneficiario {
 	private static Predicate<String> monedaPredicate = t -> (t == null) ? false
 			: t.matches("MXN|USD|EUR");
 
-	@RestrictionLayoutField(description = "Importe m√°ximo no mayor a 9999999999999999.99", fields = {
+	@RestrictionLayoutField(description = "Importe m·ximo no mayor a 9999999999999999.99", fields = {
 			FIELD_IMPORTE_MAXIMO_PAGAR })
 	private static Predicate<Double> importeMaximoPredicate = t -> (t != null && t <= MAX_IMPORTE);
+	
+	
+	private Map<String,Boolean> estatus = new HashMap<String,Boolean>();
 
 	public Beneficiario() {
 		cuenta = new SimpleLongProperty();
+		estatus.put("cuenta", true);
 		numLinea = new SimpleLongProperty();
+		estatus.put("numLinea", true);
 		bancoParticipante = new SimpleStringProperty();
+		estatus.put("bancoParticipante", true);
 		tipoCuenta = new SimpleStringProperty();
+		estatus.put("tipoCuenta", true);
 		moneda = new SimpleStringProperty();
+		estatus.put("moneda", true);
 		importeMaximo = new SimpleDoubleProperty();
+		estatus.put("importeMaximo", true);
 		tipoPersona = new SimpleStringProperty();
+		estatus.put("tipoPersona", true);
 		razonSocial = new SimpleStringProperty();
+		estatus.put("razonSocial", true);
 		nombre = new SimpleStringProperty();
+		estatus.put("nombre", true);
 		apellidoPaterno = new SimpleStringProperty();
+		estatus.put("apellidoPaterno", true);
 		apellidoMaterno = new SimpleStringProperty();
+		estatus.put("apellidoMaterno", true);
+	}
+
+	public Map<String, Boolean> getEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(String property, Boolean value) {
+		this.getEstatus().put(property, value);
 	}
 
 	/**
