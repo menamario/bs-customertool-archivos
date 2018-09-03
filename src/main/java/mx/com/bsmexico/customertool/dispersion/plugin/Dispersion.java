@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -41,7 +44,7 @@ public class Dispersion {
 	public static final String FIELD_CORREO_ELECTRONICO = "CORREO_ELECTRONICO";
 	public static final String FIELD_NUMERO_CELULAR = "NUMERO_CELULAR";
 
-	private static final Double MAX_IMPORTE = 9999999999999999.99D;
+	private static final Double MAX_IMPORTE = 999999999999999.99D;
 
 	@LayoutField(name = FIELD_TIPO_MOVIMIENTO, title = "Tipo de Movimiento", length = 1)
 	private SimpleStringProperty tipoMovimiento;
@@ -97,7 +100,7 @@ public class Dispersion {
 	@LayoutField(name = FIELD_NUMERO_CELULAR, title = "Numero Celular", length = 10)
 	private SimpleStringProperty numeroCelular;
 
-	@RestrictionLayoutField(description = "00 Cuenta Banco Sabadell, 04 CLABE SPEI", fields = { FIELD_TIPO_MOVIMIENTO })
+	@RestrictionLayoutField(description = "0 Pago, 1 Cancelacion", fields = { FIELD_TIPO_MOVIMIENTO })
 	private static Predicate<String> tipoMovimientoPredicate = t -> (t == null) ? false : t.matches("0|1");
 
 	@RestrictionLayoutField(description = "H Hoy, P Programado", fields = { FIELD_APLICACION })
@@ -116,6 +119,28 @@ public class Dispersion {
 
 	@RestrictionLayoutField(description = "MXP Pesos Mexicanos, USD Dolares Americanos", fields = { FIELD_DIVISA })
 	private static Predicate<String> divisaPredicate = t -> (t == null) ? false : t.matches("MXP|USD");
+	
+	@RestrictionLayoutField(description = "Importe máximo no mayor a 999999999999999.99", fields = {
+			FIELD_IMPORTE })
+	private static Predicate<String> importePredicate = v -> {
+		return (StringUtils.isNotBlank(v) && NumberUtils.isCreatable(v) && Double.valueOf(v) <= MAX_IMPORTE);
+	};
+	
+
+	@RestrictionLayoutField(description = "Cuenta Sabadell", fields = {
+			FIELD_CUENTA_CARGO })
+	private static Predicate<String> cuentaCargoPredicate = t -> (StringUtils.isNotBlank(t) && t.length() <= 11
+			&& StringUtils.isNumeric(t));
+	
+	@RestrictionLayoutField(description = "Cuenta Abono", fields = {
+			FIELD_CUENTA_ABONO })
+	private static Predicate<String> cuentaAbonoPredicate = t -> (StringUtils.isNotBlank(t) && t.length() <= 18
+			&& StringUtils.isNumeric(t));
+	
+	@RestrictionLayoutField(description = "Cuenta Abono", fields = {
+			FIELD_REFERENCIA })
+	private static Predicate<String> referenciaPredicate = t -> (StringUtils.isNotBlank(t) && t.length() <= 20
+			&& StringUtils.isNumeric(t));
 
 	private Map<String, Boolean> estatus = new HashMap<String, Boolean>();
 
@@ -314,5 +339,138 @@ public class Dispersion {
 	public void setEstatus(Map<String, Boolean> estatus) {
 		this.estatus = estatus;
 	}
+
+	public boolean isActive() {
+		
+			if(this.tipoMovimiento.get()!=null && this.tipoMovimiento.get().length()>0) return true;
+			if(this.aplicacion.get()!=null && this.aplicacion.get().length()>0) return true;
+			if(this.fecha.get()!=null && this.fecha.get().length()>0) return true;
+			if(this.tipoTransaccion.get()!=null && this.tipoTransaccion.get().length()>0) return true;
+			if(this.cuentaCargo.get()!=null && this.cuentaCargo.get().length()>0) return true;
+			if(this.tipoCuentaBeneficiario.get()!=null && this.tipoCuentaBeneficiario.get().length()>0) return true;
+			if(this.cuentaAbono.get()!=null && this.cuentaAbono.get().length()>0) return true;
+			if(this.tipoPersona.get()!=null && this.tipoPersona.get().length()>0) return true;
+			if(this.nombre.get()!=null && this.nombre.get().length()>0) return true;
+			if(this.rfc.get()!=null && this.rfc.get().length()>0) return true;
+			if(this.curp.get()!=null && this.curp.get().length()>0) return true;
+			if(this.divisa.get()!=null && this.divisa.get().length()>0) return true;
+			if(this.importe.get()!=null && this.importe.get().length()>0) return true;
+			if(this.iva.get()!=null && this.iva.get().length()>0) return true;
+			if(this.concepto.get()!=null && this.concepto.get().length()>0) return true;
+			if(this.referencia.get()!=null && this.referencia.get().length()>0) return true;
+			if(this.correoElectronico.get()!=null && this.correoElectronico.get().length()>0) return true;
+			if(this.numeroCelular.get()!=null && this.numeroCelular.get().length()>0) return true;
+			return false;
+	}
+
+	public boolean validar() {
+		
+		resetEstatus();
+		
+		// Tipo Movimiento
+		if (!this.tipoMovimientoPredicate.test(this.tipoMovimiento.get())){
+			this.setEstatus("tipoMovimiento", false);
+		}
+		
+		//Tipo Aplicacion
+		if (!this.tipoAplicacionPredicate.test(this.aplicacion.get())){
+			this.setEstatus("aplicacion", false);
+		}
+		
+		if(this.fecha.get()==null || this.fecha.get().length()!=10){
+			this.setEstatus("fecha", false);
+		}
+		
+		if (!this.tipoTransaccionPredicate.test(this.tipoTransaccion.get())){
+			this.setEstatus("tipoTransaccion", false);
+		}
+		
+		if(!this.cuentaCargoPredicate.test(this.cuentaCargo.get()) || this.cuentaCargo.get().length()!=11){
+			this.setEstatus("cuentaCargo", false);
+		}
+		
+		if (!this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get())){
+			this.setEstatus("tipoCuentaBeneficiario", false);
+		}
+		
+		if(!this.cuentaAbonoPredicate.test(this.cuentaAbono.get()) || this.cuentaAbono.get().length()==0){
+			this.setEstatus("cuentaAbono", false);
+		}
+		
+		if(this.cuentaAbono.get()!=null){
+			
+			if(this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get()) && this.tipoCuentaBeneficiario.get().equals("01") && this.cuentaAbono.get().length()!=11){
+				this.setEstatus("cuentaAbono", false);
+			}
+			
+			if(this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get()) && this.tipoCuentaBeneficiario.get().equals("40") && this.cuentaAbono.get().length()!=18){
+				this.setEstatus("cuentaAbono", false);
+			}
+			
+			if(this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get()) && this.tipoCuentaBeneficiario.get().equals("03") && this.cuentaAbono.get().length()!=16){
+				this.setEstatus("cuentaAbono", false);
+			}
+			
+			if(this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get()) && this.tipoCuentaBeneficiario.get().equals("10") && this.cuentaAbono.get().length()!=10){
+				this.setEstatus("cuentaAbono", false);
+			}
+		}
+		
+		
+		if (!this.tipoPersonaPredicate.test(this.tipoPersona.get())){
+			this.setEstatus("tipoPersona", false);
+		}
+		
+		if(this.nombre.get()==null || this.nombre.get().length()==0){
+			this.setEstatus("nombre", false);
+		}
+		
+		if(this.tipoPersonaPredicate.test(this.tipoPersona.get()) && this.tipoPersona.get().equals("PF") && this.rfc.get().length()!=13){
+			this.setEstatus("rfc", false);
+		}
+		
+		if(this.tipoPersonaPredicate.test(this.tipoPersona.get()) && this.tipoPersona.get().equals("PM") && this.rfc.get().length()!=12){
+			this.setEstatus("rfc", false);
+		}
+		
+		if(this.tipoPersonaPredicate.test(this.tipoPersona.get()) && this.tipoPersona.get().equals("PM") && this.curp.get()!=null || this.curp.get().length()>0){
+			this.setEstatus("curp", false);
+		}
+		
+		if (!this.divisaPredicate.test(this.divisa.get())){
+			this.setEstatus("divisa", false);
+		}
+		
+		if (!this.importePredicate.test(this.importe.get())){
+			this.setEstatus("importe", false);
+		}
+		
+		if((this.rfc.get()==null||this.rfc.get().length()==0)  &&  this.iva.get()!=null && this.iva.get().length()>0 ){
+			this.setEstatus("iva", false);
+		}
+		
+		if(this.iva.get()!=null && this.importe.get()!=null && Double.valueOf(this.iva.get())>Double.valueOf(this.importe.get())){
+			this.setEstatus("iva", false);
+		}
+		
+		if(this.concepto.get()==null || this.concepto.get().length()==0){
+			this.setEstatus("concepto", false);
+		}
+		
+		if (!this.referenciaPredicate.test(this.referencia.get())){
+			this.setEstatus("referencia", false);
+		}
+		
+		for(boolean b: this.getEstatus().values()){
+			if(!b) return false;
+		}
+		return true;
+		
+	}
+	
+	private void resetEstatus() {
+		this.getEstatus().replaceAll((k, v) -> true);
+	}
+
 
 }

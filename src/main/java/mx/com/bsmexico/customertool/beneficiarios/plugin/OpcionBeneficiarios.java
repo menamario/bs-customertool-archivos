@@ -129,7 +129,7 @@ public class OpcionBeneficiarios extends Feature {
 		});
 
 		final FileChooser fileChooser = new FileChooser();
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.xls");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.csv");
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		headerBox1.getChildren().add(bAtras);
@@ -176,25 +176,77 @@ public class OpcionBeneficiarios extends Feature {
 		bGuardar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(final ActionEvent e) {
-				// TODO validar campos, seleccionar archivo destino y escribirlo
-
-				FileChooser saveFile = new FileChooser();
-
-				// Set extension filter
-				FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("csv files (*.csv)", "*.csv");
-				saveFile.getExtensionFilters().add(sfFilter);
-
-				// Show save file dialog
-				File file = saveFile.showSaveDialog(getDesktop().getStage());
-
-				if (file != null) {
-					BeneficiariosExporter exporter = new BeneficiariosExporter();
-					try {
-						exporter.export(t.getTable().getItems(), file);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+				
+				int numError = 0;
+				int numRegistros = 0;
+				for(Beneficiario b:t.getTable().getItems()){
+					if(b.isActive()){
+						numRegistros++;
+						if(!b.validar()) numError++;
 					}
+				}
+				t.getTable().refresh();
+				
+				if(numError>0){
+					Stage stage = new Stage();
+
+					StackPane canvas = new StackPane();
+					canvas.setPadding(new Insets(10));
+					canvas.setStyle("-fx-background-color:  #e90e5c;");
+					canvas.setPrefSize(512, 40);
+
+					stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+					stage.setTitle("Archivos Bantotal - Beneficiarios - Datos Incorrectos");
+
+					Label mensaje = new Label("Error en los datos proporcionados");
+					
+					Button bContinuar = new Button("Continuar");
+					bContinuar.setStyle(
+							"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+					bContinuar.setPrefWidth(140);
+					bContinuar.setTextFill(Color.WHITE);
+					
+					bContinuar.setOnMouseClicked(evt -> {
+						stage.hide();
+					});
+					
+					
+
+					VBox vbox = new VBox();
+					vbox.setPrefSize(512, 345);
+					VBox.setVgrow(vbox, Priority.ALWAYS);
+					vbox.getChildren().add(canvas);
+					vbox.getChildren().add(mensaje);
+					vbox.getChildren().add(bContinuar);
+
+					stage.setScene(new Scene(vbox, 512, 345));
+					stage.setResizable(false);
+					stage.show();
+					
+					
+					
+					
+				}else if(numRegistros>0){
+					
+					FileChooser saveFile = new FileChooser();
+
+					// Set extension filter
+					FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("csv files (*.csv)", "*.csv");
+					saveFile.getExtensionFilters().add(sfFilter);
+
+					// Show save file dialog
+					File file = saveFile.showSaveDialog(getDesktop().getStage());
+
+					if (file != null) {
+						BeneficiariosExporter exporter = new BeneficiariosExporter();
+						try {
+							exporter.export(t.getTable().getItems(), file);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+					
 				}
 
 			}
@@ -204,8 +256,6 @@ public class OpcionBeneficiarios extends Feature {
 			public void handle(ActionEvent event) {
 
 				Stage stage = new Stage();
-
-				BorderPane instruccionesbp = new BorderPane();
 
 				StackPane canvas = new StackPane();
 				canvas.setPadding(new Insets(10));
@@ -270,9 +320,16 @@ public class OpcionBeneficiarios extends Feature {
 			@Override
 			public void handle(final ActionEvent e) {
 				File file = fileChooser.showOpenDialog(getDesktop().getStage());
-				if (file != null) {
-					t.getTable().setItems(loadXls(file));
+				BeneficiariosImporter benImporter = new BeneficiariosImporter(t);
+				try {
+					benImporter.importFile(file);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+//				if (file != null) {
+//					t.getTable().setItems(loadXls(file));
+//				}
 			}
 		});
 
