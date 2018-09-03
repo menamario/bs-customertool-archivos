@@ -13,7 +13,7 @@ public class BeneficiarioValidator {
 
 	public Predicate<String> cuenta() {
 		return v -> {
-			return (StringUtils.isNotBlank(v) && v.length() <= 18 && NumberUtils.isCreatable(v));
+			return (StringUtils.isNotBlank(v) && v.length() <= 18 && StringUtils.isNumeric(v));
 		};
 	}
 
