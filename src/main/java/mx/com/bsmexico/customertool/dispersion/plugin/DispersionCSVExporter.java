@@ -76,20 +76,28 @@ public class DispersionCSVExporter extends CSVExporter<Dispersion> {
 		String[] splitKey = null;
 		Dispersion ha = null;
 		for (String k : keys) {
-			splitKey = k.split("|");
+			splitKey = StringUtils.split(k, "|");
 			ha = new Dispersion();
 			ha.setDetalleOperacion(splitKey[0]);
 			ha.setTipoMovimiento(splitKey[1]);
 			ha.setAplicacion(splitKey[2]);
 			ha.setFecha(splitKey[3]);
 			ha.setTipoTransaccion(splitKey[4]);
+			BigDecimal subtotal = BigDecimal.ZERO;
+			for(Dispersion d:map.get(k)){
+				subtotal = subtotal
+						.add(NumberUtils.isCreatable(d.getImporte()) ? new BigDecimal(d.getImporte())
+								: BigDecimal.ZERO);
+			}
+			ha.setCuentaCargo(subtotal.toEngineeringString());
+			ha.setTipoCuentaBeneficiario(String.valueOf(map.get(k).size()));
 			groupData.add(ha);
 			groupData.addAll(map.get(k));
 		}
 		final Dispersion hb = new Dispersion();
-		ha.setDetalleOperacion("HB");
-		ha.setTipoMovimiento(totalImporte.toEngineeringString());
-		ha.setAplicacion(String.valueOf(totalRegistros));
+		hb.setDetalleOperacion("HB");
+		hb.setTipoMovimiento(totalImporte.toEngineeringString());
+		hb.setAplicacion(String.valueOf(totalRegistros));
 		groupData.add(hb);
 		// Adapter
 		this.source = new ExportSource<Dispersion>() {

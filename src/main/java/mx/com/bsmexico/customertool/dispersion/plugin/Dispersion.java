@@ -122,6 +122,14 @@ public class Dispersion {
 	private static Predicate<String> importePredicate = v -> {
 		return (StringUtils.isNotBlank(v) && NumberUtils.isCreatable(v) && Double.valueOf(v) <= MAX_IMPORTE);
 	};
+	
+    @RestrictionLayoutField(description = "Importe m�ximo no mayor a 999999999999999.99", fields = {
+            FIELD_IVA })
+    private static Predicate<String> ivaPredicate = v -> {
+        return (StringUtils.isBlank(v) || (NumberUtils.isCreatable(v) && Double.valueOf(v) <= MAX_IMPORTE));
+    };
+    
+
 
 	@RestrictionLayoutField(description = "Cuenta Sabadell", fields = { FIELD_CUENTA_CARGO })
 	private static Predicate<String> cuentaCargoPredicate = t -> (StringUtils.isNotBlank(t) && t.length() <= 11
@@ -136,6 +144,19 @@ public class Dispersion {
 			&& StringUtils.isNumeric(t));
 
 	private Map<String, Boolean> estatus = new HashMap<String, Boolean>();
+	private Map<String, String> tooltips = new HashMap<String, String>();
+
+	public Map<String, String> getTooltips() {
+		return tooltips;
+	}
+	
+	public String getTooltip(String property) {
+		return tooltips.get(property);
+	}
+	
+	public void setTooltip(String property, String value){
+		this.getTooltips().put(property, value);
+	}
 
 	private String detalleOperacion;
 
@@ -383,31 +404,38 @@ public class Dispersion {
 		// Tipo Movimiento
 		if (!this.tipoMovimientoPredicate.test(this.tipoMovimiento.get())) {
 			this.setEstatus("tipoMovimiento", false);
+			this.setTooltip("tipoMovimiento", "Debe ser 0 Pago, 1 Cancelacion");
 		}
 
 		// Tipo Aplicacion
 		if (!this.tipoAplicacionPredicate.test(this.aplicacion.get())) {
 			this.setEstatus("aplicacion", false);
+			this.setTooltip("aplicacion", "Debe ser H Hoy, P Programado");
 		}
 
-		if (this.fecha.get() == null || this.fecha.get().length() != 10) {
+		if (this.fecha.get() == null || this.fecha.get().length() != 8) {
 			this.setEstatus("fecha", false);
+			this.setTooltip("fecha", "Debe ser una fecha en formato aaaammdd");
 		}
 
 		if (!this.tipoTransaccionPredicate.test(this.tipoTransaccion.get())) {
 			this.setEstatus("tipoTransaccion", false);
+			this.setTooltip("tipoTransaccion", "Debe ser 00, 01, 02, 03");
 		}
 
 		if (!this.cuentaCargoPredicate.test(this.cuentaCargo.get()) || this.cuentaCargo.get().length() != 11) {
 			this.setEstatus("cuentaCargo", false);
+			this.setTooltip("cuentaCargo", "La cuenta de cargo debe tener 11 posiciones");
 		}
 
 		if (!this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get())) {
 			this.setEstatus("tipoCuentaBeneficiario", false);
+			this.setTooltip("tipoCuentaBeneficiario", "Debe ser 01 Sabadell, 40 CLABE, 03 TDD/TDC, 10 LTM");
 		}
 
 		if (!this.cuentaAbonoPredicate.test(this.cuentaAbono.get()) || this.cuentaAbono.get().length() == 0) {
 			this.setEstatus("cuentaAbono", false);
+			this.setTooltip("cuentaCargo", "La cuenta de abono no debe estar vacia");
 		}
 
 		if (this.cuentaAbono.get() != null) {
@@ -415,71 +443,91 @@ public class Dispersion {
 			if (this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get())
 					&& this.tipoCuentaBeneficiario.get().equals("01") && this.cuentaAbono.get().length() != 11) {
 				this.setEstatus("cuentaAbono", false);
+				this.setTooltip("cuentaAbono", "Para el tipo de cuenta de beneficiario 01 la cuenta de abono debe tener 11 posiciones");
 			}
 
 			if (this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get())
 					&& this.tipoCuentaBeneficiario.get().equals("40") && this.cuentaAbono.get().length() != 18) {
 				this.setEstatus("cuentaAbono", false);
+				this.setTooltip("cuentaAbono", "Para el tipo de cuenta de beneficiario 40 la cuenta de abono debe tener 18 posiciones");
 			}
 
 			if (this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get())
 					&& this.tipoCuentaBeneficiario.get().equals("03") && this.cuentaAbono.get().length() != 16) {
 				this.setEstatus("cuentaAbono", false);
+				this.setTooltip("cuentaAbono", "Para el tipo de cuenta de beneficiario 03 la cuenta de abono debe tener 16 posiciones");
 			}
 
 			if (this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get())
 					&& this.tipoCuentaBeneficiario.get().equals("10") && this.cuentaAbono.get().length() != 10) {
 				this.setEstatus("cuentaAbono", false);
+				this.setTooltip("cuentaAbono", "Para el tipo de cuenta de beneficiario 10 la cuenta de abono debe tener 10 posiciones");
 			}
 		}
 
 		if (!this.tipoPersonaPredicate.test(this.tipoPersona.get())) {
 			this.setEstatus("tipoPersona", false);
+			this.setTooltip("tipoPersona", "Debe ser PF Persona Fisica, PM Persona Moral");
 		}
 
 		if (this.nombre.get() == null || this.nombre.get().length() == 0) {
 			this.setEstatus("nombre", false);
+			this.setTooltip("nombre", "El nombre no debe estar vacio");
 		}
 
 		if (this.tipoPersonaPredicate.test(this.tipoPersona.get()) && this.tipoPersona.get().equals("PF")
-				&& this.rfc.get().length() != 13) {
+				&& this.rfc.get()!=null && this.rfc.get().length()>0 && this.rfc.get().length() != 13) {
 			this.setEstatus("rfc", false);
+			this.setTooltip("rfc", "El RFC debe ser de 13 posiciones para una Persona Fisica");
 		}
 
 		if (this.tipoPersonaPredicate.test(this.tipoPersona.get()) && this.tipoPersona.get().equals("PM")
-				&& this.rfc.get().length() != 12) {
+				&& this.rfc.get()!=null && this.rfc.get().length()>0 && this.rfc.get().length() != 12) {
 			this.setEstatus("rfc", false);
+			this.setTooltip("rfc", "El RFC debe ser de 12 posiciones para una Persona Moral");
 		}
 
 		if (this.tipoPersonaPredicate.test(this.tipoPersona.get()) && this.tipoPersona.get().equals("PM")
-				&& this.curp.get() != null || this.curp.get().length() > 0) {
+				&& this.curp.get() != null && this.curp.get().length() > 0) {
 			this.setEstatus("curp", false);
+			this.setTooltip("curp", "No debe capturar CURP para una persona moral");
 		}
 
 		if (!this.divisaPredicate.test(this.divisa.get())) {
 			this.setEstatus("divisa", false);
+			this.setTooltip("divisa", "Debe ser MXP Pesos Mexicanos, USD Dolares");
 		}
 
 		if (!this.importePredicate.test(this.importe.get())) {
 			this.setEstatus("importe", false);
+			this.setTooltip("importe", "Debe capturar un importe valido");
 		}
+		
+        if (!this.ivaPredicate.test(this.iva.get())){
+            this.setEstatus("iva", false);
+            this.setTooltip("iva", "Debe capturar un iva valido");
+        }
+
 
 		if ((this.rfc.get() == null || this.rfc.get().length() == 0) && this.iva.get() != null
 				&& this.iva.get().length() > 0) {
 			this.setEstatus("iva", false);
+			this.setTooltip("iva", "Para capturar iva debe ingresar un rfc");
 		}
 
-		if (this.iva.get() != null && this.importe.get() != null
-				&& Double.valueOf(this.iva.get()) > Double.valueOf(this.importe.get())) {
+        if(this.ivaPredicate.test(this.iva.get()) && StringUtils.isNotBlank(this.iva.get()) && StringUtils.isNotBlank(this.importe.get()) && Double.valueOf(this.iva.get())>Double.valueOf(this.importe.get())){
 			this.setEstatus("iva", false);
+			this.setTooltip("iva", "El iva no puede ser mayor al importe");
 		}
 
 		if (this.concepto.get() == null || this.concepto.get().length() == 0) {
 			this.setEstatus("concepto", false);
+			this.setTooltip("concepto", "El concepto no debe estar vacio");
 		}
 
 		if (!this.referenciaPredicate.test(this.referencia.get())) {
 			this.setEstatus("referencia", false);
+			this.setTooltip("referencia", "Debe capturar una referencia numerica valida");
 		}
 
 		for (boolean b : this.getEstatus().values()) {
@@ -492,6 +540,7 @@ public class Dispersion {
 
 	private void resetEstatus() {
 		this.getEstatus().replaceAll((k, v) -> true);
+		this.getTooltips().replaceAll((k, v) -> null);
 	}
 
 	public String getDetalleOperacion() {

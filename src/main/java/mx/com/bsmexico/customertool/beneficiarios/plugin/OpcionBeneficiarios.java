@@ -258,7 +258,7 @@ public class OpcionBeneficiarios extends Feature {
 					StackPane canvas = new StackPane();
 					canvas.setPadding(new Insets(10));
 					canvas.setStyle("-fx-background-color:  #a9d42c;");
-					canvas.setPrefSize(512, 40);
+					canvas.setPrefSize(512, 50);
 
 					stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
 					stage.setTitle("Archivos Bantotal - Beneficiarios - Archivo Guardado");

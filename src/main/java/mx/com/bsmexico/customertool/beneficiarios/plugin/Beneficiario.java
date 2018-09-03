@@ -42,7 +42,7 @@ public class Beneficiario {
 	@LayoutField(name = FIELD_CUENTA_BENEFICIARIO, title = "Cuenta beneficiario", length = 18)
 	private SimpleStringProperty cuenta;
 
-	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "Número de línea de telefono Móvil del Beneficiario", length = 10, disable = true, required = false)
+	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "NÃºmero de lÃ­nea de telefono MÃ³vil del Beneficiario", length = 10, disable = true, required = false)
 	private SimpleStringProperty numLinea;
 
 	@LayoutField(name = FIELD_BANCO_PARTICIPANTE, title = "Banco participante", length = 3, required = false)
@@ -54,13 +54,13 @@ public class Beneficiario {
 	@LayoutField(name = FIELD_MONEDA, title = "Moneda", length = 3)
 	private SimpleStringProperty moneda;
 
-	@LayoutField(name = FIELD_IMPORTE_MAXIMO_PAGAR, title = "Importe máximo a pagar", length = 19)
+	@LayoutField(name = FIELD_IMPORTE_MAXIMO_PAGAR, title = "Importe mÃ¡ximo a pagar", length = 19)
 	private SimpleStringProperty importeMaximo;
 
 	@LayoutField(name = FIELD_TIPO_PERSONA, title = "Tipo persona", length = 3)
 	private SimpleStringProperty tipoPersona;
 
-	@LayoutField(name = FIELD_RAZON_SOCIAL, title = "Razón Social", length = 70)
+	@LayoutField(name = FIELD_RAZON_SOCIAL, title = "RazÃ³n Social", length = 70)
 	private SimpleStringProperty razonSocial;
 
 	@LayoutField(name = FIELD_NOMBRE, title = "Nombre", length = 25)
@@ -72,7 +72,7 @@ public class Beneficiario {
 	@LayoutField(name = FIELD_APELLIDO_MATERNO, title = "Apellido materno", length = 30)
 	private SimpleStringProperty apellidoMaterno;
 
-	@RestrictionLayoutField(description = "00 Cuenta Banco Sabadell, 04 CLABE SPEI", fields = {
+	@RestrictionLayoutField(description = "Sabadell 11 posiciones, CLABE SPEI 18 posiciones", fields = {
 			FIELD_CUENTA_BENEFICIARIO })
 	private static Predicate<String> cuentaPredicate = t -> (StringUtils.isNotBlank(t) && t.length() <= 18
 			&& StringUtils.isNumeric(t));
@@ -80,19 +80,32 @@ public class Beneficiario {
 	@RestrictionLayoutField(description = "00 Cuenta Banco Sabadell, 40 CLABE SPEI", fields = { FIELD_TIPO_CUENTA })
 	private static Predicate<String> tipoCuentaPredicate = t -> (t == null) ? false : t.matches("00|40");
 
-	@RestrictionLayoutField(description = "00 Persona Física, 01 Persona Moral", fields = { FIELD_TIPO_PERSONA })
+	@RestrictionLayoutField(description = "00 Persona FÃ­sica, 01 Persona Moral", fields = { FIELD_TIPO_PERSONA })
 	private static Predicate<String> tipoPersonaPredicate = t -> (t == null) ? false : t.matches("00|01");
 
 	@RestrictionLayoutField(description = "Tipo de moneda : MXN, USD, EUR", fields = { FIELD_MONEDA })
 	private static Predicate<String> monedaPredicate = t -> (t == null) ? false : t.matches("MXN|USD|EUR");
 
-	@RestrictionLayoutField(description = "Importe máximo no mayor a 9999999999999999.99", fields = {
+	@RestrictionLayoutField(description = "Importe mÃ¡ximo no mayor a 9999999999999999.99", fields = {
 			FIELD_IMPORTE_MAXIMO_PAGAR })
 	private static Predicate<String> importeMaximoPredicate = v -> {
 		return (StringUtils.isNotBlank(v) && NumberUtils.isCreatable(v) && Double.valueOf(v) <= MAX_IMPORTE);
 	};
 
 	private Map<String, Boolean> estatus = new HashMap<String, Boolean>();
+	private Map<String, String> tooltips = new HashMap<String, String>();
+
+	public Map<String, String> getTooltips() {
+		return tooltips;
+	}
+	
+	public String getTooltip(String property) {
+		return tooltips.get(property);
+	}
+	
+	public void setTooltip(String property, String value){
+		this.getTooltips().put(property, value);
+	}
 
 	public Beneficiario() {
 		cuenta = new SimpleStringProperty();
@@ -354,40 +367,48 @@ public class Beneficiario {
 		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().equals("40")
 				&& (this.cuenta.get() == null || this.cuenta.get().length() != 18)) {
 			this.setEstatus("cuenta", false);
+			this.setTooltip("cuenta", "Para el tipo de cuenta 40 la cuenta debe tener 18 posiciones");
 		}
 		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().equals("00")
 				&& (this.cuenta.get() == null || this.cuenta.get().length() != 11)) {
 			this.setEstatus("cuenta", false);
+			this.setTooltip("cuenta", "Para el tipo de cuenta 00 la cuenta debe tener 11 posiciones");
 		}
 		
 		if (this.cuenta.get() == null || this.cuenta.get().length()==0){
 			this.setEstatus("cuenta", false);
+			this.setTooltip("cuenta", "La cuenta no debe estar vacia");
 		}
 
 		// Validar Banco Participante
 		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().equals("40")
 				&& (this.bancoParticipante.get() == null || this.bancoParticipante.get().length() != 3)) {
 			this.setEstatus("bancoParticipante", false);
+			this.setTooltip("bancoParticipante", "Para el tipo de cuenta 40 (SPEI), debe capturar el Banco Participante");
 		}
 
 		// Validar Tipo de Cuenta
 		if (!this.tipoCuentaPredicate.test(this.tipoCuenta.get())){
 			this.setEstatus("tipoCuenta", false);
+			this.setTooltip("tipoCuenta", "Debe ser 00 Sabadell, 40 SPEI");
 		}
 
 		// Validar Moneda
 		if (!this.monedaPredicate.test(this.moneda.get())) {
 			this.setEstatus("moneda", false);
+			this.setTooltip("moneda", "Debe ser MXN Pesos Mexicanos, USD Dolares, EUR Euros");
 		}
 
 		// Validar Importe
 		if (!this.importeMaximoPredicate.test(this.importeMaximo.get())) {
 			this.setEstatus("importeMaximo", false);
+			this.setTooltip("importeMaximo", "Debe capturar un importe valido");
 		}
 
 		// Validar tipoPersona
 		if (!this.tipoPersonaPredicate.test(this.tipoPersona.get())) {
 			this.setEstatus("tipoPersona", false);
+			this.setTooltip("tipoPersona", "Debe ser 00 Persona FIsica, 01 Persona Moral");
 		}
 		
 		//Validar Razon Social
@@ -395,11 +416,13 @@ public class Beneficiario {
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00") && this.razonSocial.get() != null
 				&& this.razonSocial.get().length() > 0) {
 			this.setEstatus("razonSocial", false);
+			this.setTooltip("razonSocial", "No Debe capturar Razon Social para una Persona Fisica");
 		}
 		
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01")
 				&& (this.razonSocial.get() == null || this.razonSocial.get().length() == 0)) {
 			this.setEstatus("razonSocial", false);
+			this.setTooltip("razonSocial", "Debe capturar Razon Social para una Persona Moral");
 		}
 		
 		// Validar Nombre
@@ -407,11 +430,13 @@ public class Beneficiario {
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00")
 				&& (this.nombre.get() == null || this.nombre.get().length() == 0)) {
 			this.setEstatus("nombre", false);
+			this.setTooltip("nombre", "Debe capturar el Nombre para una Persona Fisica");
 		}
 		
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01") && this.nombre.get() != null
 				&& this.nombre.get().length() > 0) {
 			this.setEstatus("nombre", false);
+			this.setTooltip("nombre", "No Debe capturar el Nombre para una Persona Moral");
 		}
 		
 		// Validar Nombre
@@ -419,22 +444,26 @@ public class Beneficiario {
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00")
 				&& (this.apellidoPaterno.get() == null || this.apellidoPaterno.get().length() == 0)) {
 			this.setEstatus("apellidoPaterno", false);
+			this.setTooltip("apellidoPaterno", "Debe capturar el Apellido Paterno para una Persona Fisica");
 		}
 		
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01") && this.apellidoPaterno.get() != null
 				&& this.apellidoPaterno.get().length() > 0) {
 			this.setEstatus("apellidoPaterno", false);
+			this.setTooltip("apellidoPaterno", "No Debe capturar el Apellido Paterno para una Persona Moral");
 		}
 		
 		//Validar Apellido Materno
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00")
 				&& (this.apellidoMaterno.get() == null || this.apellidoMaterno.get().length() == 0)) {
 			this.setEstatus("apellidoMaterno", false);
+			this.setTooltip("apellidoMaterno", "Debe capturar el Apellido Materno para una Persona Fisica");
 		}
 
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01") && this.apellidoMaterno.get() != null
 				&& this.apellidoMaterno.get().length() > 0) {
 			this.setEstatus("apellidoMaterno", false);
+			this.setTooltip("apellidoMaterno", "No Debe capturar el Apellido Materno para una Persona Moral");
 		}
 		
 		for(boolean b: this.getEstatus().values()){
@@ -446,6 +475,7 @@ public class Beneficiario {
 	
 	private void resetEstatus() {
 		this.getEstatus().replaceAll((k, v) -> true);
+		this.getTooltips().replaceAll((k, v) -> null);
 	}
 
 	public boolean isActive(){

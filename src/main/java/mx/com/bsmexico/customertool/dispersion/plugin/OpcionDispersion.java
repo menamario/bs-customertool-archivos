@@ -31,9 +31,6 @@ import javafx.stage.Stage;
 import mx.com.bsmexico.customertool.api.Feature;
 import mx.com.bsmexico.customertool.api.Layout;
 import mx.com.bsmexico.customertool.api.NavRoute;
-import mx.com.bsmexico.customertool.beneficiarios.plugin.Beneficiario;
-import mx.com.bsmexico.customertool.beneficiarios.plugin.BeneficiarioTable;
-import mx.com.bsmexico.customertool.beneficiarios.plugin.BeneficiariosImporter;
 
 public class OpcionDispersion extends Feature {
 
@@ -198,7 +195,7 @@ public class OpcionDispersion extends Feature {
 					StackPane canvas = new StackPane();
 					canvas.setPadding(new Insets(10));
 					canvas.setStyle("-fx-background-color: #e90e5c;");
-					canvas.setPrefSize(512, 40);
+					canvas.setPrefSize(512, 50);
 
 					stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
 					stage.setTitle("Archivos Bantotal - Dispersion - Datos Incorrectos");
@@ -217,7 +214,8 @@ public class OpcionDispersion extends Feature {
 
 					VBox vbox = new VBox();
 					vbox.setPrefSize(512, 275);
-					VBox.setVgrow(vbox, Priority.ALWAYS);
+					vbox.setSpacing(50);
+					vbox.setAlignment(Pos.TOP_CENTER);
 					vbox.getChildren().add(canvas);
 					vbox.getChildren().add(mensaje);
 					vbox.getChildren().add(bContinuar);
@@ -238,15 +236,57 @@ public class OpcionDispersion extends Feature {
 					// Show save file dialog
 					File file = saveFile.showSaveDialog(getDesktop().getStage());
 
-					// if (file != null) {
-					// BeneficiariosExport exporter = new BeneficiariosExport();
-					// try {
-					// exporter.export(t.getTable().getItems(), file);
-					// } catch (Exception e1) {
-					// // TODO Auto-generated catch block
-					// e1.printStackTrace();
-					// }
-					// }
+					if (file != null) {
+						DispersionCSVExporter exporter = new DispersionCSVExporter(t);
+						
+						try {
+							exporter.export(file);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+					
+					
+					Stage stage = new Stage();
+
+					StackPane canvas = new StackPane();
+					canvas.setPadding(new Insets(10));
+					canvas.setStyle("-fx-background-color:  #a9d42c;");
+					canvas.setPrefSize(512, 50);
+
+					stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+					stage.setTitle("Archivos Bantotal - Beneficiarios - Archivo Guardado");
+
+					Label mensaje = new Label("El archivo fue guardado exitosamente");
+					mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
+					mensaje.setTextFill(Color.web("#777777"));
+					
+					Button bContinuar = new Button("Continuar");
+					bContinuar.setStyle(
+							"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+					bContinuar.setPrefWidth(140);
+					bContinuar.setTextFill(Color.WHITE);
+					
+					bContinuar.setOnMouseClicked(evt -> {
+						stage.hide();
+					});
+					
+					
+
+					VBox vbox = new VBox();
+					vbox.setSpacing(50);
+					vbox.setAlignment(Pos.TOP_CENTER);
+					vbox.setPrefSize(512, 275);
+					//VBox.setVgrow(vbox, Priority.ALWAYS);
+					vbox.getChildren().add(canvas);
+					vbox.getChildren().add(mensaje);
+					vbox.getChildren().add(bContinuar);
+
+					stage.setScene(new Scene(vbox, 512, 275));
+					stage.setResizable(false);
+					stage.show();
+					
 
 				}
 			}
