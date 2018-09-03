@@ -47,7 +47,7 @@ public class Beneficiario {
 
 	@LayoutFieldConverter(conversionClass = SecureLongStringConverter.class)
 	@LayoutFieldWrapper(wrappedClass = Long.class)
-	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "Número de lÃ­nea de telefono Móvil del Beneficiario", length = 10, disable = true, required = false)
+	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "Número de línea de telefono Móvil del Beneficiario", length = 10, disable = true, required = false)
 	private SimpleLongProperty numLinea;
 
 	@LayoutField(name = FIELD_BANCO_PARTICIPANTE, title = "Banco participante", length = 3, required = false)
