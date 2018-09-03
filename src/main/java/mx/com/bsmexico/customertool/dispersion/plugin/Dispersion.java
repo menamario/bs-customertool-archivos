@@ -49,13 +49,13 @@ public class Dispersion {
 	@LayoutField(name = FIELD_TIPO_MOVIMIENTO, title = "Tipo de Movimiento", length = 1)
 	private SimpleStringProperty tipoMovimiento;
 
-	@LayoutField(name = FIELD_APLICACION, title = "AplicaciÛn", length = 1)
+	@LayoutField(name = FIELD_APLICACION, title = "Aplicaci√≥n", length = 1)
 	private SimpleStringProperty aplicacion;
 
 	@LayoutField(name = FIELD_FECHA, title = "Fecha", length = 10)
 	private SimpleStringProperty fecha;
 
-	@LayoutField(name = FIELD_TIPO_TRANSACCION, title = "Tipo de transacciÛn", length = 2)
+	@LayoutField(name = FIELD_TIPO_TRANSACCION, title = "Tipo de transacci√≥n", length = 2)
 	private SimpleStringProperty tipoTransaccion;
 
 	@LayoutField(name = FIELD_CUENTA_CARGO, title = "Cuenta de Cargo", length = 11)
@@ -120,7 +120,7 @@ public class Dispersion {
 	@RestrictionLayoutField(description = "MXP Pesos Mexicanos, USD Dolares Americanos", fields = { FIELD_DIVISA })
 	private static Predicate<String> divisaPredicate = t -> (t == null) ? false : t.matches("MXP|USD");
 	
-	@RestrictionLayoutField(description = "Importe m·ximo no mayor a 999999999999999.99", fields = {
+	@RestrictionLayoutField(description = "Importe m√°ximo no mayor a 999999999999999.99", fields = {
 			FIELD_IMPORTE })
 	private static Predicate<String> importePredicate = v -> {
 		return (StringUtils.isNotBlank(v) && NumberUtils.isCreatable(v) && Double.valueOf(v) <= MAX_IMPORTE);

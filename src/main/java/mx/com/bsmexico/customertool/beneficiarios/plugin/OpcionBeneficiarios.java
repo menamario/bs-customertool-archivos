@@ -238,9 +238,9 @@ public class OpcionBeneficiarios extends Feature {
 					File file = saveFile.showSaveDialog(getDesktop().getStage());
 
 					if (file != null) {
-						BeneficiariosExporter exporter = new BeneficiariosExporter();
+						BeneficiariosExporter exporter = new BeneficiariosExporter(t);
 						try {
-							exporter.export(t.getTable().getItems(), file);
+							exporter.export(file);
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -277,12 +277,12 @@ public class OpcionBeneficiarios extends Feature {
 				TextArea textArea = new TextArea();
 				textArea.setText(
 						"\n"
-					  + "1) Revise que la configuracion regional de su sistema operativo este en Español (México)."
+					  + "1) Revise que la configuracion regional de su sistema operativo este en Espaï¿½ol (Mï¿½xico)."
 					  + "\n\n2) Los datos que se capturan deben estar en mayusculas y sin caracteres especiales."
 					  + "\n\n3) Finalmente le pedimos validar que los datos marcados como obligatorios se encuentren con la informacion requerida."
-					  + "\n\n4) Al concluir la captura de beneficiarios, dar un click en el boton de Guardar, en seguida se abrira una ventana donde usted podrá guardar el archivo en la ruta que indique y con el nombre que desee."
+					  + "\n\n4) Al concluir la captura de beneficiarios, dar un click en el boton de Guardar, en seguida se abrira una ventana donde usted podrï¿½ guardar el archivo en la ruta que indique y con el nombre que desee."
 					  + "\n\n5) Al concluir el guardado correcto del archivo de Beneficiarios el siguiente paso es ingresar a su banca en linea de Banco Sabadell, para iniciar el proceso de Alta de Beneficiarios."
-					  + "\n\n6) Los Beneficiarios que se dan de alta estarán disponibles para transaccionar despues de 30 minutos."
+					  + "\n\n6) Los Beneficiarios que se dan de alta estarï¿½n disponibles para transaccionar despues de 30 minutos."
 					  );
 				textArea.setEditable(false);
 				textArea.setWrapText(true);
