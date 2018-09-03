@@ -188,7 +188,7 @@ public class OpcionBeneficiarios extends Feature {
 				File file = saveFile.showSaveDialog(getDesktop().getStage());
 
 				if (file != null) {
-					BeneficiariosExport exporter = new BeneficiariosExport();
+					BeneficiariosExporter exporter = new BeneficiariosExporter();
 					try {
 						exporter.export(t.getTable().getItems(), file);
 					} catch (Exception e1) {
@@ -258,10 +258,6 @@ public class OpcionBeneficiarios extends Feature {
 		vbox.setSpacing(20);
 
 		((BorderPane) mainPane).setTop(vbox);
-
-		final ClassLoader classLoader = getClass().getClassLoader();
-		InputStream layout = null;
-		layout = getClass().getResourceAsStream("/xml/layouts/beneficiariosLayout.xml");
 
 		t = new BeneficiarioTable(new ColumnBeneficiarioFactory());
 
