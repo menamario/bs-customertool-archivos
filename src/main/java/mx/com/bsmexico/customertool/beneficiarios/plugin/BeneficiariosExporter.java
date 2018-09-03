@@ -8,9 +8,11 @@ import mx.com.bsmexico.customertool.api.exporter.ExportSource;
 
 public class BeneficiariosExporter extends CSVExporter<Beneficiario> {
 
+	/**
+	 * @param source
+	 */
 	public BeneficiariosExporter(ExportSource<Beneficiario> source) {
 		super(source);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
