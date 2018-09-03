@@ -47,7 +47,7 @@ public class Beneficiario {
 	private SimpleStringProperty cuenta;
 
 	
-	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "N�mero de línea de telefono M�vil del Beneficiario", length = 10, disable = true, required = false)
+	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "Número de línea de telefono Móvil del Beneficiario", length = 10, disable = true, required = false)
 	private SimpleStringProperty numLinea;
 
 	@LayoutField(name = FIELD_BANCO_PARTICIPANTE, title = "Banco participante", length = 3, required = false)
@@ -59,13 +59,13 @@ public class Beneficiario {
 	@LayoutField(name = FIELD_MONEDA, title = "Moneda", length = 3)
 	private SimpleStringProperty moneda;
 
-	@LayoutField(name = FIELD_IMPORTE_MAXIMO_PAGAR, title = "Importe m�ximo a pagar", length = 19)
+	@LayoutField(name = FIELD_IMPORTE_MAXIMO_PAGAR, title = "Importe máximo a pagar", length = 19)
 	private SimpleStringProperty importeMaximo;
 
 	@LayoutField(name = FIELD_TIPO_PERSONA, title = "Tipo persona", length = 3)
 	private SimpleStringProperty tipoPersona;
 
-	@LayoutField(name = FIELD_RAZON_SOCIAL, title = "Raz�n Social", length = 70)
+	@LayoutField(name = FIELD_RAZON_SOCIAL, title = "Razón Social", length = 70)
 	private SimpleStringProperty razonSocial;
 
 	@LayoutField(name = FIELD_NOMBRE, title = "Nombre", length = 25)
@@ -81,7 +81,7 @@ public class Beneficiario {
 	private static Predicate<String> tipoCuentaPredicate = t -> (t == null) ? false
 			: t.matches("00|04");
 
-	@RestrictionLayoutField(description = "00 Persona F�sica, 01 Persona Moral", fields = { FIELD_TIPO_PERSONA })
+	@RestrictionLayoutField(description = "00 Persona Física, 01 Persona Moral", fields = { FIELD_TIPO_PERSONA })
 	private static Predicate<String> tipoPersonaPredicate = t -> (t == null) ? false
 			: t.matches("00|01");
 
@@ -89,7 +89,7 @@ public class Beneficiario {
 	private static Predicate<String> monedaPredicate = t -> (t == null) ? false
 			: t.matches("MXN|USD|EUR");
 
-	@RestrictionLayoutField(description = "Importe m�ximo no mayor a 9999999999999999.99", fields = {
+	@RestrictionLayoutField(description = "Importe máximo no mayor a 9999999999999999.99", fields = {
 			FIELD_IMPORTE_MAXIMO_PAGAR })
 	private static Predicate<String> importeMaximoPredicate = v -> {
 		return (StringUtils.isNotBlank(v) && NumberUtils.isCreatable(v)
