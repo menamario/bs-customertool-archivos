@@ -1,6 +1,6 @@
 package mx.com.bsmexico.customertool.beneficiarios.plugin;
 
-import org.apache.commons.csv.CSVRecord;
+import java.util.List;
 
 import mx.com.bsmexico.customertool.api.exporter.CSVImporter;
 import mx.com.bsmexico.customertool.api.exporter.ImportTarget;
@@ -16,7 +16,7 @@ public class BeneficiariosImporter extends CSVImporter<Beneficiario> {
 	}
 
 	@Override
-	protected Beneficiario getInstance(CSVRecord record) {
+	protected Beneficiario getInstance(final List<String> record) {
 		final Beneficiario beneficiario = new Beneficiario();
 		final BeneficiarioValidator validator = new BeneficiarioValidator();
 		beneficiario.setCuenta(record.get(0));
