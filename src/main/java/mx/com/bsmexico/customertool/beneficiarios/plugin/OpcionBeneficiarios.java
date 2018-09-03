@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.GroupLayout.Alignment;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -129,7 +131,7 @@ public class OpcionBeneficiarios extends Feature {
 		});
 
 		final FileChooser fileChooser = new FileChooser();
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.csv");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel and Csv files (*.xls,*.csv)", "*.csv","*.xls");
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		headerBox1.getChildren().add(bAtras);
@@ -190,15 +192,17 @@ public class OpcionBeneficiarios extends Feature {
 				if(numError>0){
 					Stage stage = new Stage();
 
-					StackPane canvas = new StackPane();
+					Pane canvas = new Pane();
 					canvas.setPadding(new Insets(10));
 					canvas.setStyle("-fx-background-color:  #e90e5c;");
-					canvas.setPrefSize(512, 40);
+					canvas.setPrefSize(512, 50);
 
 					stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
 					stage.setTitle("Archivos Bantotal - Beneficiarios - Datos Incorrectos");
 
 					Label mensaje = new Label("Error en los datos proporcionados");
+					mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
+					mensaje.setTextFill(Color.web("#777777"));
 					
 					Button bContinuar = new Button("Continuar");
 					bContinuar.setStyle(
@@ -213,13 +217,15 @@ public class OpcionBeneficiarios extends Feature {
 					
 
 					VBox vbox = new VBox();
-					vbox.setPrefSize(512, 345);
-					VBox.setVgrow(vbox, Priority.ALWAYS);
+					vbox.setSpacing(50);
+					vbox.setAlignment(Pos.TOP_CENTER);
+					vbox.setPrefSize(512, 275);
+					//VBox.setVgrow(vbox, Priority.ALWAYS);
 					vbox.getChildren().add(canvas);
 					vbox.getChildren().add(mensaje);
 					vbox.getChildren().add(bContinuar);
 
-					stage.setScene(new Scene(vbox, 512, 345));
+					stage.setScene(new Scene(vbox, 512, 275));
 					stage.setResizable(false);
 					stage.show();
 					
@@ -238,14 +244,56 @@ public class OpcionBeneficiarios extends Feature {
 					File file = saveFile.showSaveDialog(getDesktop().getStage());
 
 					if (file != null) {
-						BeneficiariosExporter exporter = new BeneficiariosExporter();
+						BeneficiariosExporter exporter = new BeneficiariosExporter(t);
 						try {
-							exporter.export(t.getTable().getItems(), file);
+							exporter.export(file);
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					}
+					
+					Stage stage = new Stage();
+
+					StackPane canvas = new StackPane();
+					canvas.setPadding(new Insets(10));
+					canvas.setStyle("-fx-background-color:  #a9d42c;");
+					canvas.setPrefSize(512, 40);
+
+					stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+					stage.setTitle("Archivos Bantotal - Beneficiarios - Archivo Guardado");
+
+					Label mensaje = new Label("El archivo fue guardado exitosamente");
+					mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
+					mensaje.setTextFill(Color.web("#777777"));
+					
+					Button bContinuar = new Button("Continuar");
+					bContinuar.setStyle(
+							"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+					bContinuar.setPrefWidth(140);
+					bContinuar.setTextFill(Color.WHITE);
+					
+					bContinuar.setOnMouseClicked(evt -> {
+						stage.hide();
+					});
+					
+					
+
+					VBox vbox = new VBox();
+					vbox.setSpacing(50);
+					vbox.setAlignment(Pos.TOP_CENTER);
+					vbox.setPrefSize(512, 275);
+					//VBox.setVgrow(vbox, Priority.ALWAYS);
+					vbox.getChildren().add(canvas);
+					vbox.getChildren().add(mensaje);
+					vbox.getChildren().add(bContinuar);
+
+					stage.setScene(new Scene(vbox, 512, 275));
+					stage.setResizable(false);
+					stage.show();
+					
+					
+					
 					
 				}
 
@@ -277,12 +325,12 @@ public class OpcionBeneficiarios extends Feature {
 				TextArea textArea = new TextArea();
 				textArea.setText(
 						"\n"
-					  + "1) Revise que la configuracion regional de su sistema operativo este en Español (México)."
+					  + "1) Revise que la configuracion regional de su sistema operativo este en Espaï¿½ol (Mï¿½xico)."
 					  + "\n\n2) Los datos que se capturan deben estar en mayusculas y sin caracteres especiales."
 					  + "\n\n3) Finalmente le pedimos validar que los datos marcados como obligatorios se encuentren con la informacion requerida."
-					  + "\n\n4) Al concluir la captura de beneficiarios, dar un click en el boton de Guardar, en seguida se abrira una ventana donde usted podrá guardar el archivo en la ruta que indique y con el nombre que desee."
+					  + "\n\n4) Al concluir la captura de beneficiarios, dar un click en el boton de Guardar, en seguida se abrira una ventana donde usted podrï¿½ guardar el archivo en la ruta que indique y con el nombre que desee."
 					  + "\n\n5) Al concluir el guardado correcto del archivo de Beneficiarios el siguiente paso es ingresar a su banca en linea de Banco Sabadell, para iniciar el proceso de Alta de Beneficiarios."
-					  + "\n\n6) Los Beneficiarios que se dan de alta estarán disponibles para transaccionar despues de 30 minutos."
+					  + "\n\n6) Los Beneficiarios que se dan de alta estarï¿½n disponibles para transaccionar despues de 30 minutos."
 					  );
 				textArea.setEditable(false);
 				textArea.setWrapText(true);
@@ -327,9 +375,6 @@ public class OpcionBeneficiarios extends Feature {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-//				if (file != null) {
-//					t.getTable().setItems(loadXls(file));
-//				}
 			}
 		});
 

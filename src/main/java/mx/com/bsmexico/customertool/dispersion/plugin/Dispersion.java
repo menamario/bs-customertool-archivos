@@ -49,13 +49,13 @@ public class Dispersion {
 	@LayoutField(name = FIELD_TIPO_MOVIMIENTO, title = "Tipo de Movimiento", length = 1)
 	private SimpleStringProperty tipoMovimiento;
 
-	@LayoutField(name = FIELD_APLICACION, title = "Aplicación", length = 1)
+	@LayoutField(name = FIELD_APLICACION, title = "Aplicaciï¿½n", length = 1)
 	private SimpleStringProperty aplicacion;
 
-	@LayoutField(name = FIELD_FECHA, title = "Fecha", length = 10)
+	@LayoutField(name = FIELD_FECHA, title = "Fecha", length = 8)
 	private SimpleStringProperty fecha;
 
-	@LayoutField(name = FIELD_TIPO_TRANSACCION, title = "Tipo de transacción", length = 2)
+	@LayoutField(name = FIELD_TIPO_TRANSACCION, title = "Tipo de transacciï¿½n", length = 2)
 	private SimpleStringProperty tipoTransaccion;
 
 	@LayoutField(name = FIELD_CUENTA_CARGO, title = "Cuenta de Cargo", length = 11)
@@ -120,10 +120,16 @@ public class Dispersion {
 	@RestrictionLayoutField(description = "MXP Pesos Mexicanos, USD Dolares Americanos", fields = { FIELD_DIVISA })
 	private static Predicate<String> divisaPredicate = t -> (t == null) ? false : t.matches("MXP|USD");
 	
-	@RestrictionLayoutField(description = "Importe máximo no mayor a 999999999999999.99", fields = {
+	@RestrictionLayoutField(description = "Importe mï¿½ximo no mayor a 999999999999999.99", fields = {
 			FIELD_IMPORTE })
 	private static Predicate<String> importePredicate = v -> {
 		return (StringUtils.isNotBlank(v) && NumberUtils.isCreatable(v) && Double.valueOf(v) <= MAX_IMPORTE);
+	};
+	
+	@RestrictionLayoutField(description = "Importe mï¿½ximo no mayor a 999999999999999.99", fields = {
+			FIELD_IVA })
+	private static Predicate<String> ivaPredicate = v -> {
+		return (StringUtils.isBlank(v) || (NumberUtils.isCreatable(v) && Double.valueOf(v) <= MAX_IMPORTE));
 	};
 	
 
@@ -377,7 +383,7 @@ public class Dispersion {
 			this.setEstatus("aplicacion", false);
 		}
 		
-		if(this.fecha.get()==null || this.fecha.get().length()!=10){
+		if(this.fecha.get()==null || this.fecha.get().length()!=8){
 			this.setEstatus("fecha", false);
 		}
 		
@@ -433,7 +439,7 @@ public class Dispersion {
 			this.setEstatus("rfc", false);
 		}
 		
-		if(this.tipoPersonaPredicate.test(this.tipoPersona.get()) && this.tipoPersona.get().equals("PM") && this.curp.get()!=null || this.curp.get().length()>0){
+		if(this.tipoPersonaPredicate.test(this.tipoPersona.get()) && this.tipoPersona.get().equals("PM") && (this.curp.get()!=null || this.curp.get().length()>0)){
 			this.setEstatus("curp", false);
 		}
 		
@@ -445,11 +451,15 @@ public class Dispersion {
 			this.setEstatus("importe", false);
 		}
 		
+		if (!this.ivaPredicate.test(this.iva.get())){
+			this.setEstatus("iva", false);
+		}
+		
 		if((this.rfc.get()==null||this.rfc.get().length()==0)  &&  this.iva.get()!=null && this.iva.get().length()>0 ){
 			this.setEstatus("iva", false);
 		}
 		
-		if(this.iva.get()!=null && this.importe.get()!=null && Double.valueOf(this.iva.get())>Double.valueOf(this.importe.get())){
+		if(this.ivaPredicate.test(this.iva.get()) && StringUtils.isNotBlank(this.iva.get()) && StringUtils.isNotBlank(this.importe.get()) && Double.valueOf(this.iva.get())>Double.valueOf(this.importe.get())){
 			this.setEstatus("iva", false);
 		}
 		

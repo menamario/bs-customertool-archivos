@@ -33,6 +33,7 @@ import mx.com.bsmexico.customertool.api.Layout;
 import mx.com.bsmexico.customertool.api.NavRoute;
 import mx.com.bsmexico.customertool.beneficiarios.plugin.Beneficiario;
 import mx.com.bsmexico.customertool.beneficiarios.plugin.BeneficiarioTable;
+import mx.com.bsmexico.customertool.beneficiarios.plugin.BeneficiariosImporter;
 
 public class OpcionDispersion extends Feature {
 
@@ -215,13 +216,13 @@ public class OpcionDispersion extends Feature {
 					});
 
 					VBox vbox = new VBox();
-					vbox.setPrefSize(512, 345);
+					vbox.setPrefSize(512, 275);
 					VBox.setVgrow(vbox, Priority.ALWAYS);
 					vbox.getChildren().add(canvas);
 					vbox.getChildren().add(mensaje);
 					vbox.getChildren().add(bContinuar);
 
-					stage.setScene(new Scene(vbox, 512, 345));
+					stage.setScene(new Scene(vbox, 512, 275));
 					stage.setResizable(false);
 					stage.show();
 
@@ -290,16 +291,20 @@ public class OpcionDispersion extends Feature {
 		((BorderPane) mainPane).setCenter(t);
 		BorderPane.setMargin(t, new Insets(25, 0, 0, 0));
 
-		// bImportarArchivo.setOnAction(new EventHandler<ActionEvent>() {
-		// @Override
-		// public void handle(final ActionEvent e) {
-		// File file = fileChooser.showOpenDialog(getDesktop().getStage());
-		// if (file != null) {
-		// t.getTable().setItems(loadXls(file));
-		// }
-		// }
-		// });
-
+		bImportarArchivo.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(final ActionEvent e) {
+				File file = fileChooser.showOpenDialog(getDesktop().getStage());
+				DispersionImporter benImporter = new DispersionImporter(t);
+				try {
+					benImporter.importFile(file);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 		getDesktop().setWorkArea(mainPane);
 	}
 }

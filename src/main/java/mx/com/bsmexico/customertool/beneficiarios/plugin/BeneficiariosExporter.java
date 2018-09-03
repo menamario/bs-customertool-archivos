@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mx.com.bsmexico.customertool.api.exporter.CSVExporter;
+import mx.com.bsmexico.customertool.api.exporter.ExportSource;
 
 public class BeneficiariosExporter extends CSVExporter<Beneficiario> {
+
+	public BeneficiariosExporter(ExportSource<Beneficiario> source) {
+		super(source);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	protected Object[] getRecord(final Beneficiario beneficiario) {
