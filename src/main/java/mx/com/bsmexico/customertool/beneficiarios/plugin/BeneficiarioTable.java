@@ -26,4 +26,13 @@ public class BeneficiarioTable extends LayoutTable<Beneficiario> {
 
 	}
 
+	@Override
+	protected String[] getFieldOrder() {
+		return new String[] { Beneficiario.FIELD_CUENTA_BENEFICIARIO, Beneficiario.FIELD_NUMERO_LINEA_BENEFICIARIO,
+				Beneficiario.FIELD_BANCO_PARTICIPANTE, Beneficiario.FIELD_TIPO_CUENTA, Beneficiario.FIELD_MONEDA,
+				Beneficiario.FIELD_IMPORTE_MAXIMO_PAGAR, Beneficiario.FIELD_TIPO_PERSONA,
+				Beneficiario.FIELD_RAZON_SOCIAL, Beneficiario.FIELD_NOMBRE, Beneficiario.FIELD_APELLIDO_PATERNO,
+				Beneficiario.FIELD_APELLIDO_MATERNO };
+	}
+
 }

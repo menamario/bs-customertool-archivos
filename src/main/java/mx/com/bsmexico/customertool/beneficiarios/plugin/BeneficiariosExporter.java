@@ -3,9 +3,9 @@ package mx.com.bsmexico.customertool.beneficiarios.plugin;
 import java.util.ArrayList;
 import java.util.List;
 
-import mx.com.bsmexico.customertool.api.layouts.CSVExporter;
+import mx.com.bsmexico.customertool.api.exporter.CSVExporter;
 
-public class BeneficiariosExport extends CSVExporter<Beneficiario> {
+public class BeneficiariosExporter extends CSVExporter<Beneficiario> {
 
 	@Override
 	protected Object[] getRecord(final Beneficiario beneficiario) {

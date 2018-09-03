@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -39,16 +42,13 @@ public class Beneficiario {
 	public static final String FIELD_APELLIDO_MATERNO = "APELLIDO_MATERNO";
 
 	private static final Double MAX_IMPORTE = 9999999999999999.99D;
-
-	@LayoutFieldConverter(conversionClass = SecureLongStringConverter.class)
-	@LayoutFieldWrapper(wrappedClass = Long.class)
+	
 	@LayoutField(name = FIELD_CUENTA_BENEFICIARIO, title = "Cuenta beneficiario", length = 18)
-	private SimpleLongProperty cuenta;
+	private SimpleStringProperty cuenta;
 
-	@LayoutFieldConverter(conversionClass = SecureLongStringConverter.class)
-	@LayoutFieldWrapper(wrappedClass = Long.class)
-	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "Número de lÃ­nea de telefono Móvil del Beneficiario", length = 10, disable = true, required = false)
-	private SimpleLongProperty numLinea;
+	
+	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "Nï¿½mero de lÃ­nea de telefono Mï¿½vil del Beneficiario", length = 10, disable = true, required = false)
+	private SimpleStringProperty numLinea;
 
 	@LayoutField(name = FIELD_BANCO_PARTICIPANTE, title = "Banco participante", length = 3, required = false)
 	private SimpleStringProperty bancoParticipante;
@@ -59,15 +59,13 @@ public class Beneficiario {
 	@LayoutField(name = FIELD_MONEDA, title = "Moneda", length = 3)
 	private SimpleStringProperty moneda;
 
-	@LayoutFieldConverter(conversionClass = SecureDoubleStringConverter.class)
-	@LayoutFieldWrapper(wrappedClass = Double.class)
-	@LayoutField(name = FIELD_IMPORTE_MAXIMO_PAGAR, title = "Importe máximo a pagar", length = 19)
-	private SimpleDoubleProperty importeMaximo;
+	@LayoutField(name = FIELD_IMPORTE_MAXIMO_PAGAR, title = "Importe mï¿½ximo a pagar", length = 19)
+	private SimpleStringProperty importeMaximo;
 
 	@LayoutField(name = FIELD_TIPO_PERSONA, title = "Tipo persona", length = 3)
 	private SimpleStringProperty tipoPersona;
 
-	@LayoutField(name = FIELD_RAZON_SOCIAL, title = "Razón Social", length = 70)
+	@LayoutField(name = FIELD_RAZON_SOCIAL, title = "Razï¿½n Social", length = 70)
 	private SimpleStringProperty razonSocial;
 
 	@LayoutField(name = FIELD_NOMBRE, title = "Nombre", length = 25)
@@ -83,7 +81,7 @@ public class Beneficiario {
 	private static Predicate<String> tipoCuentaPredicate = t -> (t == null) ? false
 			: t.matches("00|04");
 
-	@RestrictionLayoutField(description = "00 Persona Física, 01 Persona Moral", fields = { FIELD_TIPO_PERSONA })
+	@RestrictionLayoutField(description = "00 Persona Fï¿½sica, 01 Persona Moral", fields = { FIELD_TIPO_PERSONA })
 	private static Predicate<String> tipoPersonaPredicate = t -> (t == null) ? false
 			: t.matches("00|01");
 
@@ -91,17 +89,20 @@ public class Beneficiario {
 	private static Predicate<String> monedaPredicate = t -> (t == null) ? false
 			: t.matches("MXN|USD|EUR");
 
-	@RestrictionLayoutField(description = "Importe máximo no mayor a 9999999999999999.99", fields = {
+	@RestrictionLayoutField(description = "Importe mï¿½ximo no mayor a 9999999999999999.99", fields = {
 			FIELD_IMPORTE_MAXIMO_PAGAR })
-	private static Predicate<Double> importeMaximoPredicate = t -> (t != null && t <= MAX_IMPORTE);
+	private static Predicate<String> importeMaximoPredicate = v -> {
+		return (StringUtils.isNotBlank(v) && NumberUtils.isCreatable(v)
+				&& Double.valueOf(v) <= MAX_IMPORTE);
+	};
 	
 	
 	private Map<String,Boolean> estatus = new HashMap<String,Boolean>();
 
 	public Beneficiario() {
-		cuenta = new SimpleLongProperty();
+		cuenta = new SimpleStringProperty();
 		estatus.put("cuenta", true);
-		numLinea = new SimpleLongProperty();
+		numLinea = new SimpleStringProperty();
 		estatus.put("numLinea", true);
 		bancoParticipante = new SimpleStringProperty();
 		estatus.put("bancoParticipante", true);
@@ -109,7 +110,7 @@ public class Beneficiario {
 		estatus.put("tipoCuenta", true);
 		moneda = new SimpleStringProperty();
 		estatus.put("moneda", true);
-		importeMaximo = new SimpleDoubleProperty();
+		importeMaximo = new SimpleStringProperty();
 		estatus.put("importeMaximo", true);
 		tipoPersona = new SimpleStringProperty();
 		estatus.put("tipoPersona", true);
@@ -134,28 +135,28 @@ public class Beneficiario {
 	/**
 	 * @return the cuenta
 	 */
-	public Long getCuenta() {
+	public String getCuenta() {
 		return cuenta.get();
 	}
 
 	/**
 	 * @param cuenta the cuenta to set
 	 */
-	public void setCuenta(Long cuenta) {		
+	public void setCuenta(String cuenta) {		
 		this.cuenta.set(cuenta);
 	}
 
 	/**
 	 * @return the numLinea
 	 */
-	public Long getNumLinea() {
+	public String getNumLinea() {
 		return numLinea.get();
 	}
 
 	/**
 	 * @param numLinea the numLinea to set
 	 */
-	public void setNumLinea(Long numLinea) {
+	public void setNumLinea(String numLinea) {
 		this.numLinea.set(numLinea);
 	}
 
@@ -204,14 +205,14 @@ public class Beneficiario {
 	/**
 	 * @return the importeMaximo
 	 */
-	public Double getImporteMaximo() {
+	public String getImporteMaximo() {
 		return importeMaximo.get();
 	}
 
 	/**
 	 * @param importeMaximo the importeMaximo to set
 	 */
-	public void setImporteMaximo(Double importeMaximo) {
+	public void setImporteMaximo(String importeMaximo) {
 		this.importeMaximo.set(importeMaximo);
 	}
 
