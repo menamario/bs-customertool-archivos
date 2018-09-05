@@ -1,8 +1,6 @@
 package mx.com.bsmexico.customertool.beneficiarios.plugin;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -10,10 +8,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import javafx.beans.property.SimpleStringProperty;
-import mx.com.bsmexico.customertool.api.layouts.modell.LayoutField;
-import mx.com.bsmexico.customertool.api.layouts.modell.LayoutModel;
-import mx.com.bsmexico.customertool.api.layouts.modell.LayoutModelType;
-import mx.com.bsmexico.customertool.api.layouts.modell.RestrictionLayoutField;
+import mx.com.bsmexico.customertool.api.layouts.model.LayoutField;
+import mx.com.bsmexico.customertool.api.layouts.model.LayoutModel;
+import mx.com.bsmexico.customertool.api.layouts.model.LayoutModelType;
 
 /**
  * 
@@ -22,7 +19,7 @@ import mx.com.bsmexico.customertool.api.layouts.modell.RestrictionLayoutField;
  * @author jchr
  *
  */
-@LayoutModel(type = LayoutModelType.PROPERTY_JAVABEANS)
+@LayoutModel(type = LayoutModelType.PROPERTY_JAVABEANS, validatorClass = BeneficiarioValidator.class)
 public class Beneficiario {
 
 	public static final String FIELD_CUENTA_BENEFICIARIO = "CUENTA_BENEFICIARIO";
@@ -36,8 +33,6 @@ public class Beneficiario {
 	public static final String FIELD_NOMBRE = "NOMBRE";
 	public static final String FIELD_APELLIDO_PATERNO = "APELLIDO_PATERNO";
 	public static final String FIELD_APELLIDO_MATERNO = "APELLIDO_MATERNO";
-
-	private static final Double MAX_IMPORTE = 9999999999999999.99D;
 
 	@LayoutField(name = FIELD_CUENTA_BENEFICIARIO, title = "Cuenta beneficiario", length = 18)
 	private SimpleStringProperty cuenta;
@@ -72,38 +67,18 @@ public class Beneficiario {
 	@LayoutField(name = FIELD_APELLIDO_MATERNO, title = "Apellido materno", length = 30)
 	private SimpleStringProperty apellidoMaterno;
 
-	@RestrictionLayoutField(description = "Sabadell 11 posiciones, CLABE SPEI 18 posiciones", fields = {
-			FIELD_CUENTA_BENEFICIARIO })
-	private static Predicate<String> cuentaPredicate = t -> (StringUtils.isNotBlank(t) && t.length() <= 18
-			&& StringUtils.isNumeric(t));
-
-	@RestrictionLayoutField(description = "00 Cuenta Banco Sabadell, 40 CLABE SPEI", fields = { FIELD_TIPO_CUENTA })
-	private static Predicate<String> tipoCuentaPredicate = t -> (t == null) ? false : t.matches("00|40");
-
-	@RestrictionLayoutField(description = "00 Persona Física, 01 Persona Moral", fields = { FIELD_TIPO_PERSONA })
-	private static Predicate<String> tipoPersonaPredicate = t -> (t == null) ? false : t.matches("00|01");
-
-	@RestrictionLayoutField(description = "Tipo de moneda : MXN, USD, EUR", fields = { FIELD_MONEDA })
-	private static Predicate<String> monedaPredicate = t -> (t == null) ? false : t.matches("MXN|USD|EUR");
-
-	@RestrictionLayoutField(description = "Importe máximo no mayor a 9999999999999999.99", fields = {
-			FIELD_IMPORTE_MAXIMO_PAGAR })
-	private static Predicate<String> importeMaximoPredicate = v -> {
-		return (StringUtils.isNotBlank(v) && NumberUtils.isCreatable(v) && Double.valueOf(v) <= MAX_IMPORTE);
-	};
-
 	private Map<String, Boolean> estatus = new HashMap<String, Boolean>();
 	private Map<String, String> tooltips = new HashMap<String, String>();
 
 	public Map<String, String> getTooltips() {
 		return tooltips;
 	}
-	
+
 	public String getTooltip(String property) {
 		return tooltips.get(property);
 	}
-	
-	public void setTooltip(String property, String value){
+
+	public void setTooltip(String property, String value) {
 		this.getTooltips().put(property, value);
 	}
 
@@ -148,8 +123,7 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param cuenta
-	 *            the cuenta to set
+	 * @param cuenta the cuenta to set
 	 */
 	public void setCuenta(String cuenta) {
 		this.cuenta.set(cuenta);
@@ -163,8 +137,7 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param numLinea
-	 *            the numLinea to set
+	 * @param numLinea the numLinea to set
 	 */
 	public void setNumLinea(String numLinea) {
 		this.numLinea.set(numLinea);
@@ -178,8 +151,7 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param bancoParticipante
-	 *            the bancoParticipante to set
+	 * @param bancoParticipante the bancoParticipante to set
 	 */
 	public void setBancoParticipante(String bancoParticipante) {
 		this.bancoParticipante.set(bancoParticipante);
@@ -193,8 +165,7 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param tipoCuenta
-	 *            the tipoCuenta to set
+	 * @param tipoCuenta the tipoCuenta to set
 	 */
 	public void setTipoCuenta(String tipoCuenta) {
 		this.tipoCuenta.set(tipoCuenta);
@@ -208,8 +179,7 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param moneda
-	 *            the moneda to set
+	 * @param moneda the moneda to set
 	 */
 	public void setMoneda(String moneda) {
 		this.moneda.set(moneda);
@@ -223,8 +193,7 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param importeMaximo
-	 *            the importeMaximo to set
+	 * @param importeMaximo the importeMaximo to set
 	 */
 	public void setImporteMaximo(String importeMaximo) {
 		this.importeMaximo.set(importeMaximo);
@@ -238,8 +207,7 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param tipoPersona
-	 *            the tipoPersona to set
+	 * @param tipoPersona the tipoPersona to set
 	 */
 	public void setTipoPersona(String tipoPersona) {
 		this.tipoPersona.set(tipoPersona);
@@ -253,8 +221,7 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param razonSocial
-	 *            the razonSocial to set
+	 * @param razonSocial the razonSocial to set
 	 */
 	public void setRazonSocial(String razonSocial) {
 		this.razonSocial.set(razonSocial);
@@ -268,8 +235,7 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param nombre
-	 *            the nombre to set
+	 * @param nombre the nombre to set
 	 */
 	public void setNombre(String nombre) {
 		this.nombre.set(nombre);
@@ -283,8 +249,7 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param apellidoPaterno
-	 *            the apellidoPaterno to set
+	 * @param apellidoPaterno the apellidoPaterno to set
 	 */
 	public void setApellidoPaterno(String apellidoPaterno) {
 		this.apellidoPaterno.set(apellidoPaterno);
@@ -298,14 +263,13 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param apellidoMaterno
-	 *            the apellidoMaterno to set
+	 * @param apellidoMaterno the apellidoMaterno to set
 	 */
 	public void setApellidoMaterno(String apellidoMaterno) {
 		this.apellidoMaterno.set(apellidoMaterno);
 	}
 
-	public List<String> getInvalids() {
+	/*public List<String> getInvalids() {
 		List<String> invalids = new ArrayList<String>();
 		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().equals("40")
 				&& (this.bancoParticipante.get() == null || this.bancoParticipante.get().length() != 3)) {
@@ -355,13 +319,12 @@ public class Beneficiario {
 
 		return invalids;
 
-	}
+	}*/
 
 	public boolean validar() {
-		
+
 		resetEstatus();
-		
-		
+
 		// Validar Cuenta
 
 		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().equals("40")
@@ -374,8 +337,8 @@ public class Beneficiario {
 			this.setEstatus("cuenta", false);
 			this.setTooltip("cuenta", "Para el tipo de cuenta 00 la cuenta debe tener 11 posiciones");
 		}
-		
-		if (this.cuenta.get() == null || this.cuenta.get().length()==0){
+
+		if (this.cuenta.get() == null || this.cuenta.get().length() == 0) {
 			this.setEstatus("cuenta", false);
 			this.setTooltip("cuenta", "La cuenta no debe estar vacia");
 		}
@@ -384,11 +347,12 @@ public class Beneficiario {
 		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().equals("40")
 				&& (this.bancoParticipante.get() == null || this.bancoParticipante.get().length() != 3)) {
 			this.setEstatus("bancoParticipante", false);
-			this.setTooltip("bancoParticipante", "Para el tipo de cuenta 40 (SPEI), debe capturar el Banco Participante");
+			this.setTooltip("bancoParticipante",
+					"Para el tipo de cuenta 40 (SPEI), debe capturar el Banco Participante");
 		}
 
 		// Validar Tipo de Cuenta
-		if (!this.tipoCuentaPredicate.test(this.tipoCuenta.get())){
+		if (!this.tipoCuentaPredicate.test(this.tipoCuenta.get())) {
 			this.setEstatus("tipoCuenta", false);
 			this.setTooltip("tipoCuenta", "Debe ser 00 Sabadell, 40 SPEI");
 		}
@@ -410,21 +374,21 @@ public class Beneficiario {
 			this.setEstatus("tipoPersona", false);
 			this.setTooltip("tipoPersona", "Debe ser 00 Persona FIsica, 01 Persona Moral");
 		}
-		
-		//Validar Razon Social
-		
+
+		// Validar Razon Social
+
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00") && this.razonSocial.get() != null
 				&& this.razonSocial.get().length() > 0) {
 			this.setEstatus("razonSocial", false);
 			this.setTooltip("razonSocial", "No Debe capturar Razon Social para una Persona Fisica");
 		}
-		
+
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01")
 				&& (this.razonSocial.get() == null || this.razonSocial.get().length() == 0)) {
 			this.setEstatus("razonSocial", false);
 			this.setTooltip("razonSocial", "Debe capturar Razon Social para una Persona Moral");
 		}
-		
+
 		// Validar Nombre
 
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00")
@@ -432,28 +396,28 @@ public class Beneficiario {
 			this.setEstatus("nombre", false);
 			this.setTooltip("nombre", "Debe capturar el Nombre para una Persona Fisica");
 		}
-		
+
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01") && this.nombre.get() != null
 				&& this.nombre.get().length() > 0) {
 			this.setEstatus("nombre", false);
 			this.setTooltip("nombre", "No Debe capturar el Nombre para una Persona Moral");
 		}
-		
+
 		// Validar Nombre
-		
+
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00")
 				&& (this.apellidoPaterno.get() == null || this.apellidoPaterno.get().length() == 0)) {
 			this.setEstatus("apellidoPaterno", false);
 			this.setTooltip("apellidoPaterno", "Debe capturar el Apellido Paterno para una Persona Fisica");
 		}
-		
+
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01") && this.apellidoPaterno.get() != null
 				&& this.apellidoPaterno.get().length() > 0) {
 			this.setEstatus("apellidoPaterno", false);
 			this.setTooltip("apellidoPaterno", "No Debe capturar el Apellido Paterno para una Persona Moral");
 		}
-		
-		//Validar Apellido Materno
+
+		// Validar Apellido Materno
 		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00")
 				&& (this.apellidoMaterno.get() == null || this.apellidoMaterno.get().length() == 0)) {
 			this.setEstatus("apellidoMaterno", false);
@@ -465,33 +429,55 @@ public class Beneficiario {
 			this.setEstatus("apellidoMaterno", false);
 			this.setTooltip("apellidoMaterno", "No Debe capturar el Apellido Materno para una Persona Moral");
 		}
-		
-		for(boolean b: this.getEstatus().values()){
-			if(!b) return false;
+
+		for (boolean b : this.getEstatus().values()) {
+			if (!b)
+				return false;
 		}
 		return true;
 
 	}
-	
+
+	private Predicate<String> tipoCuentaPredicate = t -> (t == null) ? false : t.matches("00|40");
+
+	private Predicate<String> tipoPersonaPredicate = t -> (t == null) ? false : t.matches("00|01");
+
+	private Predicate<String> monedaPredicate = t -> (t == null) ? false : t.matches("MXN|USD|EUR");
+
+	private Predicate<String> importeMaximoPredicate = v -> {
+		return (StringUtils.isNotBlank(v) && NumberUtils.isCreatable(v) && Double.valueOf(v) <= 999999999999999.99);
+	};
+
 	private void resetEstatus() {
 		this.getEstatus().replaceAll((k, v) -> true);
 		this.getTooltips().replaceAll((k, v) -> null);
 	}
 
-	public boolean isActive(){
-		if(this.cuenta.get()!=null && this.cuenta.get().length()>0) return true;
-		if(this.numLinea.get()!=null && this.numLinea.get().length()>0) return true;
-		if(this.bancoParticipante.get()!=null && this.bancoParticipante.get().length()>0) return true;
-		if(this.tipoCuenta.get()!=null && this.tipoCuenta.get().length()>0) return true;
-		if(this.moneda.get()!=null && this.moneda.get().length()>0) return true;
-		if(this.importeMaximo.get()!=null && this.importeMaximo.get().length()>0) return true;
-		if(this.tipoPersona.get()!=null && this.tipoPersona.get().length()>0) return true;
-		if(this.razonSocial.get()!=null && this.razonSocial.get().length()>0) return true;
-		if(this.nombre.get()!=null && this.nombre.get().length()>0) return true;
-		if(this.apellidoPaterno.get()!=null && this.apellidoPaterno.get().length()>0) return true;
-		if(this.apellidoMaterno.get()!=null && this.apellidoMaterno.get().length()>0) return true;
+	public boolean isActive() {
+		if (this.cuenta.get() != null && this.cuenta.get().length() > 0)
+			return true;
+		if (this.numLinea.get() != null && this.numLinea.get().length() > 0)
+			return true;
+		if (this.bancoParticipante.get() != null && this.bancoParticipante.get().length() > 0)
+			return true;
+		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().length() > 0)
+			return true;
+		if (this.moneda.get() != null && this.moneda.get().length() > 0)
+			return true;
+		if (this.importeMaximo.get() != null && this.importeMaximo.get().length() > 0)
+			return true;
+		if (this.tipoPersona.get() != null && this.tipoPersona.get().length() > 0)
+			return true;
+		if (this.razonSocial.get() != null && this.razonSocial.get().length() > 0)
+			return true;
+		if (this.nombre.get() != null && this.nombre.get().length() > 0)
+			return true;
+		if (this.apellidoPaterno.get() != null && this.apellidoPaterno.get().length() > 0)
+			return true;
+		if (this.apellidoMaterno.get() != null && this.apellidoMaterno.get().length() > 0)
+			return true;
 		return false;
-		
+
 	}
 
 }

@@ -17,8 +17,7 @@ public class BeneficiariosImporter extends CSVImporter<Beneficiario> {
 
 	@Override
 	protected Beneficiario getInstance(final List<String> record) {
-		final Beneficiario beneficiario = new Beneficiario();
-		final BeneficiarioValidator validator = new BeneficiarioValidator();
+		final Beneficiario beneficiario = new Beneficiario();		
 		beneficiario.setCuenta(record.get(0));
 		//beneficiario.setEstatus("cuenta", validator.cuenta().test(beneficiario.getCuenta()));
 		beneficiario.setNumLinea(record.get(1));

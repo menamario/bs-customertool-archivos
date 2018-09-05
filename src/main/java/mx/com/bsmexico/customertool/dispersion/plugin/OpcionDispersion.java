@@ -53,7 +53,7 @@ public class OpcionDispersion extends Feature {
 
 	}
 
-	@SuppressWarnings("unused")
+	
 	private InputStream getImageInput(final String file) throws FileNotFoundException {
 		final InputStream input = getClass().getResourceAsStream(file);
 		return input;
@@ -355,11 +355,7 @@ public class OpcionDispersion extends Feature {
 
 		((BorderPane) mainPane).setTop(vbox);
 
-		final ClassLoader classLoader = getClass().getClassLoader();
-		InputStream layout = null;
-		layout = getClass().getResourceAsStream("/xml/layouts/beneficiariosLayout.xml");
-
-		t = new DispersionTable(new ColumnDispersionFactory());
+		t = new DispersionTable();
 
 		t.getTable().prefWidthProperty().bind(mainPane.widthProperty().add(-60));
 

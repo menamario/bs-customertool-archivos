@@ -8,10 +8,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import javafx.beans.property.SimpleStringProperty;
-import mx.com.bsmexico.customertool.api.layouts.modell.LayoutField;
-import mx.com.bsmexico.customertool.api.layouts.modell.LayoutModel;
-import mx.com.bsmexico.customertool.api.layouts.modell.LayoutModelType;
-import mx.com.bsmexico.customertool.api.layouts.modell.RestrictionLayoutField;
+import mx.com.bsmexico.customertool.api.layouts.model.LayoutField;
+import mx.com.bsmexico.customertool.api.layouts.model.LayoutModel;
+import mx.com.bsmexico.customertool.api.layouts.model.LayoutModelType;
 
 /**
  * 
@@ -20,7 +19,7 @@ import mx.com.bsmexico.customertool.api.layouts.modell.RestrictionLayoutField;
  * @author jchr
  *
  */
-@LayoutModel(type = LayoutModelType.PROPERTY_JAVABEANS)
+@LayoutModel(type = LayoutModelType.PROPERTY_JAVABEANS, validatorClass = DispersionValidator.class)
 public class Dispersion {
 
 	public static final String FIELD_TIPO_MOVIMIENTO = "TIPO_MOVIMIENTO";
@@ -98,48 +97,33 @@ public class Dispersion {
 	@LayoutField(name = FIELD_NUMERO_CELULAR, title = "Numero Celular", length = 10)
 	private SimpleStringProperty numeroCelular;
 
-	@RestrictionLayoutField(description = "0 Pago, 1 Cancelacion", fields = { FIELD_TIPO_MOVIMIENTO })
 	private static Predicate<String> tipoMovimientoPredicate = t -> (t == null) ? false : t.matches("0|1");
 
-	@RestrictionLayoutField(description = "H Hoy, P Programado", fields = { FIELD_APLICACION })
 	private static Predicate<String> tipoAplicacionPredicate = t -> (t == null) ? false : t.matches("H|P");
 
-	@RestrictionLayoutField(description = "Tipo de Transaccion : 00, 01, 02, 03", fields = { FIELD_TIPO_TRANSACCION })
 	private static Predicate<String> tipoTransaccionPredicate = t -> (t == null) ? false : t.matches("00|01|02|03");
 
-	@RestrictionLayoutField(description = "01 Sabadell, 40 CLABE, 03 TDD / TDC, 10 LTM", fields = {
-			FIELD_TIPO_CUENTA_BENEFICIARIO })
 	private static Predicate<String> tipoCuentaBeneficiarioPredicate = t -> (t == null) ? false
 			: t.matches("01|40|10|03");
 
-	@RestrictionLayoutField(description = "PF Persona Fisica, PM Persona Moral", fields = { FIELD_TIPO_PERSONA })
 	private static Predicate<String> tipoPersonaPredicate = t -> (t == null) ? false : t.matches("PF|PM");
 
-	@RestrictionLayoutField(description = "MXP Pesos Mexicanos, USD Dolares Americanos", fields = { FIELD_DIVISA })
 	private static Predicate<String> divisaPredicate = t -> (t == null) ? false : t.matches("MXP|USD");
 
-	@RestrictionLayoutField(description = "Importe máximo no mayor a 999999999999999.99", fields = { FIELD_IMPORTE })
 	private static Predicate<String> importePredicate = v -> {
 		return (StringUtils.isNotBlank(v) && NumberUtils.isCreatable(v) && Double.valueOf(v) <= MAX_IMPORTE);
 	};
-	
-    @RestrictionLayoutField(description = "Importe m�ximo no mayor a 999999999999999.99", fields = {
-            FIELD_IVA })
-    private static Predicate<String> ivaPredicate = v -> {
-        return (StringUtils.isBlank(v) || (NumberUtils.isCreatable(v) && Double.valueOf(v) <= MAX_IMPORTE));
-    };
-    
 
+	private static Predicate<String> ivaPredicate = v -> {
+		return (StringUtils.isBlank(v) || (NumberUtils.isCreatable(v) && Double.valueOf(v) <= MAX_IMPORTE));
+	};
 
-	@RestrictionLayoutField(description = "Cuenta Sabadell", fields = { FIELD_CUENTA_CARGO })
 	private static Predicate<String> cuentaCargoPredicate = t -> (StringUtils.isNotBlank(t) && t.length() <= 11
 			&& StringUtils.isNumeric(t));
 
-	@RestrictionLayoutField(description = "Cuenta Abono", fields = { FIELD_CUENTA_ABONO })
 	private static Predicate<String> cuentaAbonoPredicate = t -> (StringUtils.isNotBlank(t) && t.length() <= 18
 			&& StringUtils.isNumeric(t));
 
-	@RestrictionLayoutField(description = "Cuenta Abono", fields = { FIELD_REFERENCIA })
 	private static Predicate<String> referenciaPredicate = t -> (StringUtils.isNotBlank(t) && t.length() <= 20
 			&& StringUtils.isNumeric(t));
 
@@ -149,12 +133,12 @@ public class Dispersion {
 	public Map<String, String> getTooltips() {
 		return tooltips;
 	}
-	
+
 	public String getTooltip(String property) {
 		return tooltips.get(property);
 	}
-	
-	public void setTooltip(String property, String value){
+
+	public void setTooltip(String property, String value) {
 		this.getTooltips().put(property, value);
 	}
 
@@ -443,25 +427,29 @@ public class Dispersion {
 			if (this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get())
 					&& this.tipoCuentaBeneficiario.get().equals("01") && this.cuentaAbono.get().length() != 11) {
 				this.setEstatus("cuentaAbono", false);
-				this.setTooltip("cuentaAbono", "Para el tipo de cuenta de beneficiario 01 la cuenta de abono debe tener 11 posiciones");
+				this.setTooltip("cuentaAbono",
+						"Para el tipo de cuenta de beneficiario 01 la cuenta de abono debe tener 11 posiciones");
 			}
 
 			if (this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get())
 					&& this.tipoCuentaBeneficiario.get().equals("40") && this.cuentaAbono.get().length() != 18) {
 				this.setEstatus("cuentaAbono", false);
-				this.setTooltip("cuentaAbono", "Para el tipo de cuenta de beneficiario 40 la cuenta de abono debe tener 18 posiciones");
+				this.setTooltip("cuentaAbono",
+						"Para el tipo de cuenta de beneficiario 40 la cuenta de abono debe tener 18 posiciones");
 			}
 
 			if (this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get())
 					&& this.tipoCuentaBeneficiario.get().equals("03") && this.cuentaAbono.get().length() != 16) {
 				this.setEstatus("cuentaAbono", false);
-				this.setTooltip("cuentaAbono", "Para el tipo de cuenta de beneficiario 03 la cuenta de abono debe tener 16 posiciones");
+				this.setTooltip("cuentaAbono",
+						"Para el tipo de cuenta de beneficiario 03 la cuenta de abono debe tener 16 posiciones");
 			}
 
 			if (this.tipoCuentaBeneficiarioPredicate.test(this.tipoCuentaBeneficiario.get())
 					&& this.tipoCuentaBeneficiario.get().equals("10") && this.cuentaAbono.get().length() != 10) {
 				this.setEstatus("cuentaAbono", false);
-				this.setTooltip("cuentaAbono", "Para el tipo de cuenta de beneficiario 10 la cuenta de abono debe tener 10 posiciones");
+				this.setTooltip("cuentaAbono",
+						"Para el tipo de cuenta de beneficiario 10 la cuenta de abono debe tener 10 posiciones");
 			}
 		}
 
@@ -476,13 +464,13 @@ public class Dispersion {
 		}
 
 		if (this.tipoPersonaPredicate.test(this.tipoPersona.get()) && this.tipoPersona.get().equals("PF")
-				&& this.rfc.get()!=null && this.rfc.get().length()>0 && this.rfc.get().length() != 13) {
+				&& this.rfc.get() != null && this.rfc.get().length() > 0 && this.rfc.get().length() != 13) {
 			this.setEstatus("rfc", false);
 			this.setTooltip("rfc", "El RFC debe ser de 13 posiciones para una Persona Fisica");
 		}
 
 		if (this.tipoPersonaPredicate.test(this.tipoPersona.get()) && this.tipoPersona.get().equals("PM")
-				&& this.rfc.get()!=null && this.rfc.get().length()>0 && this.rfc.get().length() != 12) {
+				&& this.rfc.get() != null && this.rfc.get().length() > 0 && this.rfc.get().length() != 12) {
 			this.setEstatus("rfc", false);
 			this.setTooltip("rfc", "El RFC debe ser de 12 posiciones para una Persona Moral");
 		}
@@ -502,12 +490,11 @@ public class Dispersion {
 			this.setEstatus("importe", false);
 			this.setTooltip("importe", "Debe capturar un importe valido");
 		}
-		
-        if (!this.ivaPredicate.test(this.iva.get())){
-            this.setEstatus("iva", false);
-            this.setTooltip("iva", "Debe capturar un iva valido");
-        }
 
+		if (!this.ivaPredicate.test(this.iva.get())) {
+			this.setEstatus("iva", false);
+			this.setTooltip("iva", "Debe capturar un iva valido");
+		}
 
 		if ((this.rfc.get() == null || this.rfc.get().length() == 0) && this.iva.get() != null
 				&& this.iva.get().length() > 0) {
@@ -515,7 +502,9 @@ public class Dispersion {
 			this.setTooltip("iva", "Para capturar iva debe ingresar un rfc");
 		}
 
-        if(this.ivaPredicate.test(this.iva.get()) && StringUtils.isNotBlank(this.iva.get()) && StringUtils.isNotBlank(this.importe.get()) && Double.valueOf(this.iva.get())>Double.valueOf(this.importe.get())){
+		if (this.ivaPredicate.test(this.iva.get()) && StringUtils.isNotBlank(this.iva.get())
+				&& StringUtils.isNotBlank(this.importe.get())
+				&& Double.valueOf(this.iva.get()) > Double.valueOf(this.importe.get())) {
 			this.setEstatus("iva", false);
 			this.setTooltip("iva", "El iva no puede ser mayor al importe");
 		}

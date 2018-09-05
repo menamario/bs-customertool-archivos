@@ -8,8 +8,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.GroupLayout.Alignment;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -360,7 +358,7 @@ public class OpcionBeneficiarios extends Feature {
 
 		((BorderPane) mainPane).setTop(vbox);
 
-		t = new BeneficiarioTable(new ColumnBeneficiarioFactory());
+		t = new BeneficiarioTable();
 
 		t.getTable().prefWidthProperty().bind(mainPane.widthProperty().add(-60));
 
