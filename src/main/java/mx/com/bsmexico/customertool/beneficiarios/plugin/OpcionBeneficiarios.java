@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -233,12 +234,14 @@ public class OpcionBeneficiarios extends Feature {
 					
 					
 				}else if(numRegistros>0){
-					
+					String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
 					FileChooser saveFile = new FileChooser();
+					saveFile.setInitialDirectory(new File(currentPath));
 
 					// Set extension filter
 					FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("csv files (*.csv)", "*.csv");
 					saveFile.getExtensionFilters().add(sfFilter);
+					
 
 					// Show save file dialog
 					File file = saveFile.showSaveDialog(getDesktop().getStage());
@@ -325,12 +328,12 @@ public class OpcionBeneficiarios extends Feature {
 				TextArea textArea = new TextArea();
 				textArea.setText(
 						"\n"
-					  + "1) Revise que la configuracion regional de su sistema operativo este en Espa�ol (M�xico)."
+					  + "1) Revise que la configuracion regional de su sistema operativo este en Español (México)."
 					  + "\n\n2) Los datos que se capturan deben estar en mayusculas y sin caracteres especiales."
-					  + "\n\n3) Finalmente le pedimos validar que los datos marcados como obligatorios se encuentren con la informacion requerida."
-					  + "\n\n4) Al concluir la captura de beneficiarios, dar un click en el boton de Guardar, en seguida se abrira una ventana donde usted podr� guardar el archivo en la ruta que indique y con el nombre que desee."
+					  + "\n\n3) Finalmente le pedimos validar que los datos marcados como obligatorios se encuentren con la información requerida."
+					  + "\n\n4) Al concluir la captura de beneficiarios, dar un click en el boton de Guardar, en seguida se abrira una ventana donde usted podrá guardar el archivo en la ruta que indique y con el nombre que desee."
 					  + "\n\n5) Al concluir el guardado correcto del archivo de Beneficiarios el siguiente paso es ingresar a su banca en linea de Banco Sabadell, para iniciar el proceso de Alta de Beneficiarios."
-					  + "\n\n6) Los Beneficiarios que se dan de alta estar�n disponibles para transaccionar despues de 30 minutos."
+					  + "\n\n6) Los Beneficiarios que se dan de alta estarán disponibles para transaccionar despues de 30 minutos."
 					  );
 				textArea.setEditable(false);
 				textArea.setWrapText(true);
@@ -367,6 +370,8 @@ public class OpcionBeneficiarios extends Feature {
 		bImportarArchivo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(final ActionEvent e) {
+				String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
+				fileChooser.setInitialDirectory(new File(currentPath));
 				File file = fileChooser.showOpenDialog(getDesktop().getStage());
 				BeneficiariosImporter benImporter = new BeneficiariosImporter(t);
 				try {

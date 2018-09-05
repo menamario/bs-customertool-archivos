@@ -3,6 +3,7 @@ package mx.com.bsmexico.customertool.dispersion.plugin;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,6 +27,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import mx.com.bsmexico.customertool.api.Feature;
@@ -136,7 +138,7 @@ public class OpcionDispersion extends Feature {
 		});
 
 		final FileChooser fileChooser = new FileChooser();
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.xls");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel and csv files (*.xls)", "*.xls","*.csv");
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		headerBox1.getChildren().add(bAtras);
@@ -201,6 +203,8 @@ public class OpcionDispersion extends Feature {
 					stage.setTitle("Archivos Bantotal - Dispersion - Datos Incorrectos");
 
 					Label mensaje = new Label("Error en los datos proporcionados");
+					mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
+					mensaje.setTextFill(Color.web("#777777"));
 
 					Button bContinuar = new Button("Continuar");
 					bContinuar.setStyle(
@@ -226,7 +230,9 @@ public class OpcionDispersion extends Feature {
 
 				} else if(numRegistros>0){
 
+					String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
 					FileChooser saveFile = new FileChooser();
+					saveFile.setInitialDirectory(new File(currentPath));
 
 					// Set extension filter
 					FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("csv files (*.csv)",
@@ -246,7 +252,6 @@ public class OpcionDispersion extends Feature {
 							e1.printStackTrace();
 						}
 					}
-					
 					
 					Stage stage = new Stage();
 
@@ -278,7 +283,6 @@ public class OpcionDispersion extends Feature {
 					vbox.setSpacing(50);
 					vbox.setAlignment(Pos.TOP_CENTER);
 					vbox.setPrefSize(512, 275);
-					//VBox.setVgrow(vbox, Priority.ALWAYS);
 					vbox.getChildren().add(canvas);
 					vbox.getChildren().add(mensaje);
 					vbox.getChildren().add(bContinuar);
@@ -296,18 +300,49 @@ public class OpcionDispersion extends Feature {
 			public void handle(ActionEvent event) {
 
 				Stage stage = new Stage();
+
+				StackPane canvas = new StackPane();
+				canvas.setPadding(new Insets(10));
+				canvas.setStyle("-fx-background-color: #239d45;");
+				canvas.setPrefSize(800, 60);
+
+				Label instruccionesLabel = new Label(
+						"Banco Sabadell agradece su preferencia, a continuacion detallamos los pasos que debe seguir para capturar los datos de dispersion de pagos.");
+				instruccionesLabel.setWrapText(true);
+				instruccionesLabel.setTextAlignment(TextAlignment.JUSTIFY);
+				instruccionesLabel
+						.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-font-weight: bold");
+				instruccionesLabel.setTextFill(Color.WHITE);
+				canvas.getChildren().add(instruccionesLabel);
+
 				stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
-				stage.setTitle("Archivos Bantotal - Beneficiarios - Instrucciones");
+				stage.setTitle("Archivos Bantotal - Dispersion - Instrucciones");
+
 				TextArea textArea = new TextArea();
 				textArea.setText(
-						"Aqui van las instrucciones\nPara Usar la Opcion de Captura de Beneficiarios\nPuede Contener texto e imagenes");
+						"\n"
+						
+		        + "1) Revise que la configuración regional del sistema operativo esté en Español(México)."
+		        + "\n\n3) Los datos que se capturan deben estar en mayúsculas y sin caracteres especiales."
+		        + "\n\n4) Al concluir la captura de transferencias para apgos, dar un click en el boton de Guardar, en seguida se abrira una ventana donde usted podrá guardar el archivo en la ruta que indique y con el nombre que desee."
+				+ "\n\n6) Las transferencias que se pueden aplicar son:	Transferencias Sabadell en pesos mexicanos, dólares americanos y euros; sin compra-venta de divisas. Transferencias Nacionales Internbancarias en pesos mexicanos."
+				+ "\n\n7) Las Transferencias Nacionales Interbancarias deberán llevar la cuenta CLABE del beneficiario; (el número de teléfono móvil y tarjeta de débito o crédito no están disponibles). "
+				+ "\n\n8) Las transferencias se ejecutarán a las cuentas de los beneficiarios que previamente se hayan registrado."
+				
+					  );
+				textArea.setEditable(false);
+				textArea.setWrapText(true);
+				
 
-				VBox vbox = new VBox(textArea);
-				textArea.prefHeightProperty().bind(vbox.prefHeightProperty());
-				vbox.setPrefSize(800, 600);
+				VBox vbox = new VBox();
+				textArea.prefHeightProperty().bind(vbox.prefHeightProperty().add(-60));
+				vbox.setPrefSize(600, 600);
 				VBox.setVgrow(vbox, Priority.ALWAYS);
+				vbox.getChildren().add(canvas);
+				vbox.getChildren().add(textArea);
 
-				stage.setScene(new Scene(vbox, 800, 600));
+				stage.setScene(new Scene(vbox, 600, 600));
+				stage.setResizable(false);
 				stage.show();
 				// Hide this current window (if this is what you want)
 				// ((Node)(event.getSource())).getScene().getWindow().hide();
@@ -334,7 +369,10 @@ public class OpcionDispersion extends Feature {
 		bImportarArchivo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(final ActionEvent e) {
+				String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
+				fileChooser.setInitialDirectory(new File(currentPath));
 				File file = fileChooser.showOpenDialog(getDesktop().getStage());
+				
 				DispersionImporter benImporter = new DispersionImporter(t);
 				try {
 					benImporter.importFile(file);
