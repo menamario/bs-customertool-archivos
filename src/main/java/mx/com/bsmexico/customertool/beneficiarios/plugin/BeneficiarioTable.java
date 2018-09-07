@@ -2,8 +2,11 @@ package mx.com.bsmexico.customertool.beneficiarios.plugin;
 
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
 import mx.com.bsmexico.customertool.api.exporter.ExportSource;
 import mx.com.bsmexico.customertool.api.exporter.ImportTarget;
 import mx.com.bsmexico.customertool.api.layouts.control.LayoutTable;
@@ -16,6 +19,23 @@ public class BeneficiarioTable extends LayoutTable<Beneficiario>
 	public BeneficiarioTable() throws IllegalArgumentException, InstantiationError {
 		super(Beneficiario.class, new ColumnBeneficiarioFactory());
 
+	}
+	
+	/**
+	 * @throws Exception
+	 */
+	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected void setColumns() throws Exception {
+		String[] ids = getFieldOrder();
+		if (!ArrayUtils.isEmpty(ids)) {
+			TableColumn ct = null;
+			for (String id : ids) {
+				ct = columnFactory.<String>getEditableColumn(id, 100);
+				ct.prefWidthProperty().bind(table.widthProperty().multiply(0.15));
+				table.getColumns().add(ct);
+			}
+		}
 	}
 
 	protected void polulate() {
