@@ -27,7 +27,6 @@ public class BeneficiarioTable extends EditableLayoutTable<Beneficiario>
 
 	@Override
 	protected void addRow() {
-		System.out.println("adding rows");
 		getItems().add(new Beneficiario());
 
 	}
@@ -65,6 +64,18 @@ public class BeneficiarioTable extends EditableLayoutTable<Beneficiario>
 			}
 		}
 		return isValid;
+	}
+
+	@Override
+	public boolean validateModel(Beneficiario model) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isActiveModel(Beneficiario model) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

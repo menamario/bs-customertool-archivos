@@ -66,4 +66,16 @@ public class DispersionTable extends EditableLayoutTable<Dispersion>
 		return isValid;
 	}
 
+	@Override
+	public boolean validateModel(Dispersion model) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isActiveModel(Dispersion model) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

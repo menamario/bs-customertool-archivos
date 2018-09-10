@@ -233,4 +233,10 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 		return desc;
 	}
 
+	@Override
+	public boolean isActive(Beneficiario model) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
