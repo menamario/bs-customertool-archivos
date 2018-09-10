@@ -2,40 +2,21 @@ package mx.com.bsmexico.customertool.beneficiarios.plugin;
 
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
 import mx.com.bsmexico.customertool.api.exporter.ExportSource;
 import mx.com.bsmexico.customertool.api.exporter.ImportTarget;
-import mx.com.bsmexico.customertool.api.layouts.control.LayoutTable;
+import mx.com.bsmexico.customertool.api.layouts.control.EditableLayoutTable;
+import mx.com.bsmexico.customertool.api.layouts.model.validation.LayoutModelValidator;
 
-public class BeneficiarioTable extends LayoutTable<Beneficiario>
+public class BeneficiarioTable extends EditableLayoutTable<Beneficiario>
 		implements ImportTarget<Beneficiario>, ExportSource<Beneficiario> {
 
 	private final int INITIAL_CAPACITY = 50;
 
 	public BeneficiarioTable() throws IllegalArgumentException, InstantiationError {
-		super(Beneficiario.class, new ColumnBeneficiarioFactory());
+		super(Beneficiario.class);
 
-	}
-	
-	/**
-	 * @throws Exception
-	 */
-	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected void setColumns() throws Exception {
-		String[] ids = getFieldOrder();
-		if (!ArrayUtils.isEmpty(ids)) {
-			TableColumn ct = null;
-			for (String id : ids) {
-				ct = columnFactory.<String>getEditableColumn(id, 100);
-				ct.prefWidthProperty().bind(table.widthProperty().multiply(0.15));
-				table.getColumns().add(ct);
-			}
-		}
 	}
 
 	protected void polulate() {
@@ -47,20 +28,20 @@ public class BeneficiarioTable extends LayoutTable<Beneficiario>
 	@Override
 	protected void addRow() {
 		System.out.println("adding rows");
-		table.getItems().add(new Beneficiario());
+		getItems().add(new Beneficiario());
 
 	}
 
 	@Override
 	public void setData(List<Beneficiario> data) {
 		ObservableList<Beneficiario> observableList = FXCollections.observableList(data);
-		table.setItems(observableList);
+		setItems(observableList);
 
 	}
 
 	@Override
 	public List<Beneficiario> getData() {
-		return table.getItems();
+		return getItems();
 	}
 
 	@Override
@@ -70,6 +51,20 @@ public class BeneficiarioTable extends LayoutTable<Beneficiario>
 				Beneficiario.FIELD_IMPORTE_MAXIMO_PAGAR, Beneficiario.FIELD_TIPO_PERSONA,
 				Beneficiario.FIELD_RAZON_SOCIAL, Beneficiario.FIELD_NOMBRE, Beneficiario.FIELD_APELLIDO_PATERNO,
 				Beneficiario.FIELD_APELLIDO_MATERNO };
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean validateTable() throws Exception {
+		boolean isValid = true;
+		if (this.metamodel.getValidator() != null) {
+			this.validated = true;
+			isValid = ((LayoutModelValidator<Beneficiario>) this.metamodel.getValidator()).isValid(getData());
+			if (!isValid) {
+				refresh();
+			}
+		}
+		return isValid;
 	}
 
 }

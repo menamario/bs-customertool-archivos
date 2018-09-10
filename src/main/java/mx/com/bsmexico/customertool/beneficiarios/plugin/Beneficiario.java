@@ -1,12 +1,5 @@
 package mx.com.bsmexico.customertool.beneficiarios.plugin;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Predicate;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-
 import javafx.beans.property.SimpleStringProperty;
 import mx.com.bsmexico.customertool.api.layouts.model.LayoutField;
 import mx.com.bsmexico.customertool.api.layouts.model.LayoutModel;
@@ -65,54 +58,20 @@ public class Beneficiario {
 	private SimpleStringProperty apellidoPaterno;
 
 	@LayoutField(name = FIELD_APELLIDO_MATERNO, title = "Apellido materno", length = 30)
-	private SimpleStringProperty apellidoMaterno;
-
-	private Map<String, Boolean> estatus = new HashMap<String, Boolean>();
-	private Map<String, String> tooltips = new HashMap<String, String>();
-
-	public Map<String, String> getTooltips() {
-		return tooltips;
-	}
-
-	public String getTooltip(String property) {
-		return tooltips.get(property);
-	}
-
-	public void setTooltip(String property, String value) {
-		this.getTooltips().put(property, value);
-	}
+	private SimpleStringProperty apellidoMaterno;	
 
 	public Beneficiario() {
 		cuenta = new SimpleStringProperty();
-		estatus.put("cuenta", true);
 		numLinea = new SimpleStringProperty();
-		estatus.put("numLinea", true);
 		bancoParticipante = new SimpleStringProperty();
-		estatus.put("bancoParticipante", true);
 		tipoCuenta = new SimpleStringProperty();
-		estatus.put("tipoCuenta", true);
 		moneda = new SimpleStringProperty();
-		estatus.put("moneda", true);
 		importeMaximo = new SimpleStringProperty();
-		estatus.put("importeMaximo", true);
 		tipoPersona = new SimpleStringProperty();
-		estatus.put("tipoPersona", true);
 		razonSocial = new SimpleStringProperty();
-		estatus.put("razonSocial", true);
 		nombre = new SimpleStringProperty();
-		estatus.put("nombre", true);
 		apellidoPaterno = new SimpleStringProperty();
-		estatus.put("apellidoPaterno", true);
 		apellidoMaterno = new SimpleStringProperty();
-		estatus.put("apellidoMaterno", true);
-	}
-
-	public Map<String, Boolean> getEstatus() {
-		return estatus;
-	}
-
-	public void setEstatus(String property, Boolean value) {
-		this.getEstatus().put(property, value);
 	}
 
 	/**
@@ -267,217 +226,6 @@ public class Beneficiario {
 	 */
 	public void setApellidoMaterno(String apellidoMaterno) {
 		this.apellidoMaterno.set(apellidoMaterno);
-	}
-
-	/*public List<String> getInvalids() {
-		List<String> invalids = new ArrayList<String>();
-		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().equals("40")
-				&& (this.bancoParticipante.get() == null || this.bancoParticipante.get().length() != 3)) {
-			invalids.add("bancoParticipante");
-		}
-		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().equals("40")
-				&& (this.cuenta.get() == null || this.cuenta.get().length() != 18)) {
-			invalids.add("cuenta");
-		}
-		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().equals("00")
-				&& (this.cuenta.get() == null || this.cuenta.get().length() != 11)) {
-			invalids.add("cuenta");
-		}
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00") && this.razonSocial.get() != null
-				&& this.razonSocial.get().length() > 0) {
-			invalids.add("razonSocial");
-		}
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00")
-				&& (this.nombre.get() == null || this.nombre.get().length() == 0)) {
-			invalids.add("nombre");
-		}
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00")
-				&& (this.apellidoPaterno.get() == null || this.apellidoPaterno.get().length() == 0)) {
-			invalids.add("apellidoPaterno");
-		}
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00")
-				&& (this.apellidoMaterno.get() == null || this.apellidoMaterno.get().length() == 0)) {
-			invalids.add("apellidoMaterno");
-		}
-
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01")
-				&& (this.razonSocial.get() == null || this.razonSocial.get().length() == 0)) {
-			invalids.add("razonSocial");
-		}
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01") && this.nombre.get() != null
-				&& this.nombre.get().length() > 0) {
-			invalids.add("nombre");
-		}
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01") && this.apellidoPaterno.get() != null
-				&& this.apellidoPaterno.get().length() > 0) {
-			invalids.add("apellidoPaterno");
-		}
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01") && this.apellidoMaterno.get() != null
-				&& this.apellidoMaterno.get().length() > 0) {
-			invalids.add("apellidoMaterno");
-		}
-
-		return invalids;
-
-	}*/
-
-	public boolean validar() {
-
-		resetEstatus();
-
-		// Validar Cuenta
-
-		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().equals("40")
-				&& (this.cuenta.get() == null || this.cuenta.get().length() != 18)) {
-			this.setEstatus("cuenta", false);
-			this.setTooltip("cuenta", "Para el tipo de cuenta 40 la cuenta debe tener 18 posiciones");
-		}
-		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().equals("00")
-				&& (this.cuenta.get() == null || this.cuenta.get().length() != 11)) {
-			this.setEstatus("cuenta", false);
-			this.setTooltip("cuenta", "Para el tipo de cuenta 00 la cuenta debe tener 11 posiciones");
-		}
-
-		if (this.cuenta.get() == null || this.cuenta.get().length() == 0) {
-			this.setEstatus("cuenta", false);
-			this.setTooltip("cuenta", "La cuenta no debe estar vacia");
-		}
-
-		// Validar Banco Participante
-		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().equals("40")
-				&& (this.bancoParticipante.get() == null || this.bancoParticipante.get().length() != 3)) {
-			this.setEstatus("bancoParticipante", false);
-			this.setTooltip("bancoParticipante",
-					"Para el tipo de cuenta 40 (SPEI), debe capturar el Banco Participante");
-		}
-
-		// Validar Tipo de Cuenta
-		if (!this.tipoCuentaPredicate.test(this.tipoCuenta.get())) {
-			this.setEstatus("tipoCuenta", false);
-			this.setTooltip("tipoCuenta", "Debe ser 00 Sabadell, 40 SPEI");
-		}
-
-		// Validar Moneda
-		if (!this.monedaPredicate.test(this.moneda.get())) {
-			this.setEstatus("moneda", false);
-			this.setTooltip("moneda", "Debe ser MXN Pesos Mexicanos, USD Dolares, EUR Euros");
-		}
-
-		// Validar Importe
-		if (!this.importeMaximoPredicate.test(this.importeMaximo.get())) {
-			this.setEstatus("importeMaximo", false);
-			this.setTooltip("importeMaximo", "Debe capturar un importe valido");
-		}
-
-		// Validar tipoPersona
-		if (!this.tipoPersonaPredicate.test(this.tipoPersona.get())) {
-			this.setEstatus("tipoPersona", false);
-			this.setTooltip("tipoPersona", "Debe ser 00 Persona FIsica, 01 Persona Moral");
-		}
-
-		// Validar Razon Social
-
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00") && this.razonSocial.get() != null
-				&& this.razonSocial.get().length() > 0) {
-			this.setEstatus("razonSocial", false);
-			this.setTooltip("razonSocial", "No Debe capturar Razon Social para una Persona Fisica");
-		}
-
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01")
-				&& (this.razonSocial.get() == null || this.razonSocial.get().length() == 0)) {
-			this.setEstatus("razonSocial", false);
-			this.setTooltip("razonSocial", "Debe capturar Razon Social para una Persona Moral");
-		}
-
-		// Validar Nombre
-
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00")
-				&& (this.nombre.get() == null || this.nombre.get().length() == 0)) {
-			this.setEstatus("nombre", false);
-			this.setTooltip("nombre", "Debe capturar el Nombre para una Persona Fisica");
-		}
-
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01") && this.nombre.get() != null
-				&& this.nombre.get().length() > 0) {
-			this.setEstatus("nombre", false);
-			this.setTooltip("nombre", "No Debe capturar el Nombre para una Persona Moral");
-		}
-
-		// Validar Nombre
-
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00")
-				&& (this.apellidoPaterno.get() == null || this.apellidoPaterno.get().length() == 0)) {
-			this.setEstatus("apellidoPaterno", false);
-			this.setTooltip("apellidoPaterno", "Debe capturar el Apellido Paterno para una Persona Fisica");
-		}
-
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01") && this.apellidoPaterno.get() != null
-				&& this.apellidoPaterno.get().length() > 0) {
-			this.setEstatus("apellidoPaterno", false);
-			this.setTooltip("apellidoPaterno", "No Debe capturar el Apellido Paterno para una Persona Moral");
-		}
-
-		// Validar Apellido Materno
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("00")
-				&& (this.apellidoMaterno.get() == null || this.apellidoMaterno.get().length() == 0)) {
-			this.setEstatus("apellidoMaterno", false);
-			this.setTooltip("apellidoMaterno", "Debe capturar el Apellido Materno para una Persona Fisica");
-		}
-
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().equals("01") && this.apellidoMaterno.get() != null
-				&& this.apellidoMaterno.get().length() > 0) {
-			this.setEstatus("apellidoMaterno", false);
-			this.setTooltip("apellidoMaterno", "No Debe capturar el Apellido Materno para una Persona Moral");
-		}
-
-		for (boolean b : this.getEstatus().values()) {
-			if (!b)
-				return false;
-		}
-		return true;
-
-	}
-
-	private Predicate<String> tipoCuentaPredicate = t -> (t == null) ? false : t.matches("00|40");
-
-	private Predicate<String> tipoPersonaPredicate = t -> (t == null) ? false : t.matches("00|01");
-
-	private Predicate<String> monedaPredicate = t -> (t == null) ? false : t.matches("MXN|USD|EUR");
-
-	private Predicate<String> importeMaximoPredicate = v -> {
-		return (StringUtils.isNotBlank(v) && NumberUtils.isCreatable(v) && Double.valueOf(v) <= 999999999999999.99);
-	};
-
-	private void resetEstatus() {
-		this.getEstatus().replaceAll((k, v) -> true);
-		this.getTooltips().replaceAll((k, v) -> null);
-	}
-
-	public boolean isActive() {
-		if (this.cuenta.get() != null && this.cuenta.get().length() > 0)
-			return true;
-		if (this.numLinea.get() != null && this.numLinea.get().length() > 0)
-			return true;
-		if (this.bancoParticipante.get() != null && this.bancoParticipante.get().length() > 0)
-			return true;
-		if (this.tipoCuenta.get() != null && this.tipoCuenta.get().length() > 0)
-			return true;
-		if (this.moneda.get() != null && this.moneda.get().length() > 0)
-			return true;
-		if (this.importeMaximo.get() != null && this.importeMaximo.get().length() > 0)
-			return true;
-		if (this.tipoPersona.get() != null && this.tipoPersona.get().length() > 0)
-			return true;
-		if (this.razonSocial.get() != null && this.razonSocial.get().length() > 0)
-			return true;
-		if (this.nombre.get() != null && this.nombre.get().length() > 0)
-			return true;
-		if (this.apellidoPaterno.get() != null && this.apellidoPaterno.get().length() > 0)
-			return true;
-		if (this.apellidoMaterno.get() != null && this.apellidoMaterno.get().length() > 0)
-			return true;
-		return false;
-
 	}
 
 }

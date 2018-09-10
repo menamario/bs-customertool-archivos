@@ -53,7 +53,6 @@ public class OpcionDispersion extends Feature {
 
 	}
 
-	
 	private InputStream getImageInput(final String file) throws FileNotFoundException {
 		final InputStream input = getClass().getResourceAsStream(file);
 		return input;
@@ -138,7 +137,8 @@ public class OpcionDispersion extends Feature {
 		});
 
 		final FileChooser fileChooser = new FileChooser();
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel and csv files (*.xls)", "*.xls","*.csv");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel and csv files (*.xls)", "*.xls",
+				"*.csv");
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		headerBox1.getChildren().add(bAtras);
@@ -180,118 +180,109 @@ public class OpcionDispersion extends Feature {
 			@Override
 			public void handle(final ActionEvent e) {
 
-				int numError = 0;
-				int numRegistros = 0;
-				for (Dispersion b : t.getTable().getItems()) {
-					if (b.isActive()) {
-						numRegistros++;
-						if (!b.validar())
-							numError++;
-					}
-				}
-				t.getTable().refresh();
+				boolean isValid;
+				try {
+					isValid = t.validateTable();
+					if (isValid) {
+						String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
+						FileChooser saveFile = new FileChooser();
+						saveFile.setInitialDirectory(new File(currentPath));
 
-				if (numError > 0) {
-					Stage stage = new Stage();
+						// Set extension filter
+						FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("csv files (*.csv)",
+								"*.csv");
+						saveFile.getExtensionFilters().add(sfFilter);
 
-					StackPane canvas = new StackPane();
-					canvas.setPadding(new Insets(10));
-					canvas.setStyle("-fx-background-color: #e90e5c;");
-					canvas.setPrefSize(512, 50);
+						// Show save file dialog
+						File file = saveFile.showSaveDialog(getDesktop().getStage());
 
-					stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
-					stage.setTitle("Archivos Bantotal - Dispersion - Datos Incorrectos");
+						if (file != null) {
+							DispersionCSVExporter exporter = new DispersionCSVExporter(t);
 
-					Label mensaje = new Label("Error en los datos proporcionados");
-					mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
-					mensaje.setTextFill(Color.web("#777777"));
-
-					Button bContinuar = new Button("Continuar");
-					bContinuar.setStyle(
-							"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
-					bContinuar.setPrefWidth(140);
-					bContinuar.setTextFill(Color.WHITE);
-
-					bContinuar.setOnMouseClicked(evt -> {
-						stage.hide();
-					});
-
-					VBox vbox = new VBox();
-					vbox.setPrefSize(512, 275);
-					vbox.setSpacing(50);
-					vbox.setAlignment(Pos.TOP_CENTER);
-					vbox.getChildren().add(canvas);
-					vbox.getChildren().add(mensaje);
-					vbox.getChildren().add(bContinuar);
-
-					stage.setScene(new Scene(vbox, 512, 275));
-					stage.setResizable(false);
-					stage.show();
-
-				} else if(numRegistros>0){
-
-					String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
-					FileChooser saveFile = new FileChooser();
-					saveFile.setInitialDirectory(new File(currentPath));
-
-					// Set extension filter
-					FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("csv files (*.csv)",
-							"*.csv");
-					saveFile.getExtensionFilters().add(sfFilter);
-
-					// Show save file dialog
-					File file = saveFile.showSaveDialog(getDesktop().getStage());
-
-					if (file != null) {
-						DispersionCSVExporter exporter = new DispersionCSVExporter(t);
-						
-						try {
-							exporter.export(file);
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							try {
+								exporter.export(file);
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 						}
+
+						Stage stage = new Stage();
+
+						StackPane canvas = new StackPane();
+						canvas.setPadding(new Insets(10));
+						canvas.setStyle("-fx-background-color:  #a9d42c;");
+						canvas.setPrefSize(512, 50);
+
+						stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+						stage.setTitle("Archivos Bantotal - Beneficiarios - Archivo Guardado");
+
+						Label mensaje = new Label("El archivo fue guardado exitosamente");
+						mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
+						mensaje.setTextFill(Color.web("#777777"));
+
+						Button bContinuar = new Button("Continuar");
+						bContinuar.setStyle(
+								"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+						bContinuar.setPrefWidth(140);
+						bContinuar.setTextFill(Color.WHITE);
+
+						bContinuar.setOnMouseClicked(evt -> {
+							stage.hide();
+						});
+
+						VBox vbox = new VBox();
+						vbox.setSpacing(50);
+						vbox.setAlignment(Pos.TOP_CENTER);
+						vbox.setPrefSize(512, 275);
+						vbox.getChildren().add(canvas);
+						vbox.getChildren().add(mensaje);
+						vbox.getChildren().add(bContinuar);
+
+						stage.setScene(new Scene(vbox, 512, 275));
+						stage.setResizable(false);
+						stage.show();
+					} else {
+						Stage stage = new Stage();
+
+						StackPane canvas = new StackPane();
+						canvas.setPadding(new Insets(10));
+						canvas.setStyle("-fx-background-color: #e90e5c;");
+						canvas.setPrefSize(512, 50);
+
+						stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+						stage.setTitle("Archivos Bantotal - Dispersion - Datos Incorrectos");
+
+						Label mensaje = new Label("Error en los datos proporcionados");
+						mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
+						mensaje.setTextFill(Color.web("#777777"));
+
+						Button bContinuar = new Button("Continuar");
+						bContinuar.setStyle(
+								"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+						bContinuar.setPrefWidth(140);
+						bContinuar.setTextFill(Color.WHITE);
+
+						bContinuar.setOnMouseClicked(evt -> {
+							stage.hide();
+						});
+
+						VBox vbox = new VBox();
+						vbox.setPrefSize(512, 275);
+						vbox.setSpacing(50);
+						vbox.setAlignment(Pos.TOP_CENTER);
+						vbox.getChildren().add(canvas);
+						vbox.getChildren().add(mensaje);
+						vbox.getChildren().add(bContinuar);
+
+						stage.setScene(new Scene(vbox, 512, 275));
+						stage.setResizable(false);
+						stage.show();
+
 					}
-					
-					Stage stage = new Stage();
-
-					StackPane canvas = new StackPane();
-					canvas.setPadding(new Insets(10));
-					canvas.setStyle("-fx-background-color:  #a9d42c;");
-					canvas.setPrefSize(512, 50);
-
-					stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
-					stage.setTitle("Archivos Bantotal - Beneficiarios - Archivo Guardado");
-
-					Label mensaje = new Label("El archivo fue guardado exitosamente");
-					mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
-					mensaje.setTextFill(Color.web("#777777"));
-					
-					Button bContinuar = new Button("Continuar");
-					bContinuar.setStyle(
-							"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
-					bContinuar.setPrefWidth(140);
-					bContinuar.setTextFill(Color.WHITE);
-					
-					bContinuar.setOnMouseClicked(evt -> {
-						stage.hide();
-					});
-					
-					
-
-					VBox vbox = new VBox();
-					vbox.setSpacing(50);
-					vbox.setAlignment(Pos.TOP_CENTER);
-					vbox.setPrefSize(512, 275);
-					vbox.getChildren().add(canvas);
-					vbox.getChildren().add(mensaje);
-					vbox.getChildren().add(bContinuar);
-
-					stage.setScene(new Scene(vbox, 512, 275));
-					stage.setResizable(false);
-					stage.show();
-					
-
+				} catch (Exception e2) {
+					// TODO Mostrar un popup de error de sistema
+					e2.printStackTrace();
 				}
 			}
 		});
@@ -319,20 +310,18 @@ public class OpcionDispersion extends Feature {
 				stage.setTitle("Archivos Bantotal - Dispersion - Instrucciones");
 
 				TextArea textArea = new TextArea();
-				textArea.setText(
-						"\n"
-						
-		        + "1) Revise que la configuración regional del sistema operativo esté en Español(México)."
-		        + "\n\n3) Los datos que se capturan deben estar en mayúsculas y sin caracteres especiales."
-		        + "\n\n4) Al concluir la captura de transferencias para apgos, dar un click en el boton de Guardar, en seguida se abrira una ventana donde usted podrá guardar el archivo en la ruta que indique y con el nombre que desee."
-				+ "\n\n6) Las transferencias que se pueden aplicar son:	Transferencias Sabadell en pesos mexicanos, dólares americanos y euros; sin compra-venta de divisas. Transferencias Nacionales Internbancarias en pesos mexicanos."
-				+ "\n\n7) Las Transferencias Nacionales Interbancarias deberán llevar la cuenta CLABE del beneficiario; (el número de teléfono móvil y tarjeta de débito o crédito no están disponibles). "
-				+ "\n\n8) Las transferencias se ejecutarán a las cuentas de los beneficiarios que previamente se hayan registrado."
-				
-					  );
+				textArea.setText("\n"
+
+						+ "1) Revise que la configuración regional del sistema operativo esté en Español(México)."
+						+ "\n\n3) Los datos que se capturan deben estar en mayúsculas y sin caracteres especiales."
+						+ "\n\n4) Al concluir la captura de transferencias para apgos, dar un click en el boton de Guardar, en seguida se abrira una ventana donde usted podrá guardar el archivo en la ruta que indique y con el nombre que desee."
+						+ "\n\n6) Las transferencias que se pueden aplicar son:	Transferencias Sabadell en pesos mexicanos, dólares americanos y euros; sin compra-venta de divisas. Transferencias Nacionales Internbancarias en pesos mexicanos."
+						+ "\n\n7) Las Transferencias Nacionales Interbancarias deberán llevar la cuenta CLABE del beneficiario; (el número de teléfono móvil y tarjeta de débito o crédito no están disponibles). "
+						+ "\n\n8) Las transferencias se ejecutarán a las cuentas de los beneficiarios que previamente se hayan registrado."
+
+				);
 				textArea.setEditable(false);
 				textArea.setWrapText(true);
-				
 
 				VBox vbox = new VBox();
 				textArea.prefHeightProperty().bind(vbox.prefHeightProperty().add(-60));
@@ -357,7 +346,7 @@ public class OpcionDispersion extends Feature {
 
 		t = new DispersionTable();
 
-		t.getTable().prefWidthProperty().bind(mainPane.widthProperty().add(-60));
+		t.prefWidthProperty().bind(mainPane.widthProperty().add(-60));
 
 		((BorderPane) mainPane).setCenter(t);
 		BorderPane.setMargin(t, new Insets(25, 0, 0, 0));
@@ -368,7 +357,7 @@ public class OpcionDispersion extends Feature {
 				String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
 				fileChooser.setInitialDirectory(new File(currentPath));
 				File file = fileChooser.showOpenDialog(getDesktop().getStage());
-				
+
 				DispersionImporter benImporter = new DispersionImporter(t);
 				try {
 					benImporter.importFile(file);
@@ -378,7 +367,7 @@ public class OpcionDispersion extends Feature {
 				}
 			}
 		});
-		
+
 		getDesktop().setWorkArea(mainPane);
 	}
 }

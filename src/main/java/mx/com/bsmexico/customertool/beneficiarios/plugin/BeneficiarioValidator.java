@@ -81,6 +81,9 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 		return isValid;
 	}
 
+	/**
+	 * @return
+	 */
 	public Predicate<Beneficiario> cuenta() {
 		return v -> {
 			return (StringUtils.isNotBlank(v.getCuenta()) && v.getCuenta().length() <= 18
@@ -88,12 +91,18 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 		};
 	}
 
+	/**
+	 * @return
+	 */
 	public Predicate<Beneficiario> bancoParticipante() {
 		return v -> {
 			return (StringUtils.isBlank(v.getBancoParticipante()) || v.getBancoParticipante().length() == 3);
 		};
 	}
 
+	/**
+	 * @return
+	 */
 	public Predicate<Beneficiario> tipoCuenta() {
 		return v -> {
 			return (StringUtils.isNotBlank(v.getTipoCuenta()) && v.getTipoCuenta().length() == 2
@@ -101,12 +110,18 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 		};
 	}
 
+	/**
+	 * @return
+	 */
 	public Predicate<Beneficiario> moneda() {
 		return v -> {
 			return (StringUtils.isNotBlank(v.getMoneda()) && v.getMoneda().matches("USD|MXN|EUR"));
 		};
 	}
 
+	/**
+	 * @return
+	 */
 	public Predicate<Beneficiario> importeMaximo() {
 		return v -> {
 			return (StringUtils.isNotBlank(v.getImporteMaximo()) && NumberUtils.isCreatable(v.getImporteMaximo())
@@ -114,12 +129,18 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 		};
 	}
 
+	/**
+	 * @return
+	 */
 	public Predicate<Beneficiario> tipoPersona() {
 		return v -> {
 			return (StringUtils.isNotBlank(v.getTipoPersona()) && v.getTipoPersona().matches("00|01"));
 		};
 	}
 
+	/**
+	 * @return
+	 */
 	public Predicate<Beneficiario> razonSocial() {
 		return v -> {
 			return ("01".equals(v.getTipoPersona()) && StringUtils.isNotBlank(v.getTipoPersona())
@@ -128,6 +149,9 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 		};
 	}
 
+	/**
+	 * @return
+	 */
 	public Predicate<Beneficiario> nombre() {
 		return v -> {
 			return ("00".equals(v.getTipoPersona()) && StringUtils.isNotBlank(v.getNombre())
@@ -136,6 +160,9 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 		};
 	}
 
+	/**
+	 * @return
+	 */
 	public Predicate<Beneficiario> apellidoPaterno() {
 		return v -> {
 			return ("00".equals(v.getTipoPersona()) && StringUtils.isNotBlank(v.getApellidoPaterno())
@@ -144,12 +171,66 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 		};
 	}
 
+	/**
+	 * @return
+	 */
 	public Predicate<Beneficiario> apellidoMaterno() {
 		return v -> {
 			return ("00".equals(v.getTipoPersona()) && StringUtils.isNotBlank(v.getApellidoMaterno())
 					&& v.getApellidoMaterno().length() <= 30)
 					|| ("01".equals(v.getTipoPersona()) && StringUtils.isBlank(v.getApellidoMaterno()));
 		};
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see mx.com.bsmexico.customertool.api.layouts.model.validation.
+	 * LayoutModelValidator#getValidationDescription(java.lang.String)
+	 */
+	@Override
+	public String getValidationDescription(String fieldName) {
+		String desc = StringUtils.EMPTY;
+		if (StringUtils.isNotBlank(fieldName)) {
+			switch (fieldName) {
+			case Beneficiario.FIELD_CUENTA_BENEFICIARIO:
+				desc = "Valor numérico de la cuenta de Sabadell Banco o CLABE(otros bancos)";
+				break;
+			case Beneficiario.FIELD_NUMERO_LINEA_BENEFICIARIO:
+				desc = "Valor numérico";
+				break;
+			case Beneficiario.FIELD_BANCO_PARTICIPANTE:
+				desc = "Campo vacío (Cuenta Sabadell) - Tres primeros dígitos de la cuenta CALBE (otros bancos)";
+				break;
+			case Beneficiario.FIELD_TIPO_CUENTA:
+				desc = "00(cuenta Sabadell) -  004 (otros bancos)";
+				break;
+			case Beneficiario.FIELD_MONEDA:
+				desc = "MXN (pesos mexicanos) - USD (dolares americanos)- EUR (euros)";
+				break;
+			case Beneficiario.FIELD_IMPORTE_MAXIMO_PAGAR:
+				desc = "Valor numérico cuyo máximo es  9999999999999999.99";
+				break;
+			case Beneficiario.FIELD_TIPO_PERSONA:
+				desc = "00 (persona física) - 01 (persona moral)";
+				break;
+			case Beneficiario.FIELD_RAZON_SOCIAL:
+				desc = "Campo vacio si es persona física";
+				break;
+			case Beneficiario.FIELD_NOMBRE:
+				desc = "Campo vacio  si es persona moral";
+				break;
+			case Beneficiario.FIELD_APELLIDO_PATERNO:
+				desc = "Campo vacio  si es persona moral";
+				break;
+			case Beneficiario.FIELD_APELLIDO_MATERNO:
+				desc = "Campo vacio si es persona moral";
+				break;
+			default:
+				break;
+			}
+		}
+		return desc;
 	}
 
 }
