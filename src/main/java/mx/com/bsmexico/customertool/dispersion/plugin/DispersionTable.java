@@ -9,7 +9,6 @@ import mx.com.bsmexico.customertool.api.exporter.ExportSource;
 import mx.com.bsmexico.customertool.api.importer.ImportTarget;
 import mx.com.bsmexico.customertool.api.layouts.control.EditableLayoutTable;
 import mx.com.bsmexico.customertool.api.layouts.model.validation.LayoutModelValidator;
-import mx.com.bsmexico.customertool.beneficiarios.plugin.Beneficiario;
 
 public class DispersionTable extends EditableLayoutTable<Dispersion>
 		implements ImportTarget<Dispersion>, ExportSource<Dispersion> {
