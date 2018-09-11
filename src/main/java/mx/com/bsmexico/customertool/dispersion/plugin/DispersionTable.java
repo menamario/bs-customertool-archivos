@@ -1,5 +1,6 @@
 package mx.com.bsmexico.customertool.dispersion.plugin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -8,6 +9,7 @@ import mx.com.bsmexico.customertool.api.exporter.ExportSource;
 import mx.com.bsmexico.customertool.api.importer.ImportTarget;
 import mx.com.bsmexico.customertool.api.layouts.control.EditableLayoutTable;
 import mx.com.bsmexico.customertool.api.layouts.model.validation.LayoutModelValidator;
+import mx.com.bsmexico.customertool.beneficiarios.plugin.Beneficiario;
 
 public class DispersionTable extends EditableLayoutTable<Dispersion>
 		implements ImportTarget<Dispersion>, ExportSource<Dispersion> {
@@ -39,7 +41,17 @@ public class DispersionTable extends EditableLayoutTable<Dispersion>
 
 	@Override
 	public List<Dispersion> getData() {
-		return getItems();
+		List<Dispersion> exportList = new ArrayList<Dispersion>();
+		try{
+			for(Dispersion r:getItems()){
+				if(isActiveModel(r)){
+					exportList.add(r);
+				}
+			}
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		return exportList;
 	}
 
 	@Override
@@ -68,14 +80,25 @@ public class DispersionTable extends EditableLayoutTable<Dispersion>
 
 	@Override
 	public boolean validateModel(Dispersion model) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		boolean isValid = true;
+		if (this.metamodel.getValidator() != null) {
+			isValid = ((LayoutModelValidator<Dispersion>) this.metamodel.getValidator()).isValid(model);
+			if (!isValid) {
+				refresh();
+			}
+		}
+		return isValid;
 	}
 
 	@Override
 	public boolean isActiveModel(Dispersion model) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		boolean isValid = true;
+		if (this.metamodel.getValidator() != null) {
+			isValid = ((LayoutModelValidator<Dispersion>) this.metamodel.getValidator()).isActive(model);
+			if (!isValid) {
+				refresh();
+			}
+		}
+		return isValid;
 	}
-
 }

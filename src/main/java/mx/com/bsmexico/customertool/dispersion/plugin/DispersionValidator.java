@@ -98,7 +98,6 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 					&& nombreBeneficiario().test(model) && numeroTel().test(model) && referencia().test(model)
 					&& rfc().test(model) && tipoCuentaBeneficiario().test(model) && tipoMovimiento().test(model)
 					&& tipoPersona().test(model) && tipoTransaccion().test(model) && divisa().test(model);
-
 		}
 		return isValid;
 	}
@@ -275,8 +274,11 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> cuentaAbono() {
 		return v -> {
-			return (StringUtils.isNotBlank(v.getCuentaAbono()) && StringUtils.isNumeric(v.getCuentaAbono())
-					&& v.getCuentaAbono().length() >= 10 && v.getCuentaAbono().length() <= 18);
+			return StringUtils.isNotBlank(v.getCuentaAbono()) && StringUtils.isNumeric(v.getCuentaAbono())
+					&& (("01".equals(v.getTipoCuentaBeneficiario()) && v.getCuentaAbono().length()==11)
+						|| ("40".equals(v.getTipoCuentaBeneficiario()) && v.getCuentaAbono().length()==18)
+						|| ("03".equals(v.getTipoCuentaBeneficiario()) && v.getCuentaAbono().length()==16)
+						|| ("10".equals(v.getTipoCuentaBeneficiario()) && v.getCuentaAbono().length()==10));
 		};
 	}
 
@@ -303,9 +305,9 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> rfc() {
 		return v -> {
-			return (("PF".equals(v.getTipoPersona()) && v.getRfc().length() == 13)
-					|| ("PM".equals(v.getTipoPersona()) && v.getRfc().length() == 12))
-					|| StringUtils.isBlank(v.getRfc());
+			return StringUtils.isBlank(v.getRfc()) 
+					|| (StringUtils.isNotBlank(v.getRfc()) && "PF".equals(v.getTipoPersona()) && v.getRfc().length() == 13 )
+					|| (StringUtils.isNotBlank(v.getRfc()) && "PM".equals(v.getTipoPersona()) && v.getRfc().length() == 12 );
 		};
 	}
 
@@ -314,7 +316,8 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> curp() {
 		return v -> {
-			return (StringUtils.isBlank(v.getCurp()) || v.getCurp().length() == 18);
+			return StringUtils.isBlank(v.getCurp())
+					|| (StringUtils.isNotBlank(v.getCurp()) && v.getCurp().length() == 18 && "PF".equals(v.getTipoPersona()));
 		};
 	}
 
@@ -323,7 +326,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> divisa() {
 		return v -> {
-			return (StringUtils.isNotBlank(v.getDivisa()) && v.getDivisa().matches("USD|MXN"));
+			return (StringUtils.isNotBlank(v.getDivisa()) && v.getDivisa().matches("USD|MXP|EUR"));
 		};
 	}
 
@@ -366,7 +369,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 					&& (v.getReferencia().length() == 7 || v.getReferencia().length() == 20));
 		};
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -390,7 +393,44 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 
 	@Override
 	public boolean isActive(Dispersion model) {
-		// TODO Auto-generated method stub
+		if (model != null) {
+			if (model.getTipoMovimiento() != null && model.getTipoMovimiento().length() > 0)
+				return true;
+			if (model.getAplicacion() != null && model.getAplicacion().length() > 0)
+				return true;
+			if (model.getFecha() != null && model.getFecha().length() > 0)
+				return true;
+			if (model.getTipoTransaccion() != null && model.getTipoTransaccion().length() > 0)
+				return true;
+			if (model.getCuentaCargo() != null && model.getCuentaCargo().length() > 0)
+				return true;
+			if (model.getTipoCuentaBeneficiario() != null && model.getTipoCuentaBeneficiario().length() > 0)
+				return true;
+			if (model.getCuentaAbono() != null && model.getCuentaAbono().length() > 0)
+				return true;
+			if (model.getTipoPersona() != null && model.getTipoPersona().length() > 0)
+				return true;
+			if (model.getNombre() != null && model.getNombre().length() > 0)
+				return true;
+			if (model.getRfc() != null && model.getRfc().length() > 0)
+				return true;
+			if (model.getCurp() != null && model.getCurp().length() > 0)
+				return true;
+			if (model.getDivisa() != null && model.getDivisa().length() > 0)
+				return true;
+			if (model.getImporte() != null && model.getImporte().length() > 0)
+				return true;
+			if (model.getIva() != null && model.getIva().length() > 0)
+				return true;
+			if (model.getConcepto() != null && model.getConcepto().length() > 0)
+				return true;
+			if (model.getReferencia() != null && model.getReferencia().length() > 0)
+				return true;
+			if (model.getCorreoElectronico() != null && model.getCorreoElectronico().length() > 0)
+				return true;
+			if (model.getNumeroCelular() != null && model.getNumeroCelular().length() > 0)
+				return true;
+		}
 		return false;
 	}
 

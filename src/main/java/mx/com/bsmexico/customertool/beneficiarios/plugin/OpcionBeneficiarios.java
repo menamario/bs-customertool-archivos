@@ -179,8 +179,16 @@ public class OpcionBeneficiarios extends Feature {
 			public void handle(final ActionEvent e) {
 								
 				try {
+					
+					int numRegistros = 0;
+					for (Beneficiario b : t.getItems()) {
+						if (t.isActiveModel(b)) {
+							numRegistros++;
+						}
+					}
+					
 					boolean isValid = t.validateTable();
-					if(isValid) {
+					if(isValid && numRegistros>0) {
 						String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
 						FileChooser saveFile = new FileChooser();
 						saveFile.setInitialDirectory(new File(currentPath));
@@ -239,7 +247,7 @@ public class OpcionBeneficiarios extends Feature {
 						stage.setScene(new Scene(vbox, 512, 275));
 						stage.setResizable(false);
 						stage.show();
-					}else {
+					}else if(numRegistros>0){
 						Stage stage = new Stage();
 
 						Pane canvas = new Pane();
