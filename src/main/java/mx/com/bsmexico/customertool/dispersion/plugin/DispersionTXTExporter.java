@@ -3,6 +3,7 @@ package mx.com.bsmexico.customertool.dispersion.plugin;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.csv.QuoteMode;
 import org.apache.commons.lang3.StringUtils;
 
 import mx.com.bsmexico.customertool.api.exporter.CSVExporter;
@@ -34,7 +35,11 @@ public class DispersionTXTExporter extends CSVExporter<Dispersion> {
 	protected Character getCustomDelimiter() {
 		return " ".charAt(0);
 	}
-
+	@Override
+	protected QuoteMode getQuoteMode() {
+		return QuoteMode.NONE;
+	}
+	
 	private String builRecord(final Dispersion dispersion) {
 		StringBuffer record = new StringBuffer();
 		final String dop = StringUtils.isBlank(dispersion.getDetalleOperacion()) ? "DE"
