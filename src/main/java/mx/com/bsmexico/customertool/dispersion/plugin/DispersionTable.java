@@ -1,5 +1,6 @@
 package mx.com.bsmexico.customertool.dispersion.plugin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -40,7 +41,17 @@ public class DispersionTable extends EditableLayoutTable<Dispersion>
 
 	@Override
 	public List<Dispersion> getData() {
-		return getItems();
+		List<Dispersion> exportList = new ArrayList<Dispersion>();
+		try{
+			for(Dispersion r:getItems()){
+				if(isActiveModel(r)){
+					exportList.add(r);
+				}
+			}
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		return exportList;
 	}
 
 	@Override
