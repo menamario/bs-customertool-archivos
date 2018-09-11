@@ -61,10 +61,10 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 
 	@Override
 	public boolean isValid(Beneficiario model) {
-		return model != null && cuenta().test(model) && bancoParticipante().test(model) && tipoCuenta().test(model)
-				&& moneda().test(model) && importeMaximo().test(model) && tipoPersona().test(model)
-				&& razonSocial().test(model) && nombre().test(model) && apellidoPaterno().test(model)
-				&& apellidoMaterno().test(model);
+		return !isActive(model) || (model != null && cuenta().test(model) && bancoParticipante().test(model)
+				&& tipoCuenta().test(model) && moneda().test(model) && importeMaximo().test(model)
+				&& tipoPersona().test(model) && razonSocial().test(model) && nombre().test(model)
+				&& apellidoPaterno().test(model) && apellidoMaterno().test(model));
 	}
 
 	@Override
@@ -143,9 +143,9 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 	 */
 	public Predicate<Beneficiario> razonSocial() {
 		return v -> {
-			return ("01".equals(v.getTipoPersona()) && StringUtils.isNotBlank(v.getTipoPersona())
-					&& v.getTipoPersona().length() <= 70)
-					|| ("00".equals(v.getTipoPersona()) && StringUtils.isBlank(v.getTipoPersona()));
+			return ("01".equals(v.getTipoPersona()) && StringUtils.isNotBlank(v.getRazonSocial())
+					&& v.getRazonSocial().length() <= 70)
+					|| ("00".equals(v.getTipoPersona()) && StringUtils.isBlank(v.getRazonSocial()));
 		};
 	}
 
@@ -235,7 +235,30 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 
 	@Override
 	public boolean isActive(Beneficiario model) {
-		// TODO Auto-generated method stub
+		if (model != null) {
+			if (model.getCuenta() != null && model.getCuenta().length() > 0)
+				return true;
+			if (model.getNumLinea() != null && model.getNumLinea().length() > 0)
+				return true;
+			if (model.getBancoParticipante() != null && model.getBancoParticipante().length() > 0)
+				return true;
+			if (model.getTipoCuenta() != null && model.getTipoCuenta().length() > 0)
+				return true;
+			if (model.getMoneda() != null && model.getMoneda().length() > 0)
+				return true;
+			if (model.getImporteMaximo() != null && model.getImporteMaximo().length() > 0)
+				return true;
+			if (model.getTipoPersona() != null && model.getTipoPersona().length() > 0)
+				return true;
+			if (model.getRazonSocial() != null && model.getRazonSocial().length() > 0)
+				return true;
+			if (model.getNombre() != null && model.getNombre().length() > 0)
+				return true;
+			if (model.getApellidoPaterno() != null && model.getApellidoPaterno().length() > 0)
+				return true;
+			if (model.getApellidoMaterno() != null && model.getApellidoMaterno().length() > 0)
+				return true;
+		}
 		return false;
 	}
 

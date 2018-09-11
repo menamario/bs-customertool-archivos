@@ -1,5 +1,6 @@
 package mx.com.bsmexico.customertool.beneficiarios.plugin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -40,7 +41,17 @@ public class BeneficiarioTable extends EditableLayoutTable<Beneficiario>
 
 	@Override
 	public List<Beneficiario> getData() {
-		return getItems();
+		List<Beneficiario> exportList = new ArrayList<Beneficiario>();
+		try{
+			for(Beneficiario r:getItems()){
+				if(isActiveModel(r)){
+					exportList.add(r);
+				}
+			}
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		return exportList;
 	}
 
 	@Override
@@ -68,14 +79,26 @@ public class BeneficiarioTable extends EditableLayoutTable<Beneficiario>
 
 	@Override
 	public boolean validateModel(Beneficiario model) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		boolean isValid = true;
+		if (this.metamodel.getValidator() != null) {
+			isValid = ((LayoutModelValidator<Beneficiario>) this.metamodel.getValidator()).isValid(model);
+			if (!isValid) {
+				refresh();
+			}
+		}
+		return isValid;
 	}
 
 	@Override
 	public boolean isActiveModel(Beneficiario model) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		boolean isValid = true;
+		if (this.metamodel.getValidator() != null) {
+			isValid = ((LayoutModelValidator<Beneficiario>) this.metamodel.getValidator()).isActive(model);
+			if (!isValid) {
+				refresh();
+			}
+		}
+		return isValid;
 	}
 
 }

@@ -33,6 +33,7 @@ import javafx.stage.Stage;
 import mx.com.bsmexico.customertool.api.Feature;
 import mx.com.bsmexico.customertool.api.Layout;
 import mx.com.bsmexico.customertool.api.NavRoute;
+import mx.com.bsmexico.customertool.beneficiarios.plugin.Beneficiario;
 
 public class OpcionDispersion extends Feature {
 
@@ -182,29 +183,60 @@ public class OpcionDispersion extends Feature {
 
 				boolean isValid;
 				try {
+					
+					int numRegistros = 0;
+					for (Dispersion d : t.getItems()) {
+						if (t.isActiveModel(d)) {
+							numRegistros++;
+						}
+					}
+					
 					isValid = t.validateTable();
-					if (isValid) {
+					if(isValid && numRegistros>0) {
 						String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
 						FileChooser saveFile = new FileChooser();
 						saveFile.setInitialDirectory(new File(currentPath));
 
 						// Set extension filter
-						FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("csv files (*.csv)",
-								"*.csv");
+						FileChooser.ExtensionFilter sfFilter = null;
+						
+						if (rbCsv.isSelected()){
+							sfFilter = new FileChooser.ExtensionFilter("csv files (*.csv)",
+									"*.csv");
+						}
+						if (rbTxt.isSelected()){
+							sfFilter = new FileChooser.ExtensionFilter("txt files (*.txt)",
+									"*.txt");
+						}
+						
+						
 						saveFile.getExtensionFilters().add(sfFilter);
 
 						// Show save file dialog
 						File file = saveFile.showSaveDialog(getDesktop().getStage());
 
+						
+						//TODO use a factoty here
 						if (file != null) {
-							DispersionCSVExporter exporter = new DispersionCSVExporter(t);
-
-							try {
-								exporter.export(file);
-							} catch (Exception e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
+							if (rbCsv.isSelected()){
+								DispersionCSVExporter exporter = new DispersionCSVExporter(t);
+								try {
+									exporter.export(file);
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
 							}
+							if (rbTxt.isSelected()){
+								DispersionTXTExporter exporter = new DispersionTXTExporter(t);
+								try {
+									exporter.export(file);
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							}
+							
 						}
 
 						Stage stage = new Stage();
@@ -242,7 +274,7 @@ public class OpcionDispersion extends Feature {
 						stage.setScene(new Scene(vbox, 512, 275));
 						stage.setResizable(false);
 						stage.show();
-					} else {
+					}else if(numRegistros>0){
 						Stage stage = new Stage();
 
 						StackPane canvas = new StackPane();
