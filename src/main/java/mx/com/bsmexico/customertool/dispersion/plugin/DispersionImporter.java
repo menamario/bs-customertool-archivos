@@ -2,8 +2,8 @@ package mx.com.bsmexico.customertool.dispersion.plugin;
 
 import java.util.List;
 
-import mx.com.bsmexico.customertool.api.exporter.CSVImporter;
-import mx.com.bsmexico.customertool.api.exporter.ImportTarget;
+import mx.com.bsmexico.customertool.api.importer.CSVImporter;
+import mx.com.bsmexico.customertool.api.importer.ImportTarget;
 
 /**
  * @author jchr
