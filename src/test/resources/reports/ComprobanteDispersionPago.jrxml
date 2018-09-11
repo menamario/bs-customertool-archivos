@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ComprobanteDispersionPago" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6559e8e4-15a0-4daf-9f83-8853d0c0eef4">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="75"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -25,21 +25,21 @@
 	</style>
 	<subDataset name="Table Dataset 1" uuid="1ff123ed-92f8-4b25-b311-8e13ff9b4739"/>
 	<parameter name="logo" class="java.io.InputStream" isForPrompting="false"/>
-	<field name="cuentaRetiro" class="java.lang.String"/>
+	<parameter name="cliente" class="java.lang.String"/>
+	<field name="cuentaCargo" class="java.lang.String"/>
 	<field name="usuario" class="java.lang.String"/>
-	<field name="cliente" class="java.lang.String"/>
-	<field name="beneficiario" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
 	<field name="rfc" class="java.lang.String"/>
-	<field name="cuentaDeposito" class="java.lang.String"/>
+	<field name="cuentaAbono" class="java.lang.String"/>
 	<field name="banco" class="java.lang.String"/>
-	<field name="importe" class="java.lang.Double"/>
-	<field name="moneda" class="java.lang.String"/>
-	<field name="iva" class="java.lang.Double"/>
-	<field name="comision" class="java.lang.Double"/>
-	<field name="ivaComision" class="java.lang.Double"/>
+	<field name="importe" class="java.lang.String"/>
+	<field name="divisa" class="java.lang.String"/>
+	<field name="iva" class="java.lang.String"/>
+	<field name="comision" class="java.lang.String"/>
+	<field name="ivaComision" class="java.lang.String"/>
 	<field name="referencia" class="java.lang.String"/>
-	<field name="motivoPago" class="java.lang.String"/>
-	<field name="fechaHoraOperacion" class="java.lang.String"/>
+	<field name="concepto" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
 	<field name="folioOperacion" class="java.lang.String"/>
 	<field name="claveRastreo" class="java.lang.String"/>
 	<field name="estadoOperacion" class="java.lang.String"/>
@@ -190,7 +190,7 @@
 			</staticText>
 			<textField>
 				<reportElement x="261" y="25" width="251" height="20" uuid="6461b027-d4f6-489b-a0f8-927d158263ff"/>
-				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="261" y="45" width="251" height="20" uuid="7c431732-2207-4d12-8323-75625e598ba7"/>
@@ -198,11 +198,11 @@
 			</textField>
 			<textField>
 				<reportElement x="261" y="65" width="251" height="20" uuid="e96bc258-6f90-4d30-8996-5e01d773378a"/>
-				<textFieldExpression><![CDATA[$F{cuentaRetiro}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cuentaCargo}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="261" y="85" width="251" height="20" uuid="4a9713a0-3da9-4e95-86d7-806732dab050"/>
-				<textFieldExpression><![CDATA[$F{beneficiario}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="261" y="105" width="251" height="20" uuid="989d791a-b9b7-4009-a061-747ebd08dde4"/>
@@ -214,7 +214,7 @@
 			</textField>
 			<textField>
 				<reportElement x="261" y="125" width="251" height="20" uuid="cd017c6f-ce52-4cb1-8180-15c36696617d"/>
-				<textFieldExpression><![CDATA[$F{cuentaDeposito}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cuentaAbono}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="261" y="165" width="251" height="20" uuid="5bb7645d-ea24-46f2-ba06-bb5c4cadac5c"/>
@@ -222,7 +222,7 @@
 			</textField>
 			<textField>
 				<reportElement x="261" y="185" width="251" height="20" uuid="04253acc-95ee-4d55-b34a-864d9fabc5b6"/>
-				<textFieldExpression><![CDATA[$F{moneda}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{divisa}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="261" y="205" width="251" height="20" uuid="5abd11f4-5701-43be-9c8c-103516771ab5"/>
@@ -242,11 +242,11 @@
 			</textField>
 			<textField>
 				<reportElement x="261" y="285" width="251" height="20" uuid="8aba7c7b-cc50-4f74-a0c2-dfd375c2f2df"/>
-				<textFieldExpression><![CDATA[$F{motivoPago}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{concepto}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="261" y="305" width="251" height="20" uuid="12a533b9-8625-42c8-8a2c-f541f2478ec3"/>
-				<textFieldExpression><![CDATA[$F{fechaHoraOperacion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="261" y="325" width="251" height="20" uuid="0b9a902b-8944-4489-92b3-60a12c5bf6bd"/>
