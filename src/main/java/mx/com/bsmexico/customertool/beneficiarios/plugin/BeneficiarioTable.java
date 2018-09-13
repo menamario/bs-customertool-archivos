@@ -5,10 +5,10 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import mx.com.bsmexico.customertool.api.exporter.ExportSource;
-import mx.com.bsmexico.customertool.api.importer.ImportTarget;
 import mx.com.bsmexico.customertool.api.layouts.control.EditableLayoutTable;
 import mx.com.bsmexico.customertool.api.layouts.model.validation.LayoutModelValidator;
+import mx.com.bsmexico.customertool.api.process.ExportSource;
+import mx.com.bsmexico.customertool.api.process.ImportTarget;
 
 public class BeneficiarioTable extends EditableLayoutTable<Beneficiario>
 		implements ImportTarget<Beneficiario>, ExportSource<Beneficiario> {

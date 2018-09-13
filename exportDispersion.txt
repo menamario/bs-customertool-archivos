@@ -1,0 +1,4 @@
+HA120180913MXN1111111111 
+DE1H20180913001111111111 4011111111111111111 PFTest                                    CARJ8412225S2CARJ841222HDFHYS06MXN00.00          00.00          PAGO DIRECTO                            1234567890          jesus.chavez@isol.com.mx                                    5533354399 
+DE1H20180913001111111111 4011111111111111111 PFTest                                    CARJ8412225S2CARJ841222HDFHYS06MXN100.00         10.00          PAGO DIRECTO                            1234567890          jesus.chavez@isol.com.mx                                    5533354399 
+HB100.002 
