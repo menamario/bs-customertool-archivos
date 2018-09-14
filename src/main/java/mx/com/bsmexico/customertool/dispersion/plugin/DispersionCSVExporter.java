@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import mx.com.bsmexico.customertool.api.exporter.CSVExporter;
-import mx.com.bsmexico.customertool.api.exporter.ExportSource;
+import mx.com.bsmexico.customertool.api.process.CSVExporter;
+import mx.com.bsmexico.customertool.api.process.ExportSource;
 
 /**
  * @author jchr
@@ -35,7 +35,11 @@ public class DispersionCSVExporter extends CSVExporter<Dispersion> {
 		record.add(dispersion.getCurp());
 		record.add(dispersion.getDivisa());
 		record.add(dispersion.getImporte());
-		record.add(dispersion.getIva());		
+		record.add(dispersion.getIva());
+		record.add(dispersion.getConcepto());
+		record.add(dispersion.getReferencia());
+		record.add(dispersion.getCorreoElectronico());
+		record.add(dispersion.getNumeroCelular());
 		return record.toArray();
 	}
 

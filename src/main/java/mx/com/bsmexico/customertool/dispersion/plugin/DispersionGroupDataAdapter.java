@@ -10,7 +10,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import mx.com.bsmexico.customertool.api.exporter.ExportSource;
+import mx.com.bsmexico.customertool.api.process.ExportSource;
 
 /**
  * @author jchr
@@ -74,7 +74,7 @@ public class DispersionGroupDataAdapter implements ExportSource<Dispersion> {
 		}
 		final Dispersion hb = new Dispersion();
 		hb.setDetalleOperacion("HB");
-		hb.setTipoMovimiento(totalImporte.toEngineeringString());
+		hb.setTipoMovimiento((String.format("%12.2f", totalImporte)).trim());
 		hb.setAplicacion(String.valueOf(totalRegistros));
 		groupData.add(hb);
 		return groupData;

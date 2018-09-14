@@ -3,8 +3,8 @@ package mx.com.bsmexico.customertool.beneficiarios.plugin;
 import java.util.ArrayList;
 import java.util.List;
 
-import mx.com.bsmexico.customertool.api.exporter.CSVExporter;
-import mx.com.bsmexico.customertool.api.exporter.ExportSource;
+import mx.com.bsmexico.customertool.api.process.CSVExporter;
+import mx.com.bsmexico.customertool.api.process.ExportSource;
 
 public class BeneficiariosExporter extends CSVExporter<Beneficiario> {
 
