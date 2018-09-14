@@ -79,6 +79,7 @@ public class OpcionBeneficiarios extends Feature {
 	public void launch() {
 
 		getMenuNavigator().hide();
+		getDesktop().updatePleca("#b50055", null);
 
 		Pane mainPane = new BorderPane();
 
@@ -127,6 +128,8 @@ public class OpcionBeneficiarios extends Feature {
 
 		bAtras.setOnMouseClicked(evt -> {
 			getMenuNavigator().show();
+			getDesktop().setWorkArea(null);
+			getDesktop().updatePleca("black", null);
 		});
 
 		final FileChooser fileChooser = new FileChooser();
@@ -134,12 +137,20 @@ public class OpcionBeneficiarios extends Feature {
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		headerBox1.getChildren().add(bAtras);
+		headerBox1.setSpacing(40);
+		Label l = new Label("    Alta de Beneficiarios    ");
+		l.setTextFill(Color.WHITE);
+		l.setStyle("-fx-background-color: #b50055;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-border-radius: 0 0 10 10; -fx-background-radius: 0 0 10 10;");
+		 
+         
+		headerBox1.getChildren().add(l);
 		headerBox2.getChildren().add(bInstrucciones);
 		headerBox2.getChildren().add(bImportarArchivo);
-		headerBox2.setSpacing(30);
+		headerBox2.setSpacing(100);
 		HBox.setHgrow(headerBox2, Priority.ALWAYS);
 		headerBox2.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 		headerBox1.getChildren().add(headerBox2);
+		headerBox1.setPadding(new Insets(0,30,0,0));
 
 		BorderPane borderpane = new BorderPane();
 		borderpane.setPadding(new Insets(0, 20, 0, 20));
@@ -173,6 +184,7 @@ public class OpcionBeneficiarios extends Feature {
 		bGuardar.setPrefWidth(140);
 		bGuardar.setTextFill(Color.WHITE);
 		borderpane.setRight(bGuardar);
+		BorderPane.setMargin(bGuardar, new Insets(0,15,0,0));
 
 		bGuardar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -368,9 +380,10 @@ public class OpcionBeneficiarios extends Feature {
 		t = new BeneficiarioTable();		
 
 		t.prefWidthProperty().bind(mainPane.widthProperty().add(-60));
+		
 
 		((BorderPane) mainPane).setCenter(t);
-		BorderPane.setMargin(t, new Insets(25, 0, 0, 0));
+		BorderPane.setMargin(t, new Insets(25, 25, 50, 0));
 
 		bImportarArchivo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -389,72 +402,6 @@ public class OpcionBeneficiarios extends Feature {
 		});
 
 		getDesktop().setWorkArea(mainPane);
-	}
-
-	public ObservableList<Beneficiario> loadXls(File file) {
-
-		Workbook w;
-		try {
-			w = Workbook.getWorkbook(file);
-			// Get the first sheet
-			Sheet sheet = w.getSheet(0);
-			// Loop over first 10 column and lines
-			List<Beneficiario> list = new ArrayList<Beneficiario>();
-
-			for (int j = 0; j < sheet.getRows(); j++) {
-				int numColumna = 1;
-				Beneficiario b = new Beneficiario();
-				for (int i = 0; i < sheet.getColumns(); i++) {
-					Cell cell = sheet.getCell(i, j);
-					String valorCelda = cell.getContents();
-					switch (numColumna) {
-					case 1:
-						// b.setCuenta(valorCelda);
-						break;
-					case 2:
-						break;
-					case 3:
-						b.setBancoParticipante(valorCelda);
-						break;
-					case 4:
-						b.setTipoCuenta(valorCelda);
-						break;
-					case 5:
-						b.setMoneda(valorCelda);
-						break;
-					case 6:
-						// b.setImporteMaximo(valorCelda);
-						break;
-					case 7:
-						b.setTipoPersona(valorCelda);
-						break;
-					case 8:
-						b.setRazonSocial(valorCelda);
-						break;
-					case 9:
-						b.setNombre(valorCelda);
-						break;
-					case 10:
-						b.setApellidoPaterno(valorCelda);
-						break;
-					case 11:
-						b.setApellidoMaterno(valorCelda);
-						break;
-					}
-					numColumna++;
-
-				}
-				list.add(b);
-			}
-			ObservableList<Beneficiario> observableList = FXCollections.observableList(list);
-			return observableList;
-		} catch (BiffException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 }

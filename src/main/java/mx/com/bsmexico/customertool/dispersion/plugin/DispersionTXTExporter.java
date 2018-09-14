@@ -37,7 +37,7 @@ public class DispersionTXTExporter extends CSVExporter<Dispersion> {
 	}
 	@Override
 	protected QuoteMode getQuoteMode() {
-		return QuoteMode.NONE;
+		return null;
 	}
 	
 	private String builRecord(final Dispersion dispersion) {

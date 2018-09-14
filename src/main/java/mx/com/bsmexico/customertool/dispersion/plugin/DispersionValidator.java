@@ -365,8 +365,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> referencia() {
 		return v -> {
-			return (StringUtils.isNotBlank(v.getReferencia())
-					&& (v.getReferencia().length() == 7 || v.getReferencia().length() == 20));
+			return (StringUtils.isNotBlank(v.getReferencia()));
 		};
 	}
 	
@@ -386,8 +385,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> numeroTel() {
 		return v -> {
-			return (StringUtils.isNumeric(v.getCuentaCargo()) && v.getCuentaCargo().length() == 10)
-					|| StringUtils.isBlank(v.getNumeroCelular());
+			return (StringUtils.isEmpty(v.getNumeroCelular()) || (StringUtils.isNumeric(v.getNumeroCelular())));
 		};
 	}
 

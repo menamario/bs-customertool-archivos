@@ -87,6 +87,7 @@ public class OpcionDispersion extends Feature {
 	public void launch() {
 
 		getMenuNavigator().hide();
+		getDesktop().updatePleca("#b50055", null);
 
 		Pane mainPane = new BorderPane();
 
@@ -135,6 +136,8 @@ public class OpcionDispersion extends Feature {
 
 		bAtras.setOnMouseClicked(evt -> {
 			getMenuNavigator().show();
+			getDesktop().setWorkArea(null);
+			getDesktop().updatePleca("black", null);
 		});
 
 		final FileChooser fileChooser = new FileChooser();
@@ -143,12 +146,18 @@ public class OpcionDispersion extends Feature {
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		headerBox1.getChildren().add(bAtras);
+		headerBox1.setSpacing(40);
+		Label l = new Label("    Dispersion de Pagos    ");
+		l.setTextFill(Color.WHITE);
+		l.setStyle("-fx-background-color: #b50055;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-border-radius: 0 0 10 10; -fx-background-radius: 0 0 10 10;");
+		headerBox1.getChildren().add(l);
 		headerBox2.getChildren().add(bInstrucciones);
 		headerBox2.getChildren().add(bImportarArchivo);
-		headerBox2.setSpacing(10);
+		headerBox2.setSpacing(100);
 		HBox.setHgrow(headerBox2, Priority.ALWAYS);
 		headerBox2.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 		headerBox1.getChildren().add(headerBox2);
+		headerBox1.setPadding(new Insets(0,30,0,0));
 
 		BorderPane borderpane = new BorderPane();
 		borderpane.setPadding(new Insets(0, 20, 0, 20));
@@ -176,6 +185,7 @@ public class OpcionDispersion extends Feature {
 		bGuardar.setPrefWidth(140);
 		bGuardar.setTextFill(Color.WHITE);
 		borderpane.setRight(bGuardar);
+		BorderPane.setMargin(bGuardar, new Insets(0,15,0,0));
 
 		bGuardar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -377,11 +387,12 @@ public class OpcionDispersion extends Feature {
 		((BorderPane) mainPane).setTop(vbox);
 
 		t = new DispersionTable();
+		
 
 		t.prefWidthProperty().bind(mainPane.widthProperty().add(-60));
 
 		((BorderPane) mainPane).setCenter(t);
-		BorderPane.setMargin(t, new Insets(25, 0, 0, 0));
+		BorderPane.setMargin(t, new Insets(25, 25, 50, 0));
 
 		bImportarArchivo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
