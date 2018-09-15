@@ -17,30 +17,40 @@ public class BeneficiariosImporter extends CSVImporter<Beneficiario> {
 
 	@Override
 	protected Beneficiario getInstance(final List<String> record) {
-		final Beneficiario beneficiario = new Beneficiario();		
+		final Beneficiario beneficiario = new Beneficiario();
+		
+		
+			for(int i=0;i<=10;i++){
+				try{
+					record.get(i);
+				}catch(IndexOutOfBoundsException ex){
+					record.add(i, "");
+				}
+			}
+		
 		beneficiario.setCuenta(record.get(0));
-		//beneficiario.setEstatus("cuenta", validator.cuenta().test(beneficiario.getCuenta()));
+
 		beneficiario.setNumLinea(record.get(1));
-		//beneficiario.setEstatus("numLinea", validator.numLinea().test(beneficiario.getNumLinea()));
+
 		beneficiario.setBancoParticipante(record.get(2));
-		//beneficiario.setEstatus("bancoParticipante",
-		//		validator.bancoParticipante().test(beneficiario.getBancoParticipante()));
 		beneficiario.setTipoCuenta(record.get(3));
-		//beneficiario.setEstatus("tipoCuenta", validator.tipoCuenta().test(beneficiario.getTipoCuenta()));
+
 		beneficiario.setMoneda(record.get(4));
-		//beneficiario.setEstatus("moneda", validator.moneda().test(beneficiario.getMoneda()));
+
 		beneficiario.setImporteMaximo(record.get(5));
-		//beneficiario.setEstatus("importeMaximo", validator.importeMaximo().test(beneficiario.getImporteMaximo()));
+
 		beneficiario.setTipoPersona(record.get(6));
-		//beneficiario.setEstatus("tipoPersona", validator.tipoPersona().test(beneficiario.getTipoPersona()));
+
 		beneficiario.setRazonSocial(record.get(7));
-		//beneficiario.setEstatus("razonSocial", validator.razonSocial().test(beneficiario.getRazonSocial()));
+
 		beneficiario.setNombre(record.get(8));
-		//beneficiario.setEstatus("nombre", validator.nombre().test(beneficiario.getNombre()));
-		beneficiario.setApellidoMaterno(record.get(9));
-		//beneficiario.setEstatus("apellidoMaterno", validator.apellidoMaterno().test(beneficiario.getApellidoMaterno()));
-		beneficiario.setApellidoPaterno(record.get(10));
-		//beneficiario.setEstatus("apellidoPaterno", validator.apellidoPaterno().test(beneficiario.getApellidoPaterno()));
+		
+		beneficiario.setApellidoPaterno(record.get(9));
+
+		beneficiario.setApellidoMaterno(record.get(10));
+
+		
+
 		return beneficiario;
 	}
 

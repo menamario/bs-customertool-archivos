@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -15,7 +17,9 @@ import mx.com.bsmexico.customertool.api.layouts.model.validation.LayoutModelVali
 public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 
 	private SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-
+	String regex = "^([A-Z,Ñ,&]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\\d]{3})$";
+	Pattern rfcPattern = Pattern.compile(regex);
+	
 	@Override
 	public boolean isValidField(String fieldName, Dispersion model) {
 		boolean isValid = false;
@@ -305,9 +309,18 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> rfc() {
 		return v -> {
+			boolean match = false;
+			if(StringUtils.isNotBlank(v.getRfc())){
+				Matcher m = rfcPattern.matcher(v.getRfc());
+				match = m.find();
+				System.out.println(m.pattern());
+				System.out.println(match);
+				System.out.println(v.getRfc());
+			}
+			
 			return StringUtils.isBlank(v.getRfc()) 
-					|| (StringUtils.isNotBlank(v.getRfc()) && "PF".equals(v.getTipoPersona()) && v.getRfc().length() == 13 )
-					|| (StringUtils.isNotBlank(v.getRfc()) && "PM".equals(v.getTipoPersona()) && v.getRfc().length() == 12 );
+					|| (StringUtils.isNotBlank(v.getRfc()) && "PF".equals(v.getTipoPersona()) && v.getRfc().length() == 13 && match)
+					|| (StringUtils.isNotBlank(v.getRfc()) && "PM".equals(v.getTipoPersona()) && v.getRfc().length() == 12 && match);
 		};
 	}
 
@@ -365,7 +378,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> referencia() {
 		return v -> {
-			return (StringUtils.isNotBlank(v.getReferencia()));
+			return StringUtils.isNotBlank(v.getReferencia()) && StringUtils.isNumeric(v.getReferencia()) && v.getReferencia().length()>=7;
 		};
 	}
 	

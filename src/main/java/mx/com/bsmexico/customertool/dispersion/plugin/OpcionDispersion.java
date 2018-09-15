@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,9 +17,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -29,15 +35,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.com.bsmexico.customertool.api.Feature;
 import mx.com.bsmexico.customertool.api.Layout;
 import mx.com.bsmexico.customertool.api.NavRoute;
-import mx.com.bsmexico.customertool.beneficiarios.plugin.Beneficiario;
 
 public class OpcionDispersion extends Feature {
 
 	DispersionTable t = null;
+	private SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
 
 	public String getNombreMenu() {
 		// TODO Auto-generated method stub
@@ -181,7 +188,7 @@ public class OpcionDispersion extends Feature {
 
 		Button bGuardar = new Button("Guardar");
 		bGuardar.setStyle(
-				"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+				"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;-fx-font-weight:bold");
 		bGuardar.setPrefWidth(140);
 		bGuardar.setTextFill(Color.WHITE);
 		borderpane.setRight(bGuardar);
@@ -223,15 +230,53 @@ public class OpcionDispersion extends Feature {
 						saveFile.getExtensionFilters().add(sfFilter);
 
 						// Show save file dialog
+						saveFile.setInitialFileName(df.format(new Date())+"_XXXXXXXXX_NNN");
 						File file = saveFile.showSaveDialog(getDesktop().getStage());
-
 						
+
 						//TODO use a factoty here
 						if (file != null) {
 							if (rbCsv.isSelected()){
 								DispersionCSVExporter exporter = new DispersionCSVExporter(t);
 								try {
 									exporter.export(file);
+									Stage stage = new Stage();
+
+									StackPane canvas = new StackPane();
+									canvas.setPadding(new Insets(10));
+									canvas.setStyle("-fx-background-color:  #a9d42c;");
+									canvas.setPrefSize(512, 50);
+
+									stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+									stage.setTitle("Archivos Bantotal - Dispersion - Archivo Guardado");
+
+									Label mensaje = new Label("El archivo fue guardado exitosamente");
+									mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
+									mensaje.setTextFill(Color.web("#777777"));
+
+									Button bContinuar = new Button("Continuar");
+									bContinuar.setStyle(
+											"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+									bContinuar.setPrefWidth(140);
+									bContinuar.setTextFill(Color.WHITE);
+
+									bContinuar.setOnMouseClicked(evt -> {
+										stage.hide();
+									});
+
+									VBox vbox = new VBox();
+									vbox.setSpacing(50);
+									vbox.setAlignment(Pos.TOP_CENTER);
+									vbox.setPrefSize(512, 275);
+									vbox.getChildren().add(canvas);
+									vbox.getChildren().add(mensaje);
+									vbox.getChildren().add(bContinuar);
+
+									stage.setScene(new Scene(vbox, 512, 275));
+									stage.setResizable(false);
+									stage.initOwner(getDesktop().getStage());
+									stage.initModality(Modality.WINDOW_MODAL);
+									stage.showAndWait();
 								} catch (Exception e1) {
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
@@ -241,6 +286,43 @@ public class OpcionDispersion extends Feature {
 								DispersionTXTExporter exporter = new DispersionTXTExporter(t);
 								try {
 									exporter.export(file);
+									Stage stage = new Stage();
+
+									StackPane canvas = new StackPane();
+									canvas.setPadding(new Insets(10));
+									canvas.setStyle("-fx-background-color:  #a9d42c;");
+									canvas.setPrefSize(512, 50);
+
+									stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+									stage.setTitle("Archivos Bantotal - Dispersion - Archivo Guardado");
+
+									Label mensaje = new Label("El archivo fue guardado exitosamente");
+									mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
+									mensaje.setTextFill(Color.web("#777777"));
+
+									Button bContinuar = new Button("Continuar");
+									bContinuar.setStyle(
+											"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+									bContinuar.setPrefWidth(140);
+									bContinuar.setTextFill(Color.WHITE);
+
+									bContinuar.setOnMouseClicked(evt -> {
+										stage.hide();
+									});
+
+									VBox vbox = new VBox();
+									vbox.setSpacing(50);
+									vbox.setAlignment(Pos.TOP_CENTER);
+									vbox.setPrefSize(512, 275);
+									vbox.getChildren().add(canvas);
+									vbox.getChildren().add(mensaje);
+									vbox.getChildren().add(bContinuar);
+
+									stage.setScene(new Scene(vbox, 512, 275));
+									stage.setResizable(false);
+									stage.initOwner(getDesktop().getStage());
+									stage.initModality(Modality.WINDOW_MODAL);
+									stage.showAndWait();
 								} catch (Exception e1) {
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
@@ -249,41 +331,7 @@ public class OpcionDispersion extends Feature {
 							
 						}
 
-						Stage stage = new Stage();
-
-						StackPane canvas = new StackPane();
-						canvas.setPadding(new Insets(10));
-						canvas.setStyle("-fx-background-color:  #a9d42c;");
-						canvas.setPrefSize(512, 50);
-
-						stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
-						stage.setTitle("Archivos Bantotal - Beneficiarios - Archivo Guardado");
-
-						Label mensaje = new Label("El archivo fue guardado exitosamente");
-						mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
-						mensaje.setTextFill(Color.web("#777777"));
-
-						Button bContinuar = new Button("Continuar");
-						bContinuar.setStyle(
-								"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
-						bContinuar.setPrefWidth(140);
-						bContinuar.setTextFill(Color.WHITE);
-
-						bContinuar.setOnMouseClicked(evt -> {
-							stage.hide();
-						});
-
-						VBox vbox = new VBox();
-						vbox.setSpacing(50);
-						vbox.setAlignment(Pos.TOP_CENTER);
-						vbox.setPrefSize(512, 275);
-						vbox.getChildren().add(canvas);
-						vbox.getChildren().add(mensaje);
-						vbox.getChildren().add(bContinuar);
-
-						stage.setScene(new Scene(vbox, 512, 275));
-						stage.setResizable(false);
-						stage.show();
+						
 					}else if(numRegistros>0){
 						Stage stage = new Stage();
 
@@ -319,7 +367,9 @@ public class OpcionDispersion extends Feature {
 
 						stage.setScene(new Scene(vbox, 512, 275));
 						stage.setResizable(false);
-						stage.show();
+						stage.initOwner(getDesktop().getStage());
+						stage.initModality(Modality.WINDOW_MODAL);
+						stage.showAndWait();
 
 					}
 				} catch (Exception e2) {
@@ -364,19 +414,41 @@ public class OpcionDispersion extends Feature {
 				);
 				textArea.setEditable(false);
 				textArea.setWrapText(true);
+				
+				ImageView insIv = null;
+
+				try {
+					insIv = new ImageView(new Image(getImageInput("/img/instruccionesDispersion.png")));
+					insIv.setPreserveRatio(true);
+					insIv.setFitWidth(1000);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				ScrollPane scrollPane = new ScrollPane();
+				scrollPane.setPrefSize(1000, 600);
+				scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+				scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+				scrollPane.setContent(insIv);
+
+				TabPane tabPane = new TabPane();
+				Tab tabInstrucciones = new Tab("Instrucciones");
+				Tab tabCampos = new Tab("Descripcion de campos");
+				tabInstrucciones.setContent(textArea);
+				tabCampos.setContent(scrollPane);
+				tabPane.getTabs().addAll(tabInstrucciones, tabCampos);
 
 				VBox vbox = new VBox();
 				textArea.prefHeightProperty().bind(vbox.prefHeightProperty().add(-60));
-				vbox.setPrefSize(600, 600);
+				vbox.setPrefSize(1020, 600);
 				VBox.setVgrow(vbox, Priority.ALWAYS);
 				vbox.getChildren().add(canvas);
-				vbox.getChildren().add(textArea);
+				vbox.getChildren().add(tabPane);
 
-				stage.setScene(new Scene(vbox, 600, 600));
+				stage.setScene(new Scene(vbox, 1020, 600));
 				stage.setResizable(false);
 				stage.show();
-				// Hide this current window (if this is what you want)
-				// ((Node)(event.getSource())).getScene().getWindow().hide();
 
 			}
 		});
@@ -405,8 +477,44 @@ public class OpcionDispersion extends Feature {
 				try {
 					benImporter.importFile(file);
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Stage stage = new Stage();
+
+					Pane canvas = new Pane();
+					canvas.setPadding(new Insets(10));
+					canvas.setStyle("-fx-background-color:  #e90e5c;");
+					canvas.setPrefSize(512, 50);
+
+					stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+					stage.setTitle("Archivos Bantotal - Dispersion - Formato de Archivo Incorrecto");
+
+					Label mensaje = new Label("El archivo no tiene el formato correcto");
+					mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
+					mensaje.setTextFill(Color.web("#777777"));
+
+					Button bContinuar = new Button("Continuar");
+					bContinuar.setStyle(
+							"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+					bContinuar.setPrefWidth(140);
+					bContinuar.setTextFill(Color.WHITE);
+
+					bContinuar.setOnMouseClicked(evt -> {
+						stage.hide();
+					});
+
+					VBox vbox = new VBox();
+					vbox.setSpacing(50);
+					vbox.setAlignment(Pos.TOP_CENTER);
+					vbox.setPrefSize(512, 275);
+					// VBox.setVgrow(vbox, Priority.ALWAYS);
+					vbox.getChildren().add(canvas);
+					vbox.getChildren().add(mensaje);
+					vbox.getChildren().add(bContinuar);
+
+					stage.setScene(new Scene(vbox, 512, 275));
+					stage.setResizable(false);
+					stage.initOwner(getDesktop().getStage());
+					stage.initModality(Modality.WINDOW_MODAL);
+					stage.showAndWait();
 				}
 			}
 		});
