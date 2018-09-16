@@ -1,5 +1,9 @@
 package mx.com.bsmexico.customertool.dispersion.plugin;
 
+import java.text.DecimalFormat;
+
+import org.apache.commons.lang3.math.NumberUtils;
+
 import javafx.beans.property.SimpleStringProperty;
 import mx.com.bsmexico.customertool.api.layouts.model.LayoutField;
 import mx.com.bsmexico.customertool.api.layouts.model.LayoutModel;
@@ -14,6 +18,9 @@ import mx.com.bsmexico.customertool.api.layouts.model.LayoutModelType;
  */
 @LayoutModel(type = LayoutModelType.PROPERTY_JAVABEANS, validatorClass = DispersionValidator.class)
 public class Dispersion {
+	
+	String pattern = "################.00";
+	DecimalFormat decimalFormat = new DecimalFormat(pattern);
 
 	public static final String FIELD_TIPO_MOVIMIENTO = "TIPO_MOVIMIENTO";
 	public static final String FIELD_APLICACION = "APLICACION";
@@ -172,7 +179,7 @@ public class Dispersion {
 	}
 
 	public void setTipoPersona(String tipoPersona) {
-		this.tipoPersona.set(tipoPersona);
+		this.tipoPersona.set(tipoPersona.toUpperCase());
 	}
 
 	public String getNombre() {
@@ -204,7 +211,7 @@ public class Dispersion {
 	}
 
 	public void setDivisa(String divisa) {
-		this.divisa.set(divisa);
+		this.divisa.set(divisa.toUpperCase());
 	}
 
 	public String getImporte() {
@@ -212,6 +219,9 @@ public class Dispersion {
 	}
 
 	public void setImporte(String importe) {
+		if (NumberUtils.isCreatable(importe)) {
+			importe = decimalFormat.format(Double.valueOf(importe));
+		}
 		this.importe.set(importe);
 	}
 
@@ -220,6 +230,9 @@ public class Dispersion {
 	}
 
 	public void setIva(String iva) {
+		if (NumberUtils.isCreatable(iva)) {
+			iva = decimalFormat.format(Double.valueOf(iva));
+		}
 		this.iva.set(iva);
 	}
 

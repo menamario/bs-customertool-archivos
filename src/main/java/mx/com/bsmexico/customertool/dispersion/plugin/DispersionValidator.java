@@ -359,7 +359,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	public Predicate<Dispersion> iva() {
 		return v -> {
 			return (StringUtils.isNotBlank(v.getRfc()) && StringUtils.isNotBlank(v.getIva())
-					&& NumberUtils.isCreatable(v.getIva()) && Double.valueOf(v.getIva()) <= 999999999999.99)
+					&& NumberUtils.isCreatable(v.getIva()) && Double.valueOf(v.getIva()) <= 999999999999.99 && Double.valueOf(v.getIva()) < Double.valueOf(v.getImporte()))
 					|| StringUtils.isBlank(v.getIva());
 		};
 	}

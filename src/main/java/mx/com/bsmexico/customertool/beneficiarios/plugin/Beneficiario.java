@@ -1,6 +1,11 @@
 package mx.com.bsmexico.customertool.beneficiarios.plugin;
 
+import java.text.DecimalFormat;
+
+import org.apache.commons.lang3.math.NumberUtils;
+
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import mx.com.bsmexico.customertool.api.layouts.model.LayoutField;
 import mx.com.bsmexico.customertool.api.layouts.model.LayoutModel;
 import mx.com.bsmexico.customertool.api.layouts.model.LayoutModelType;
@@ -14,6 +19,9 @@ import mx.com.bsmexico.customertool.api.layouts.model.LayoutModelType;
  */
 @LayoutModel(type = LayoutModelType.PROPERTY_JAVABEANS, validatorClass = BeneficiarioValidator.class)
 public class Beneficiario {
+
+	String pattern = "################.00";
+	DecimalFormat decimalFormat = new DecimalFormat(pattern);
 
 	public static final String FIELD_CUENTA_BENEFICIARIO = "CUENTA_BENEFICIARIO";
 	public static final String FIELD_NUMERO_LINEA_BENEFICIARIO = "NUMERO_LINEA_BENEFICIARIO";
@@ -58,7 +66,7 @@ public class Beneficiario {
 	private SimpleStringProperty apellidoPaterno;
 
 	@LayoutField(name = FIELD_APELLIDO_MATERNO, title = "Apellido materno", length = 30)
-	private SimpleStringProperty apellidoMaterno;	
+	private SimpleStringProperty apellidoMaterno;
 
 	public Beneficiario() {
 		cuenta = new SimpleStringProperty();
@@ -82,7 +90,8 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param cuenta the cuenta to set
+	 * @param cuenta
+	 *            the cuenta to set
 	 */
 	public void setCuenta(String cuenta) {
 		this.cuenta.set(cuenta);
@@ -96,7 +105,8 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param numLinea the numLinea to set
+	 * @param numLinea
+	 *            the numLinea to set
 	 */
 	public void setNumLinea(String numLinea) {
 		this.numLinea.set(numLinea);
@@ -110,7 +120,8 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param bancoParticipante the bancoParticipante to set
+	 * @param bancoParticipante
+	 *            the bancoParticipante to set
 	 */
 	public void setBancoParticipante(String bancoParticipante) {
 		this.bancoParticipante.set(bancoParticipante);
@@ -124,7 +135,8 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param tipoCuenta the tipoCuenta to set
+	 * @param tipoCuenta
+	 *            the tipoCuenta to set
 	 */
 	public void setTipoCuenta(String tipoCuenta) {
 		this.tipoCuenta.set(tipoCuenta);
@@ -138,10 +150,11 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param moneda the moneda to set
+	 * @param moneda
+	 *            the moneda to set
 	 */
 	public void setMoneda(String moneda) {
-		this.moneda.set(moneda);
+		this.moneda.set(moneda.toUpperCase());
 	}
 
 	/**
@@ -152,10 +165,15 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param importeMaximo the importeMaximo to set
+	 * @param importeMaximo
+	 *            the importeMaximo to set
 	 */
 	public void setImporteMaximo(String importeMaximo) {
+		if (NumberUtils.isCreatable(importeMaximo)) {
+			importeMaximo = decimalFormat.format(Double.valueOf(importeMaximo));
+		}
 		this.importeMaximo.set(importeMaximo);
+
 	}
 
 	/**
@@ -166,7 +184,8 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param tipoPersona the tipoPersona to set
+	 * @param tipoPersona
+	 *            the tipoPersona to set
 	 */
 	public void setTipoPersona(String tipoPersona) {
 		this.tipoPersona.set(tipoPersona);
@@ -180,7 +199,8 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param razonSocial the razonSocial to set
+	 * @param razonSocial
+	 *            the razonSocial to set
 	 */
 	public void setRazonSocial(String razonSocial) {
 		this.razonSocial.set(razonSocial);
@@ -194,7 +214,8 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param nombre the nombre to set
+	 * @param nombre
+	 *            the nombre to set
 	 */
 	public void setNombre(String nombre) {
 		this.nombre.set(nombre);
@@ -208,7 +229,8 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param apellidoPaterno the apellidoPaterno to set
+	 * @param apellidoPaterno
+	 *            the apellidoPaterno to set
 	 */
 	public void setApellidoPaterno(String apellidoPaterno) {
 		this.apellidoPaterno.set(apellidoPaterno);
@@ -222,10 +244,19 @@ public class Beneficiario {
 	}
 
 	/**
-	 * @param apellidoMaterno the apellidoMaterno to set
+	 * @param apellidoMaterno
+	 *            the apellidoMaterno to set
 	 */
 	public void setApellidoMaterno(String apellidoMaterno) {
 		this.apellidoMaterno.set(apellidoMaterno);
+	}
+
+	public StringProperty cuentaProperty() {
+		return cuenta;
+	}
+
+	public StringProperty monedaProperty() {
+		return moneda;
 	}
 
 }
