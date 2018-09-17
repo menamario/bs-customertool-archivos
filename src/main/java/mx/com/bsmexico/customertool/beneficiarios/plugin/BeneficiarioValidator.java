@@ -19,7 +19,9 @@ import mx.com.bsmexico.customertool.dispersion.plugin.Dispersion;
 public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 
 	String regex = "^([A-Z,Ñ,&]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\\d]{3})$";
+	String regexCurp = "^([A-Z][AEIOUX][A-Z]{2}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d])(\\d)$";
 	Pattern rfcPattern = Pattern.compile(regex);
+	Pattern curpPattern = Pattern.compile(regexCurp);
 
 	@Override
 	public boolean isValidField(String fieldName, Beneficiario model) {
@@ -235,8 +237,13 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 	 */
 	public Predicate<Beneficiario> curp() {
 		return v -> {
+			boolean match = false;
+			if (StringUtils.isNotBlank(v.getCurp())) {
+				Matcher m = curpPattern.matcher(v.getCurp());
+				match = m.find();
+			}
 			return StringUtils.isBlank(v.getCurp()) || (StringUtils.isNotBlank(v.getCurp())
-					&& v.getCurp().length() == 18 && "00".equals(v.getTipoPersona()));
+					&& v.getCurp().length() == 18 && "00".equals(v.getTipoPersona()) && match);
 		};
 	}
 
@@ -301,7 +308,7 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 				desc = "Dato Opcional\nDebe Cumplir con el Formato de RFC\nDebe ser de 12 posiciones si el tipo de persona es 01-Persona Moral\nDebe ser de 13 posiciones si el tipo de persona es 00-Persona Física";
 				break;
 			case Beneficiario.FIELD_CURP:
-				desc = "Dato Opcional\nDebe estar vacío si tipo de persona es 01-Persona Moral";
+				desc = "Dato Opcional\nDebe estar vacío si tipo de persona es 01-Persona Moral\nDebe cumplir con el formato de un CURP";
 				break;
 			case Beneficiario.FIELD_CORREO_ELECTRONICO:
 				desc = "Dato obligatorio si Tipo de Persona es 00-Persona Física\nDebe estar vacio si tipo de persona es 01-Persona Moral";

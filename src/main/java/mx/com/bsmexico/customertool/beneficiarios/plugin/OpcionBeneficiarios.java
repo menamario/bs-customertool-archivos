@@ -433,7 +433,7 @@ public class OpcionBeneficiarios extends Feature {
 						exporter.export(file);
 						hashCodeGuardado = t.getItems().hashCode();
 
-						Stage stage = new Stage(StageStyle.UTILITY);
+						Stage stage = new Stage(StageStyle.UNDECORATED);
 
 						StackPane canvas = new StackPane();
 						canvas.setPadding(new Insets(10));

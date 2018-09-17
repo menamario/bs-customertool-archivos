@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import mx.com.bsmexico.customertool.api.layouts.model.LayoutField;
 import mx.com.bsmexico.customertool.api.layouts.model.LayoutModel;
 import mx.com.bsmexico.customertool.api.layouts.model.LayoutModelType;
@@ -276,6 +277,30 @@ public class Dispersion {
 		this.detalleOperacion = detalleOperacion;
 	}
 
+	
+	
+	public StringProperty tipoMovimientoProperty(){return tipoMovimiento;}
+	public StringProperty aplicacionProperty(){return aplicacion;}
+	public StringProperty fechaProperty(){return fecha;}
+	public StringProperty tipoTransaccionProperty(){return tipoTransaccion;}
+	public StringProperty cuentaCargoProperty(){return cuentaCargo;}
+	public StringProperty tipoCuentaBeneficiarioProperty(){return tipoCuentaBeneficiario;}
+	public StringProperty cuentaAbonoProperty(){return cuentaAbono;}
+	public StringProperty tipoPersonaProperty(){return tipoPersona;}
+	public StringProperty nombreProperty(){return nombre;}
+	public StringProperty rfcProperty(){return rfc;}
+	public StringProperty curpProperty(){return curp;}
+	public StringProperty divisaProperty(){return divisa;}
+	public StringProperty importeProperty(){return importe;}
+	public StringProperty ivaProperty(){return iva;}
+	public StringProperty conceptoProperty(){return concepto;}
+	public StringProperty referenciaProperty(){return referencia;}
+	public StringProperty correoElectronicoProperty(){return correoElectronico;}
+	public StringProperty numeroCelularProperty(){return numeroCelular;}
+	
+	
+	
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

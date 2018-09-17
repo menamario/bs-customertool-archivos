@@ -68,22 +68,22 @@ public class Beneficiario {
 
 	@LayoutField(name = FIELD_APELLIDO_PATERNO, title = "Apellido paterno", length = 30)
 	private SimpleStringProperty apellidoPaterno;
-	
+
 	@LayoutField(name = FIELD_APELLIDO_MATERNO, title = "Apellido materno", length = 30)
 	private SimpleStringProperty apellidoMaterno;
 
 	@LayoutField(name = FIELD_ALIAS, title = "Alias", length = 30)
 	private SimpleStringProperty alias;
-	
+
 	@LayoutField(name = FIELD_RFC, title = "RFC", length = 13)
 	private SimpleStringProperty rfc;
-	
+
 	@LayoutField(name = FIELD_CURP, title = "CURP", length = 18)
 	private SimpleStringProperty curp;
-	
+
 	@LayoutField(name = FIELD_CORREO_ELECTRONICO, title = "Correo Electrónico", length = 50)
 	private SimpleStringProperty email;
-	
+
 	public Beneficiario() {
 		cuenta = new SimpleStringProperty();
 		numLinea = new SimpleStringProperty();
@@ -270,7 +270,7 @@ public class Beneficiario {
 	public void setApellidoMaterno(String apellidoMaterno) {
 		this.apellidoMaterno.set(apellidoMaterno);
 	}
-	
+
 	/**
 	 * @return the apellidoMaterno
 	 */
@@ -285,7 +285,7 @@ public class Beneficiario {
 	public void setAlias(String alias) {
 		this.alias.set(alias);
 	}
-	
+
 	/**
 	 * @return the apellidoMaterno
 	 */
@@ -300,7 +300,7 @@ public class Beneficiario {
 	public void setRfc(String rfc) {
 		this.rfc.set(rfc);
 	}
-	
+
 	/**
 	 * @return the apellidoMaterno
 	 */
@@ -315,7 +315,7 @@ public class Beneficiario {
 	public void setCurp(String curp) {
 		this.curp.set(curp);
 	}
-	
+
 	/**
 	 * @return the apellidoMaterno
 	 */
@@ -330,22 +330,70 @@ public class Beneficiario {
 	public void setEmail(String email) {
 		this.email.set(email);
 	}
-	
-	
-	
-	
-	
-	
 
 	public StringProperty cuentaProperty() {
 		return cuenta;
+	}
+
+	public StringProperty numLineaProperty() {
+		return numLinea;
+	}
+
+	public StringProperty bancoParticipanteProperty() {
+		return bancoParticipante;
+	}
+
+	public StringProperty tipoCuentaProperty() {
+		return tipoCuenta;
 	}
 
 	public StringProperty monedaProperty() {
 		return moneda;
 	}
 
-	/* (non-Javadoc)
+	public StringProperty importeMaximoProperty() {
+		return importeMaximo;
+	}
+
+	public StringProperty tipoPersonaProperty() {
+		return tipoPersona;
+	}
+
+	public StringProperty razonSocialProperty() {
+		return razonSocial;
+	}
+
+	public StringProperty nombreProperty() {
+		return nombre;
+	}
+
+	public StringProperty apellidoPaternoProperty() {
+		return apellidoPaterno;
+	}
+
+	public StringProperty apellidoMaternoProperty() {
+		return apellidoMaterno;
+	}
+
+	public StringProperty aliasProperty() {
+		return alias;
+	}
+
+	public StringProperty rfcProperty() {
+		return rfc;
+	}
+
+	public StringProperty curpProperty() {
+		return curp;
+	}
+
+	public StringProperty emailProperty() {
+		return email;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
