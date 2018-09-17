@@ -60,7 +60,8 @@ public class BeneficiarioTable extends EditableLayoutTable<Beneficiario>
 				Beneficiario.FIELD_BANCO_PARTICIPANTE, Beneficiario.FIELD_TIPO_CUENTA, Beneficiario.FIELD_MONEDA,
 				Beneficiario.FIELD_IMPORTE_MAXIMO_PAGAR, Beneficiario.FIELD_TIPO_PERSONA,
 				Beneficiario.FIELD_RAZON_SOCIAL, Beneficiario.FIELD_NOMBRE, Beneficiario.FIELD_APELLIDO_PATERNO,
-				Beneficiario.FIELD_APELLIDO_MATERNO };
+				Beneficiario.FIELD_APELLIDO_MATERNO, Beneficiario.FIELD_ALIAS, Beneficiario.FIELD_RFC, 
+				Beneficiario.FIELD_CURP, Beneficiario.FIELD_CORREO_ELECTRONICO };
 	}
 
 	@SuppressWarnings("unchecked")

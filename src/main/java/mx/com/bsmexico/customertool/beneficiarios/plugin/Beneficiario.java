@@ -34,6 +34,10 @@ public class Beneficiario {
 	public static final String FIELD_NOMBRE = "NOMBRE";
 	public static final String FIELD_APELLIDO_PATERNO = "APELLIDO_PATERNO";
 	public static final String FIELD_APELLIDO_MATERNO = "APELLIDO_MATERNO";
+	public static final String FIELD_ALIAS = "ALIAS";
+	public static final String FIELD_RFC = "RFC";
+	public static final String FIELD_CURP = "CURP";
+	public static final String FIELD_CORREO_ELECTRONICO = "CORREO_ELECTRONICO";
 
 	@LayoutField(name = FIELD_CUENTA_BENEFICIARIO, title = "Cuenta beneficiario", length = 18)
 	private SimpleStringProperty cuenta;
@@ -64,10 +68,22 @@ public class Beneficiario {
 
 	@LayoutField(name = FIELD_APELLIDO_PATERNO, title = "Apellido paterno", length = 30)
 	private SimpleStringProperty apellidoPaterno;
-
+	
 	@LayoutField(name = FIELD_APELLIDO_MATERNO, title = "Apellido materno", length = 30)
 	private SimpleStringProperty apellidoMaterno;
 
+	@LayoutField(name = FIELD_ALIAS, title = "Alias", length = 30)
+	private SimpleStringProperty alias;
+	
+	@LayoutField(name = FIELD_RFC, title = "RFC", length = 13)
+	private SimpleStringProperty rfc;
+	
+	@LayoutField(name = FIELD_CURP, title = "CURP", length = 18)
+	private SimpleStringProperty curp;
+	
+	@LayoutField(name = FIELD_CORREO_ELECTRONICO, title = "Correo Electrónico", length = 50)
+	private SimpleStringProperty email;
+	
 	public Beneficiario() {
 		cuenta = new SimpleStringProperty();
 		numLinea = new SimpleStringProperty();
@@ -80,6 +96,10 @@ public class Beneficiario {
 		nombre = new SimpleStringProperty();
 		apellidoPaterno = new SimpleStringProperty();
 		apellidoMaterno = new SimpleStringProperty();
+		alias = new SimpleStringProperty();
+		rfc = new SimpleStringProperty();
+		curp = new SimpleStringProperty();
+		email = new SimpleStringProperty();
 	}
 
 	/**
@@ -250,6 +270,72 @@ public class Beneficiario {
 	public void setApellidoMaterno(String apellidoMaterno) {
 		this.apellidoMaterno.set(apellidoMaterno);
 	}
+	
+	/**
+	 * @return the apellidoMaterno
+	 */
+	public String getAlias() {
+		return alias.get();
+	}
+
+	/**
+	 * @param apellidoMaterno
+	 *            the apellidoMaterno to set
+	 */
+	public void setAlias(String alias) {
+		this.alias.set(alias);
+	}
+	
+	/**
+	 * @return the apellidoMaterno
+	 */
+	public String getRfc() {
+		return rfc.get();
+	}
+
+	/**
+	 * @param apellidoMaterno
+	 *            the apellidoMaterno to set
+	 */
+	public void setRfc(String rfc) {
+		this.rfc.set(rfc);
+	}
+	
+	/**
+	 * @return the apellidoMaterno
+	 */
+	public String getCurp() {
+		return curp.get();
+	}
+
+	/**
+	 * @param apellidoMaterno
+	 *            the apellidoMaterno to set
+	 */
+	public void setCurp(String curp) {
+		this.curp.set(curp);
+	}
+	
+	/**
+	 * @return the apellidoMaterno
+	 */
+	public String getEmail() {
+		return email.get();
+	}
+
+	/**
+	 * @param apellidoMaterno
+	 *            the apellidoMaterno to set
+	 */
+	public void setEmail(String email) {
+		this.email.set(email);
+	}
+	
+	
+	
+	
+	
+	
 
 	public StringProperty cuentaProperty() {
 		return cuenta;
@@ -257,6 +343,31 @@ public class Beneficiario {
 
 	public StringProperty monedaProperty() {
 		return moneda;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((apellidoMaterno.get() == null) ? 0 : apellidoMaterno.get().hashCode());
+		result = prime * result + ((apellidoPaterno.get() == null) ? 0 : apellidoPaterno.get().hashCode());
+		result = prime * result + ((bancoParticipante.get() == null) ? 0 : bancoParticipante.get().hashCode());
+		result = prime * result + ((cuenta.get() == null) ? 0 : cuenta.get().hashCode());
+		result = prime * result + ((importeMaximo.get() == null) ? 0 : importeMaximo.get().hashCode());
+		result = prime * result + ((moneda.get() == null) ? 0 : moneda.get().hashCode());
+		result = prime * result + ((nombre.get() == null) ? 0 : nombre.get().hashCode());
+		result = prime * result + ((numLinea.get() == null) ? 0 : numLinea.get().hashCode());
+		result = prime * result + ((razonSocial.get() == null) ? 0 : razonSocial.get().hashCode());
+		result = prime * result + ((tipoCuenta.get() == null) ? 0 : tipoCuenta.get().hashCode());
+		result = prime * result + ((tipoPersona.get() == null) ? 0 : tipoPersona.get().hashCode());
+		result = prime * result + ((alias.get() == null) ? 0 : alias.get().hashCode());
+		result = prime * result + ((rfc.get() == null) ? 0 : rfc.get().hashCode());
+		result = prime * result + ((curp.get() == null) ? 0 : curp.get().hashCode());
+		result = prime * result + ((email.get() == null) ? 0 : email.get().hashCode());
+		return result;
 	}
 
 }

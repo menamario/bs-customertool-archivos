@@ -276,4 +276,34 @@ public class Dispersion {
 		this.detalleOperacion = detalleOperacion;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((aplicacion.get() == null) ? 0 : aplicacion.get().hashCode());
+		result = prime * result + ((concepto.get() == null) ? 0 : concepto.get().hashCode());
+		result = prime * result + ((correoElectronico.get() == null) ? 0 : correoElectronico.get().hashCode());
+		result = prime * result + ((cuentaAbono.get() == null) ? 0 : cuentaAbono.get().hashCode());
+		result = prime * result + ((cuentaCargo.get() == null) ? 0 : cuentaCargo.get().hashCode());
+		result = prime * result + ((curp.get() == null) ? 0 : curp.get().hashCode());
+		result = prime * result + ((divisa.get() == null) ? 0 : divisa.get().hashCode());
+		result = prime * result + ((fecha.get() == null) ? 0 : fecha.get().hashCode());
+		result = prime * result + ((importe.get() == null) ? 0 : importe.get().hashCode());
+		result = prime * result + ((iva.get() == null) ? 0 : iva.get().hashCode());
+		result = prime * result + ((nombre.get() == null) ? 0 : nombre.get().hashCode());
+		result = prime * result + ((numeroCelular.get() == null) ? 0 : numeroCelular.get().hashCode());
+		result = prime * result + ((referencia.get() == null) ? 0 : referencia.get().hashCode());
+		result = prime * result + ((rfc.get() == null) ? 0 : rfc.get().hashCode());
+		result = prime * result + ((tipoCuentaBeneficiario.get() == null) ? 0 : tipoCuentaBeneficiario.get().hashCode());
+		result = prime * result + ((tipoMovimiento.get() == null) ? 0 : tipoMovimiento.get().hashCode());
+		result = prime * result + ((tipoPersona.get() == null) ? 0 : tipoPersona.get().hashCode());
+		result = prime * result + ((tipoTransaccion.get() == null) ? 0 : tipoTransaccion.get().hashCode());
+		return result;
+	}
+	
+	
+
 }
