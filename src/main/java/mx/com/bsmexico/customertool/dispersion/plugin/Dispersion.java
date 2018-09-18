@@ -69,10 +69,10 @@ public class Dispersion {
 	@LayoutField(name = FIELD_NOMBRE_BENEFICIARIO, title = "Nombre Beneficiario", length = 40)
 	private SimpleStringProperty nombre;
 
-	@LayoutField(name = FIELD_RFC, title = "Rfc", length = 13)
+	@LayoutField(name = FIELD_RFC, title = "RFC", length = 13)
 	private SimpleStringProperty rfc;
 
-	@LayoutField(name = FIELD_CURP, title = "Curp", length = 18)
+	@LayoutField(name = FIELD_CURP, title = "CURP", length = 18)
 	private SimpleStringProperty curp;
 
 	@LayoutField(name = FIELD_DIVISA, title = "Divisa", length = 3)

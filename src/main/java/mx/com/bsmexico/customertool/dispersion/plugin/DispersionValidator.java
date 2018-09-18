@@ -240,8 +240,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 					// No match pattern
 				}
 			}
-			return ((StringUtils.isNotBlank(v.getFecha()) && date != null && v.getAplicacion().equals("P"))  
-					|| (StringUtils.isBlank(v.getFecha()) && v.getAplicacion().equals("H")));
+			return StringUtils.isBlank(v.getFecha()) || date != null;
 		};
 	}
 

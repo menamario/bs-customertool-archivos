@@ -9,6 +9,7 @@ import mx.com.bsmexico.customertool.api.layouts.control.EditableLayoutTable;
 import mx.com.bsmexico.customertool.api.layouts.model.validation.LayoutModelValidator;
 import mx.com.bsmexico.customertool.api.process.ExportSource;
 import mx.com.bsmexico.customertool.api.process.ImportTarget;
+import mx.com.bsmexico.customertool.beneficiarios.plugin.Beneficiario;
 
 public class DispersionTable extends EditableLayoutTable<Dispersion>
 		implements ImportTarget<Dispersion>, ExportSource<Dispersion> {
@@ -35,6 +36,11 @@ public class DispersionTable extends EditableLayoutTable<Dispersion>
 	@Override
 	public void setData(List<Dispersion> data) {
 		ObservableList<Dispersion> observableList = FXCollections.observableList(data);
+		if (observableList.size()<INITIAL_CAPACITY){
+			for(int i = 0; i < INITIAL_CAPACITY-observableList.size(); i++){
+				observableList.add(new Dispersion());
+			}
+		}
 		setItems(observableList);
 	}
 
