@@ -1,5 +1,6 @@
 package mx.com.bsmexico.customertool.dispersion.plugin;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,9 @@ import mx.com.bsmexico.customertool.api.process.ImportTarget;
 import mx.com.bsmexico.customertool.api.process.RecordPosition;
 
 public class DispersionTXTImporter extends FixPositionImporter<Dispersion> {
-
+	
+	private DecimalFormat decimalFormat = new DecimalFormat("############.00");
+	
 	public DispersionTXTImporter(ImportTarget<Dispersion> target) throws IllegalArgumentException {
 		super(target);
 		withTrim(true);
@@ -34,10 +37,8 @@ public class DispersionTXTImporter extends FixPositionImporter<Dispersion> {
 				dispersion.setRfc(record.get(10));
 				dispersion.setCurp(record.get(11));
 				dispersion.setDivisa(record.get(12));
-				dispersion.setImporte(
-						(record.get(13) == null) ? StringUtils.EMPTY : record.get(13).replaceFirst("^0+(?!$)", ""));
-				dispersion.setIva(
-						(record.get(14) == null) ? StringUtils.EMPTY : record.get(14).replaceFirst("^0+(?!$)", ""));
+				dispersion.setImporte(StringUtils.isNotEmpty(record.get(13))?decimalFormat.format(Double.parseDouble(record.get(13))):"");
+				dispersion.setIva(StringUtils.isNotEmpty(record.get(14))?decimalFormat.format(Double.parseDouble(record.get(14))):"");				
 				dispersion.setConcepto(record.get(15));
 				dispersion.setReferencia(record.get(16));
 				dispersion.setCorreoElectronico(record.get(17));
