@@ -150,7 +150,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 				desc = "Dato Opcional\nDebe estar vacío si tipo de persona es PM-Persona Moral";
 				break;
 			case Dispersion.FIELD_FECHA:
-				desc = "Dato Obligatorio si la Aplicación es P-Programada\nDebe estar vacio si la Aplicación es H-Hoy";
+				desc = "Dato Obligatorio si la Aplicación es P-Programada\nEl formato debe ser aaaammdd";
 				break;
 			case Dispersion.FIELD_IMPORTE:
 				desc = "Dato Obligatorio\nImporte de la Operación\nDebe ser un dato numérico válido";
