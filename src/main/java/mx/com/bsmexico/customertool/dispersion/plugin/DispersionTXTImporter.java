@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import mx.com.bsmexico.customertool.api.process.FixPositionImporter;
 import mx.com.bsmexico.customertool.api.process.ImportTarget;
@@ -37,8 +38,8 @@ public class DispersionTXTImporter extends FixPositionImporter<Dispersion> {
 				dispersion.setRfc(record.get(10));
 				dispersion.setCurp(record.get(11));
 				dispersion.setDivisa(record.get(12));
-				dispersion.setImporte(StringUtils.isNotEmpty(record.get(13))?decimalFormat.format(Double.parseDouble(record.get(13))):"");
-				dispersion.setIva(StringUtils.isNotEmpty(record.get(14))?decimalFormat.format(Double.parseDouble(record.get(14))):"");				
+				dispersion.setImporte(NumberUtils.isCreatable(record.get(13))?decimalFormat.format(Double.parseDouble(record.get(13))):record.get(13));
+				dispersion.setIva(NumberUtils.isCreatable(record.get(14))?decimalFormat.format(Double.parseDouble(record.get(14))):record.get(14));
 				dispersion.setConcepto(record.get(15));
 				dispersion.setReferencia(record.get(16));
 				dispersion.setCorreoElectronico(record.get(17));

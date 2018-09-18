@@ -376,7 +376,6 @@ public class OpcionDispersion extends Feature {
 				fileChooser.setInitialDirectory(new File(currentPath));
 				File file = fileChooser.showOpenDialog(getDesktop().getStage());
 				if (file != null){
-					DispersionCSVImporter benImporter = new DispersionCSVImporter(t);
 					
 					Importer ddImporter = null;
 					if (file.getName().toUpperCase().endsWith("CSV")){
@@ -387,7 +386,7 @@ public class OpcionDispersion extends Feature {
 					
 					
 					try {
-						benImporter.importFile(file);
+						ddImporter.importFile(file);
 					} catch (Exception e1) {
 						e1.printStackTrace();
 						Stage stage = new Stage(StageStyle.UNDECORATED);
