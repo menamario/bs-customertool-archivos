@@ -43,6 +43,7 @@ import mx.com.bsmexico.customertool.api.Feature;
 import mx.com.bsmexico.customertool.api.Layout;
 import mx.com.bsmexico.customertool.api.NavRoute;
 import mx.com.bsmexico.customertool.api.process.Exporter;
+import mx.com.bsmexico.customertool.api.process.Importer;
 
 public class OpcionDispersion extends Feature {
 
@@ -376,6 +377,15 @@ public class OpcionDispersion extends Feature {
 				File file = fileChooser.showOpenDialog(getDesktop().getStage());
 				if (file != null){
 					DispersionCSVImporter benImporter = new DispersionCSVImporter(t);
+					
+					Importer ddImporter = null;
+					if (file.getName().toUpperCase().endsWith("CSV")){
+						ddImporter = new DispersionCSVImporter(t);
+					}else{
+						ddImporter = new DispersionTXTImporter(t);
+					}
+					
+					
 					try {
 						benImporter.importFile(file);
 					} catch (Exception e1) {
