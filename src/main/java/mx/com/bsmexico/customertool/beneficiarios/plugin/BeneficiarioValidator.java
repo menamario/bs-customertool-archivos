@@ -10,7 +10,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import mx.com.bsmexico.customertool.api.layouts.model.validation.LayoutModelValidator;
-import mx.com.bsmexico.customertool.dispersion.plugin.Dispersion;
 
 /**
  * @author jchr
