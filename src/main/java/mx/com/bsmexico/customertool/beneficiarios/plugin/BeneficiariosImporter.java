@@ -20,7 +20,7 @@ public class BeneficiariosImporter extends CSVImporter<Beneficiario> {
 		final Beneficiario beneficiario = new Beneficiario();
 		
 		
-			for(int i=0;i<=10;i++){
+			for(int i=0;i<=14;i++){
 				try{
 					record.get(i);
 				}catch(IndexOutOfBoundsException ex){
@@ -48,6 +48,10 @@ public class BeneficiariosImporter extends CSVImporter<Beneficiario> {
 		beneficiario.setApellidoPaterno(record.get(9));
 
 		beneficiario.setApellidoMaterno(record.get(10));
+		beneficiario.setAlias(record.get(11));
+		beneficiario.setRfc(record.get(12));
+		beneficiario.setCurp(record.get(13));
+		beneficiario.setEmail(record.get(14));
 
 		
 

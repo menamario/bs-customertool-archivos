@@ -35,6 +35,11 @@ public class BeneficiarioTable extends EditableLayoutTable<Beneficiario>
 	@Override
 	public void setData(List<Beneficiario> data) {
 		ObservableList<Beneficiario> observableList = FXCollections.observableList(data);
+		if (observableList.size()<INITIAL_CAPACITY){
+			for(int i = 0; i < INITIAL_CAPACITY-observableList.size(); i++){
+				observableList.add(new Beneficiario());
+			}
+		}
 		setItems(observableList);
 
 	}

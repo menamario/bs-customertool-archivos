@@ -358,6 +358,7 @@ public class OpcionBeneficiarios extends Feature {
 					try {
 						benImporter.importFile(file);
 					} catch (Exception e1) {
+						e1.printStackTrace();
 						Stage stage = new Stage(StageStyle.UNDECORATED);
 
 						Pane canvas = new Pane();
@@ -534,6 +535,11 @@ public class OpcionBeneficiarios extends Feature {
 		getMenuNavigator().show();
 		getDesktop().setWorkArea(null);
 		getDesktop().updatePleca("black", null);
+	}
+
+	@Override
+	public int getOrder() {
+		return 0;
 	}
 
 }
