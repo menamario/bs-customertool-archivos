@@ -372,7 +372,7 @@ public class OpcionDispersion extends Feature {
 				fileChooser.setInitialDirectory(new File(currentPath));
 				File file = fileChooser.showOpenDialog(getDesktop().getStage());
 				if (file != null){
-					DispersionImporter benImporter = new DispersionImporter(t);
+					DispersionCSVImporter benImporter = new DispersionCSVImporter(t);
 					try {
 						benImporter.importFile(file);
 					} catch (Exception e1) {
