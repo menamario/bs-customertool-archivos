@@ -23,9 +23,10 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -148,6 +149,8 @@ public class OpcionBeneficiarios extends Feature {
 			if (t.getItems().hashCode() == hashCodeGuardado) {
 				salir();
 			} else {
+				
+				getDesktop().opacar();
 				Stage stage = new Stage(StageStyle.UNDECORATED);
 
 				StackPane canvas = new StackPane();
@@ -219,7 +222,16 @@ public class OpcionBeneficiarios extends Feature {
 				stage.setResizable(false);
 				stage.initOwner(getDesktop().getStage());
 				stage.initModality(Modality.WINDOW_MODAL);
+				
+				stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
+				stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+				stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+			        if (KeyCode.ESCAPE == event.getCode()) {
+			            stage.close();
+			        }
+			    });
 				stage.showAndWait();
+				getDesktop().desOpacar();
 
 			}
 		});
@@ -234,7 +246,7 @@ public class OpcionBeneficiarios extends Feature {
 		Label l = new Label("    Alta de Beneficiarios    ");
 		l.setTextFill(Color.WHITE);
 		l.setStyle(
-				"-fx-background-color: #b50055;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-border-radius: 0 0 5 5; -fx-background-radius: -1 -1 4 4;");
+				"-fx-background-color: #b50055;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-border-radius: 0 0 5 5; -fx-background-radius: 0 0 4 4;");
 
 		headerBox1.getChildren().add(l);
 		headerBox2.getChildren().add(bInstrucciones);
@@ -296,33 +308,31 @@ public class OpcionBeneficiarios extends Feature {
 				canvas.setPadding(new Insets(10));
 				canvas.setStyle("-fx-background-color: #239d45;");
 				canvas.setPrefSize(1000, 60);
+				canvas.setMinHeight(54);
 
 				Label instruccionesLabel = new Label(
-						"Banco Sabadell agradece su preferencia, a continuacion detallamos los pasos que debe seguir para capturar los datos de alta de beneficiario.");
+						"Banco Sabadell agradece su preferencia, a continuación se detallan los pasos que debes seguir para generar el layout de Beneficiarios.");
 				instruccionesLabel.setWrapText(true);
 				instruccionesLabel.setTextAlignment(TextAlignment.JUSTIFY);
 				instruccionesLabel
 						.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-font-weight: bold");
-				instruccionesLabel.setTextFill(Color.WHITE);
-				canvas.getChildren().add(instruccionesLabel);
+				instruccionesLabel.setTextFill(Color.web("#828488"));
+				StackPane p = new StackPane();
+				p.setPadding(new Insets(20,0,20,0));
+				p.setStyle("-fx-background-color: #d9d9d9");
+				p.getChildren().add(instruccionesLabel);
 
 				stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
 				stage.setTitle("Archivos Bantotal - Beneficiarios - Instrucciones");
 
-				TextArea textArea = new TextArea();
-				textArea.setText("\n"
-						+ "1) Revise que la configuracion regional de su sistema operativo este en Español (México)."
-						+ "\n\n2) Los datos que se capturan deben estar en mayusculas y sin caracteres especiales."
-						+ "\n\n3) Finalmente le pedimos validar que los datos marcados como obligatorios se encuentren con la información requerida."
-						+ "\n\n4) Al concluir la captura de beneficiarios, dar un click en el boton de Guardar, en seguida se abrira una ventana donde usted podrá guardar el archivo en la ruta que indique y con el nombre que desee."
-						+ "\n\n5) Al concluir el guardado correcto del archivo de Beneficiarios el siguiente paso es ingresar a su banca en linea de Banco Sabadell, para iniciar el proceso de Alta de Beneficiarios."
-						+ "\n\n6) Los Beneficiarios que se dan de alta estarán disponibles para transaccionar despues de 30 minutos.");
-				textArea.setEditable(false);
-				textArea.setWrapText(true);
-
 				ImageView insIv = null;
+				ImageView insGIv = null;
 
 				try {
+					insGIv = new ImageView(new Image(getImageInput("/img/instruccionesGeneralesBeneficiarios.png")));
+					insGIv.setPreserveRatio(true);
+					insGIv.setFitWidth(1000);
+					insGIv.setSmooth(true);
 					insIv = new ImageView(new Image(getImageInput("/img/instruccionesBeneficiarios.png")));
 					insIv.setPreserveRatio(true);
 					insIv.setFitWidth(1000);
@@ -331,6 +341,12 @@ public class OpcionBeneficiarios extends Feature {
 					e.printStackTrace();
 				}
 
+				ScrollPane scrollPaneGenerales = new ScrollPane();
+				scrollPaneGenerales.setPrefSize(800, 600);
+				scrollPaneGenerales.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+				scrollPaneGenerales.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+				scrollPaneGenerales.setContent(insGIv);
+				
 				ScrollPane scrollPane = new ScrollPane();
 				scrollPane.setPrefSize(1000, 600);
 				scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
@@ -340,16 +356,17 @@ public class OpcionBeneficiarios extends Feature {
 				TabPane tabPane = new TabPane();
 				Tab tabInstrucciones = new Tab("Instrucciones");
 				Tab tabCampos = new Tab("Descripcion de campos");
-				tabInstrucciones.setContent(textArea);
+				tabInstrucciones.setContent(scrollPaneGenerales);
 				tabCampos.setContent(scrollPane);
 				tabPane.getTabs().addAll(tabInstrucciones, tabCampos);
 
 				VBox vbox = new VBox();
-				textArea.prefHeightProperty().bind(vbox.prefHeightProperty().add(-60));
 				vbox.setPrefSize(1020, 600);
 				VBox.setVgrow(vbox, Priority.ALWAYS);
 				vbox.getChildren().add(canvas);
+				vbox.getChildren().add(p);
 				vbox.getChildren().add(tabPane);
+				
 
 				stage.setScene(new Scene(vbox, 1020, 600));
 				stage.setResizable(false);
@@ -383,6 +400,7 @@ public class OpcionBeneficiarios extends Feature {
 						benImporter.importFile(file);
 					} catch (Exception e1) {
 						e1.printStackTrace();
+						getDesktop().opacar();
 						Stage stage = new Stage(StageStyle.UNDECORATED);
 
 						Pane canvas = new Pane();
@@ -429,7 +447,15 @@ public class OpcionBeneficiarios extends Feature {
 						stage.setResizable(false);
 						stage.initOwner(getDesktop().getStage());
 						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
+						stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+						stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+					        if (KeyCode.ESCAPE == event.getCode()) {
+					            stage.close();
+					        }
+					    });
 						stage.showAndWait();
+						getDesktop().desOpacar();
 					}
 				}
 			}
@@ -466,6 +492,7 @@ public class OpcionBeneficiarios extends Feature {
 					try {
 						exporter.export(file);
 						hashCodeGuardado = t.getItems().hashCode();
+						getDesktop().opacar();
 
 						Stage stage = new Stage(StageStyle.UNDECORATED);
 
@@ -514,7 +541,15 @@ public class OpcionBeneficiarios extends Feature {
 						stage.setResizable(false);
 						stage.initOwner(getDesktop().getStage());
 						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
+						stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+						stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+					        if (KeyCode.ESCAPE == event.getCode()) {
+					            stage.close();
+					        }
+					    });
 						stage.showAndWait();
+						getDesktop().desOpacar();
 						return true;
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -524,8 +559,8 @@ public class OpcionBeneficiarios extends Feature {
 				}
 
 			} else if (numRegistros > 0) {
+				getDesktop().opacar();
 				Stage stage = new Stage(StageStyle.UNDECORATED);
-
 				StackPane canvas = new StackPane();
 				canvas.setPadding(new Insets(5));
 				canvas.setStyle("-fx-background-color: #e90e5c;");
@@ -566,7 +601,15 @@ public class OpcionBeneficiarios extends Feature {
 				stage.setResizable(false);
 				stage.initOwner(getDesktop().getStage());
 				stage.initModality(Modality.WINDOW_MODAL);
+				stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
+				stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+				stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+			        if (KeyCode.ESCAPE == event.getCode()) {
+			            stage.close();
+			        }
+			    });
 				stage.showAndWait();
+				getDesktop().desOpacar();
 				return false;
 
 			}

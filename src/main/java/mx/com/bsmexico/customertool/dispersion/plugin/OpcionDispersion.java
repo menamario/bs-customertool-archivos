@@ -27,6 +27,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -143,7 +145,6 @@ public class OpcionDispersion extends Feature {
 		Button bAtras = new Button();
 		Button bInstrucciones = new Button();
 		Button bImportarArchivo = new Button();
-		
 
 		bCerrar.setGraphic(cerrar);
 		bCerrar.setStyle("-fx-background-color: transparent;");
@@ -168,13 +169,14 @@ public class OpcionDispersion extends Feature {
 			if (t.getItems().hashCode() == hashCodeGuardado) {
 				salir();
 			} else {
+				getDesktop().opacar();
 				Stage stage = new Stage(StageStyle.UNDECORATED);
 
 				StackPane canvas = new StackPane();
 				canvas.setPadding(new Insets(5));
 				canvas.setStyle("-fx-background-color: #e90e5c;");
 				canvas.setPrefSize(512, 54);
-				
+
 				canvas.getChildren().add(bCerrar);
 				StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
 
@@ -182,8 +184,7 @@ public class OpcionDispersion extends Feature {
 					stage.hide();
 				});
 
-				Label mensaje = new Label(
-						"¿Quieres guardar los cambios realizados en el archivo?");
+				Label mensaje = new Label("¿Quieres guardar los cambios realizados en el archivo?");
 				mensaje.setWrapText(true);
 				mensaje.setTextAlignment(TextAlignment.CENTER);
 				mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
@@ -191,9 +192,10 @@ public class OpcionDispersion extends Feature {
 				mensaje.setPrefWidth(400);
 
 				Button bGuardar = new Button("Guardar");
-				bGuardar.setStyle("-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
-				bGuardar.setPrefSize(140,40);
-				
+				bGuardar.setStyle(
+						"-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
+				bGuardar.setPrefSize(140, 40);
+
 				bGuardar.setTextFill(Color.WHITE);
 
 				bGuardar.setOnMouseClicked(ev -> {
@@ -211,7 +213,7 @@ public class OpcionDispersion extends Feature {
 				Button bSalir = new Button("No guardar");
 				bSalir.setStyle(
 						"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 12px;  -fx-border-radius: 8px;-fx-background-color: rgba(255, 255, 255, 0.8);-fx-border-width: 1px;-fx-border-color: #006dff;-fx-font-weight:bold;-fx-background-radius: 8px");
-				bSalir.setPrefSize(140,40);
+				bSalir.setPrefSize(140, 40);
 				bSalir.setTextFill(Color.web("#006dff"));
 
 				bSalir.setOnMouseClicked(ev -> {
@@ -222,7 +224,7 @@ public class OpcionDispersion extends Feature {
 				});
 
 				HBox opciones = new HBox();
-				opciones.getChildren().addAll(bSalir,bGuardar);
+				opciones.getChildren().addAll(bSalir, bGuardar);
 				opciones.setAlignment(Pos.CENTER);
 				opciones.setSpacing(35);
 
@@ -239,14 +241,21 @@ public class OpcionDispersion extends Feature {
 				stage.setResizable(false);
 				stage.initOwner(getDesktop().getStage());
 				stage.initModality(Modality.WINDOW_MODAL);
+				stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
+				stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+				stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+			        if (KeyCode.ESCAPE == event.getCode()) {
+			            stage.close();
+			        }
+			    });
 				stage.showAndWait();
+				getDesktop().desOpacar();
 
 			}
 		});
 
 		final FileChooser fileChooser = new FileChooser();
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("csv and txt files", "*.csv",
-				"*.txt");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("csv and txt files", "*.csv", "*.txt");
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		headerBox1.getChildren().add(bAtras);
@@ -281,11 +290,11 @@ public class OpcionDispersion extends Feature {
 		rbTxt.setToggleGroup(tgFormato);
 
 		HBox hb = new HBox();
-		
+
 		hb.setSpacing(50);
 		hb.getChildren().addAll(lFormato, rbTxt, rbCsv);
 		hb.setAlignment(Pos.CENTER_RIGHT);
-		hb.setPadding(new Insets(0,100,0,0));
+		hb.setPadding(new Insets(0, 100, 0, 0));
 
 		borderpane.setCenter(hb);
 
@@ -308,6 +317,7 @@ public class OpcionDispersion extends Feature {
 
 		bInstrucciones.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
+				
 
 				Stage stage = new Stage();
 
@@ -315,36 +325,34 @@ public class OpcionDispersion extends Feature {
 				canvas.setPadding(new Insets(10));
 				canvas.setStyle("-fx-background-color: #239d45;");
 				canvas.setPrefSize(800, 60);
+				canvas.setMinHeight(54);
 
 				Label instruccionesLabel = new Label(
-						"Banco Sabadell agradece su preferencia, a continuacion detallamos los pasos que debe seguir para capturar los datos de dispersion de pagos.");
+						"Banco Sabadell agradece su preferencia, a continuación se detallan los pasos que debes seguir para\ngenerar los layouts de Dispersión de Pagos. (CSV y TXT)");
 				instruccionesLabel.setWrapText(true);
-				instruccionesLabel.setTextAlignment(TextAlignment.JUSTIFY);
+				instruccionesLabel.setTextAlignment(TextAlignment.CENTER);
 				instruccionesLabel
 						.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-font-weight: bold");
-				instruccionesLabel.setTextFill(Color.WHITE);
-				canvas.getChildren().add(instruccionesLabel);
+				instruccionesLabel.setTextFill(Color.web("#828488"));
+				instruccionesLabel.setMinHeight(40);
+				StackPane p = new StackPane();
+				p.setPadding(new Insets(20, 0, 20, 0));
+				p.setStyle("-fx-background-color: #d9d9d9");
+				p.getChildren().add(instruccionesLabel);
 
 				stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
 				stage.setTitle("Archivos Bantotal - Dispersion - Instrucciones");
 
-				TextArea textArea = new TextArea();
-				textArea.setText("\n"
-
-						+ "1) Revise que la configuración regional del sistema operativo esté en Español(México)."
-						+ "\n\n3) Los datos que se capturan deben estar en mayúsculas y sin caracteres especiales."
-						+ "\n\n4) Al concluir la captura de transferencias para apgos, dar un click en el boton de Guardar, en seguida se abrira una ventana donde usted podrá guardar el archivo en la ruta que indique y con el nombre que desee."
-						+ "\n\n6) Las transferencias que se pueden aplicar son:	Transferencias Sabadell en pesos mexicanos, dólares americanos y euros; sin compra-venta de divisas. Transferencias Nacionales Internbancarias en pesos mexicanos."
-						+ "\n\n7) Las Transferencias Nacionales Interbancarias deberán llevar la cuenta CLABE del beneficiario; (el número de teléfono móvil y tarjeta de débito o crédito no están disponibles). "
-						+ "\n\n8) Las transferencias se ejecutarán a las cuentas de los beneficiarios que previamente se hayan registrado."
-
-				);
-				textArea.setEditable(false);
-				textArea.setWrapText(true);
+				
 
 				ImageView insIv = null;
+				ImageView insGIv = null;
 
 				try {
+					insGIv = new ImageView(new Image(getImageInput("/img/instruccionesGeneralesDispersion.png")));
+					insGIv.setPreserveRatio(true);
+					insGIv.setFitWidth(1000);
+					insGIv.setSmooth(true);
 					insIv = new ImageView(new Image(getImageInput("/img/instruccionesDispersion.png")));
 					insIv.setPreserveRatio(true);
 					insIv.setFitWidth(1000);
@@ -353,6 +361,12 @@ public class OpcionDispersion extends Feature {
 					e.printStackTrace();
 				}
 
+				ScrollPane scrollPaneGenerales = new ScrollPane();
+				scrollPaneGenerales.setPrefSize(800, 600);
+				scrollPaneGenerales.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+				scrollPaneGenerales.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+				scrollPaneGenerales.setContent(insGIv);
+				
 				ScrollPane scrollPane = new ScrollPane();
 				scrollPane.setPrefSize(1000, 600);
 				scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
@@ -361,16 +375,16 @@ public class OpcionDispersion extends Feature {
 
 				TabPane tabPane = new TabPane();
 				Tab tabInstrucciones = new Tab("Instrucciones");
-				Tab tabCampos = new Tab("Descripcion de campos");
-				tabInstrucciones.setContent(textArea);
+				Tab tabCampos = new Tab("Descripción de campos");
+				tabInstrucciones.setContent(scrollPaneGenerales);
 				tabCampos.setContent(scrollPane);
 				tabPane.getTabs().addAll(tabInstrucciones, tabCampos);
 
 				VBox vbox = new VBox();
-				textArea.prefHeightProperty().bind(vbox.prefHeightProperty().add(-60));
 				vbox.setPrefSize(1020, 600);
 				VBox.setVgrow(vbox, Priority.ALWAYS);
 				vbox.getChildren().add(canvas);
+				vbox.getChildren().add(p);
 				vbox.getChildren().add(tabPane);
 
 				stage.setScene(new Scene(vbox, 1020, 600));
@@ -398,27 +412,27 @@ public class OpcionDispersion extends Feature {
 				String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
 				fileChooser.setInitialDirectory(new File(currentPath));
 				File file = fileChooser.showOpenDialog(getDesktop().getStage());
-				if (file != null){
-					
+				if (file != null) {
+
 					Importer ddImporter = null;
-					if (file.getName().toUpperCase().endsWith("CSV")){
+					if (file.getName().toUpperCase().endsWith("CSV")) {
 						ddImporter = new DispersionCSVImporter(t);
-					}else{
+					} else {
 						ddImporter = new DispersionTXTImporter(t);
 					}
-					
-					
+
 					try {
 						ddImporter.importFile(file);
 					} catch (Exception e1) {
 						e1.printStackTrace();
+						getDesktop().opacar();
 						Stage stage = new Stage(StageStyle.UNDECORATED);
 
 						Pane canvas = new Pane();
 						canvas.setPadding(new Insets(5));
 						canvas.setStyle("-fx-background-color:  #e90e5c;");
 						canvas.setPrefSize(512, 54);
-						
+
 						canvas.getChildren().add(bCerrar);
 						StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
 
@@ -434,8 +448,9 @@ public class OpcionDispersion extends Feature {
 						mensaje.setTextFill(Color.web("#777777"));
 
 						Button bContinuar = new Button("Continuar");
-						bContinuar.setStyle("-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
-						bContinuar.setPrefSize(140,40);
+						bContinuar.setStyle(
+								"-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
+						bContinuar.setPrefSize(140, 40);
 						bContinuar.setTextFill(Color.WHITE);
 
 						bContinuar.setOnMouseClicked(evt -> {
@@ -449,7 +464,7 @@ public class OpcionDispersion extends Feature {
 						// VBox.setVgrow(vbox, Priority.ALWAYS);
 						vbox.getChildren().add(canvas);
 						vbox.getChildren().add(error);
-						mensaje.setPadding(new Insets(0,0,35,0));
+						mensaje.setPadding(new Insets(0, 0, 35, 0));
 						vbox.getChildren().add(mensaje);
 						vbox.getChildren().add(bContinuar);
 
@@ -457,7 +472,15 @@ public class OpcionDispersion extends Feature {
 						stage.setResizable(false);
 						stage.initOwner(getDesktop().getStage());
 						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
+						stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+						stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+					        if (KeyCode.ESCAPE == event.getCode()) {
+					            stage.close();
+					        }
+					    });
 						stage.showAndWait();
+						getDesktop().desOpacar();
 					}
 				}
 			}
@@ -511,13 +534,14 @@ public class OpcionDispersion extends Feature {
 					try {
 						exporter.export(file);
 						hashCodeGuardado = t.getItems().hashCode();
+						getDesktop().opacar();
 						Stage stage = new Stage(StageStyle.UNDECORATED);
 
 						StackPane canvas = new StackPane();
 						canvas.setPadding(new Insets(5));
 						canvas.setStyle("-fx-background-color:  #a9d42c;");
 						canvas.setPrefSize(512, 54);
-						
+
 						canvas.getChildren().add(bCerrar);
 						StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
 
@@ -535,7 +559,7 @@ public class OpcionDispersion extends Feature {
 						Button bContinuar = new Button("Continuar");
 						bContinuar.setStyle(
 								"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
-						bContinuar.setPrefSize(140,40);
+						bContinuar.setPrefSize(140, 40);
 						bContinuar.setTextFill(Color.WHITE);
 
 						bContinuar.setOnMouseClicked(evt -> {
@@ -548,7 +572,7 @@ public class OpcionDispersion extends Feature {
 						vbox.setPrefSize(512, 345);
 						vbox.getChildren().add(canvas);
 						vbox.getChildren().add(check);
-						mensaje.setPadding(new Insets(0,0,35,0));
+						mensaje.setPadding(new Insets(0, 0, 35, 0));
 						vbox.getChildren().add(mensaje);
 						vbox.getChildren().add(bContinuar);
 
@@ -556,7 +580,15 @@ public class OpcionDispersion extends Feature {
 						stage.setResizable(false);
 						stage.initOwner(getDesktop().getStage());
 						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
+						stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+						stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+					        if (KeyCode.ESCAPE == event.getCode()) {
+					            stage.close();
+					        }
+					    });
 						stage.showAndWait();
+						getDesktop().desOpacar();
 						return true;
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -566,13 +598,14 @@ public class OpcionDispersion extends Feature {
 				return false;
 
 			} else if (numRegistros > 0) {
+				getDesktop().opacar();
 				Stage stage = new Stage(StageStyle.UNDECORATED);
 
 				StackPane canvas = new StackPane();
 				canvas.setPadding(new Insets(5));
 				canvas.setStyle("-fx-background-color: #e90e5c;");
 				canvas.setPrefSize(512, 54);
-				
+
 				canvas.getChildren().add(bCerrar);
 				StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
 
@@ -590,7 +623,7 @@ public class OpcionDispersion extends Feature {
 				Button bContinuar = new Button("Continuar");
 				bContinuar.setStyle(
 						"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
-				bContinuar.setPrefSize(140,40);
+				bContinuar.setPrefSize(140, 40);
 				bContinuar.setTextFill(Color.WHITE);
 
 				bContinuar.setOnMouseClicked(evt -> {
@@ -603,7 +636,7 @@ public class OpcionDispersion extends Feature {
 				vbox.setAlignment(Pos.TOP_CENTER);
 				vbox.getChildren().add(canvas);
 				vbox.getChildren().add(error);
-				mensaje.setPadding(new Insets(0,0,35,0));
+				mensaje.setPadding(new Insets(0, 0, 35, 0));
 				vbox.getChildren().add(mensaje);
 				vbox.getChildren().add(bContinuar);
 
@@ -611,7 +644,15 @@ public class OpcionDispersion extends Feature {
 				stage.setResizable(false);
 				stage.initOwner(getDesktop().getStage());
 				stage.initModality(Modality.WINDOW_MODAL);
+				stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
+				stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+				stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+			        if (KeyCode.ESCAPE == event.getCode()) {
+			            stage.close();
+			        }
+			    });
 				stage.showAndWait();
+				getDesktop().desOpacar();
 				return false;
 
 			}

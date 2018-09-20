@@ -1,7 +1,9 @@
 package mx.com.bsmexico.customertool.dispersion.plugin;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -20,7 +22,7 @@ import mx.com.bsmexico.customertool.api.layouts.model.LayoutModelType;
 @LayoutModel(type = LayoutModelType.PROPERTY_JAVABEANS, validatorClass = DispersionValidator.class)
 public class Dispersion {
 	
-	String pattern = "################.00";
+	String pattern = "###############0.00";
 	DecimalFormat decimalFormat = new DecimalFormat(pattern);
 
 	public static final String FIELD_TIPO_MOVIMIENTO = "TIPO_MOVIMIENTO";
@@ -220,8 +222,8 @@ public class Dispersion {
 	}
 
 	public void setImporte(String importe) {
-		if (NumberUtils.isCreatable(importe)) {
-			importe = decimalFormat.format(Double.valueOf(importe));
+		if (NumberUtils.isCreatable(StringUtils.stripStart(importe,"0")) && Double.valueOf(StringUtils.stripStart(importe,"0")) < 9999999999999999.99) {
+			importe = decimalFormat.format(new BigDecimal(StringUtils.stripStart(importe,"0")));
 		}
 		this.importe.set(importe);
 	}
@@ -231,8 +233,8 @@ public class Dispersion {
 	}
 
 	public void setIva(String iva) {
-		if (NumberUtils.isCreatable(iva)) {
-			iva = decimalFormat.format(Double.valueOf(iva));
+		if (NumberUtils.isCreatable(StringUtils.stripStart(iva,"0")) && Double.valueOf(StringUtils.stripStart(iva,"0")) < 9999999999999999.99) {
+			iva = decimalFormat.format(new BigDecimal(StringUtils.stripStart(iva,"0")));
 		}
 		this.iva.set(iva);
 	}

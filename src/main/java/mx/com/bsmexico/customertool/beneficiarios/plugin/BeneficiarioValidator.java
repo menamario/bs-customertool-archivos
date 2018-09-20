@@ -283,7 +283,7 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 				desc = "Dato Obligatorio\nMXN Pesos\nUSD Dólares\nEUR Euros";
 				break;
 			case Beneficiario.FIELD_IMPORTE_MAXIMO_PAGAR:
-				desc = "Dato Obligatorio\nImporte Máximo por Operación\nDebe ser un dato numérico válido";
+				desc = "Dato Obligatorio\nImporte Máximo por Operación\nDebe ser un dato numérico válido\nEl importe máximo es 9999999999999999.99";
 				break;
 			case Beneficiario.FIELD_TIPO_PERSONA:
 				desc = "Dato Obligatorio\n00 Persona física\n01 Persona moral";

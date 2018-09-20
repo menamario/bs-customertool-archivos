@@ -1,7 +1,9 @@
 package mx.com.bsmexico.customertool.beneficiarios.plugin;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -20,7 +22,7 @@ import mx.com.bsmexico.customertool.api.layouts.model.LayoutModelType;
 @LayoutModel(type = LayoutModelType.PROPERTY_JAVABEANS, validatorClass = BeneficiarioValidator.class)
 public class Beneficiario {
 
-	String pattern = "################.00";
+	String pattern = "###############0.00";
 	DecimalFormat decimalFormat = new DecimalFormat(pattern);
 
 	public static final String FIELD_CUENTA_BENEFICIARIO = "CUENTA_BENEFICIARIO";
@@ -189,8 +191,8 @@ public class Beneficiario {
 	 *            the importeMaximo to set
 	 */
 	public void setImporteMaximo(String importeMaximo) {
-		if (NumberUtils.isCreatable(importeMaximo)) {
-			importeMaximo = decimalFormat.format(Double.valueOf(importeMaximo));
+		if (NumberUtils.isCreatable(StringUtils.stripStart(importeMaximo,"0")) && Double.valueOf(StringUtils.stripStart(importeMaximo,"0")) < 9999999999999999.99) {
+			importeMaximo = decimalFormat.format(new BigDecimal(StringUtils.stripStart(importeMaximo,"0")));
 		}
 		this.importeMaximo.set(importeMaximo);
 
