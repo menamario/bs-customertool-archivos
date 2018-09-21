@@ -17,7 +17,7 @@ public class BeneficiarioTable extends EditableLayoutTable<Beneficiario>
 
 	public BeneficiarioTable() throws IllegalArgumentException, InstantiationError {
 		super(Beneficiario.class);
-
+		this.setIndexColumn();
 	}
 
 	protected void polulate() {
