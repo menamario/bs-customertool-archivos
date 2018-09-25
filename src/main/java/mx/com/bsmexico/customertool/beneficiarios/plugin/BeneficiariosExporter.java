@@ -29,13 +29,16 @@ public class BeneficiariosExporter extends CSVExporter<Beneficiario> {
 		record.add(beneficiario.getNombre());
 		record.add(beneficiario.getApellidoPaterno());
 		record.add(beneficiario.getApellidoMaterno());
+		record.add(beneficiario.getAlias());
+		record.add(beneficiario.getRfc());
+		record.add(beneficiario.getCurp());
+		record.add(beneficiario.getEmail());
 		return record.toArray();
 	}
 
 	@Override
 	protected String[] getHeader() {
-		return new String[] { "CuentaBeneficiario", "NumeroLinea", "BancoParticipante", "TipoCuenta", "Moneda",
-				"ImporteMaximo", "TipoPersona", "RazonSocial", "Nombre", "ApellidoPaterno", "ApellidoMaterno" };
+		return null;
 	}
 
 }

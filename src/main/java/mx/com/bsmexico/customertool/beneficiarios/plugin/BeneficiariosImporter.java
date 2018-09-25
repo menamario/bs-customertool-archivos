@@ -29,32 +29,20 @@ public class BeneficiariosImporter extends CSVImporter<Beneficiario> {
 			}
 		
 		beneficiario.setCuenta(record.get(0));
-
 		beneficiario.setNumLinea(record.get(1));
-
 		beneficiario.setBancoParticipante(record.get(2));
 		beneficiario.setTipoCuenta(record.get(3));
-
 		beneficiario.setMoneda(record.get(4));
-
 		beneficiario.setImporteMaximo(record.get(5));
-
 		beneficiario.setTipoPersona(record.get(6));
-
 		beneficiario.setRazonSocial(record.get(7));
-
 		beneficiario.setNombre(record.get(8));
-		
 		beneficiario.setApellidoPaterno(record.get(9));
-
 		beneficiario.setApellidoMaterno(record.get(10));
 		beneficiario.setAlias(record.get(11));
 		beneficiario.setRfc(record.get(12));
 		beneficiario.setCurp(record.get(13));
 		beneficiario.setEmail(record.get(14));
-
-		
-
 		return beneficiario;
 	}
 

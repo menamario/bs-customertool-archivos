@@ -44,31 +44,31 @@ public class Dispersion {
 	public static final String FIELD_CORREO_ELECTRONICO = "CORREO_ELECTRONICO";
 	public static final String FIELD_NUMERO_CELULAR = "NUMERO_CELULAR";
 
-	@LayoutField(name = FIELD_TIPO_MOVIMIENTO, title = "Tipo de Movimiento", length = 1)
+	@LayoutField(name = FIELD_TIPO_MOVIMIENTO, title = "Tipo de movimiento", length = 1)
 	private SimpleStringProperty tipoMovimiento;
 
 	@LayoutField(name = FIELD_APLICACION, title = "Aplicación", length = 1)
 	private SimpleStringProperty aplicacion;
 
-	@LayoutField(name = FIELD_FECHA, title = "Fecha", length = 10)
+	@LayoutField(name = FIELD_FECHA, title = "Fecha de aplicación", length = 8)
 	private SimpleStringProperty fecha;
 
 	@LayoutField(name = FIELD_TIPO_TRANSACCION, title = "Tipo de transacción", length = 2)
 	private SimpleStringProperty tipoTransaccion;
 
-	@LayoutField(name = FIELD_CUENTA_CARGO, title = "Cuenta de Cargo", length = 11)
+	@LayoutField(name = FIELD_CUENTA_CARGO, title = "Cuenta de cargo", length = 11)
 	private SimpleStringProperty cuentaCargo;
 
-	@LayoutField(name = FIELD_TIPO_CUENTA_BENEFICIARIO, title = "Tipo Cuenta Beneficiario", length = 2)
+	@LayoutField(name = FIELD_TIPO_CUENTA_BENEFICIARIO, title = "Tipo cuenta beneficiario", length = 2)
 	private SimpleStringProperty tipoCuentaBeneficiario;
 
 	@LayoutField(name = FIELD_CUENTA_ABONO, title = "Cuenta abono", length = 18)
 	private SimpleStringProperty cuentaAbono;
 
-	@LayoutField(name = FIELD_TIPO_PERSONA, title = "Tipo Persona", length = 2)
+	@LayoutField(name = FIELD_TIPO_PERSONA, title = "Tipo persona", length = 2)
 	private SimpleStringProperty tipoPersona;
 
-	@LayoutField(name = FIELD_NOMBRE_BENEFICIARIO, title = "Nombre Beneficiario", length = 40)
+	@LayoutField(name = FIELD_NOMBRE_BENEFICIARIO, title = "Nombre beneficiario", length = 40)
 	private SimpleStringProperty nombre;
 
 	@LayoutField(name = FIELD_RFC, title = "RFC", length = 13)
@@ -83,7 +83,7 @@ public class Dispersion {
 	@LayoutField(name = FIELD_IMPORTE, title = "Importe", length = 15)
 	private SimpleStringProperty importe;
 
-	@LayoutField(name = FIELD_IVA, title = "Iva", length = 15)
+	@LayoutField(name = FIELD_IVA, title = "IVA", length = 15)
 	private SimpleStringProperty iva;
 
 	@LayoutField(name = FIELD_CONCEPTO, title = "Concepto", length = 40)
@@ -92,10 +92,10 @@ public class Dispersion {
 	@LayoutField(name = FIELD_REFERENCIA, title = "Referencia", length = 20)
 	private SimpleStringProperty referencia;
 
-	@LayoutField(name = FIELD_CORREO_ELECTRONICO, title = "Correo Electronico", length = 60)
+	@LayoutField(name = FIELD_CORREO_ELECTRONICO, title = "Correo electrónico", length = 60)
 	private SimpleStringProperty correoElectronico;
 
-	@LayoutField(name = FIELD_NUMERO_CELULAR, title = "Numero Celular", length = 10)
+	@LayoutField(name = FIELD_NUMERO_CELULAR, title = "Número celular", length = 10)
 	private SimpleStringProperty numeroCelular;
 
 	private String detalleOperacion;
@@ -134,7 +134,7 @@ public class Dispersion {
 	}
 
 	public void setAplicacion(String aplicacion) {
-		this.aplicacion.set(aplicacion);
+		this.aplicacion.set(aplicacion.toUpperCase());
 	}
 
 	public String getFecha() {
@@ -198,7 +198,7 @@ public class Dispersion {
 	}
 
 	public void setRfc(String rfc) {
-		this.rfc.set(rfc);
+		this.rfc.set(rfc.toUpperCase());
 	}
 
 	public String getCurp() {
@@ -206,7 +206,7 @@ public class Dispersion {
 	}
 
 	public void setCurp(String curp) {
-		this.curp.set(curp);
+		this.curp.set(curp.toUpperCase());
 	}
 
 	public String getDivisa() {

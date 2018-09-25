@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.validator.GenericValidator;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import mx.com.bsmexico.customertool.api.layouts.model.validation.LayoutModelValidator;
@@ -19,6 +20,8 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	private SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
 	String regex = "^([A-Z,Ñ,&]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\\d]{3})$";
 	Pattern rfcPattern = Pattern.compile(regex);
+	String regexCurp = "^([A-Z][AEIOUX][A-Z]{2}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d])(\\d)$";
+	Pattern curpPattern = Pattern.compile(regexCurp);
 	
 	@Override
 	public boolean isValidField(String fieldName, Dispersion model) {
@@ -180,10 +183,10 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 				desc = "Dato Obligatorio\nPF Persona Física\nPM Persona Moral";
 				break;
 			case Dispersion.FIELD_TIPO_TRANSACCION:
-				desc = "Dato Obligatorio\n00 Genérico\n01 Nómina\n02 Pago a Proveedores\n03Pago de Viáticos";
+				desc = "Dato Obligatorio\n00 Genérico\n01 Nómina\n02 Pago a Proveedores\n03 Pago de Viáticos";
 				break;
 			case Dispersion.FIELD_DIVISA:
-				desc = "Dato Obligatorio\nMXP Pesos\nUSD Dólares\nEUR Euros";
+				desc = "Dato Obligatorio\nMXN Pesos\nUSD Dólares";
 				break;
 			default:
 				break;
@@ -233,14 +236,17 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	public Predicate<Dispersion> fecha() {
 		return v -> {
 			Date date = null;
-			if (StringUtils.isNotBlank(v.getFecha())) {
+			System.out.println(v.getFecha());
+			if (StringUtils.isNotBlank(v.getFecha()) && GenericValidator.isDate(v.getFecha(), "yyyyMMdd", true)) {
 				try {
 					date = df.parse(v.getFecha());
+					
 				} catch (ParseException e) {
-					// No match pattern
 				}
 			}
-			return StringUtils.isBlank(v.getFecha()) || date != null;
+			return (StringUtils.isBlank(v.getFecha()) && "H".equals(v.getAplicacion())) || 
+				   (StringUtils.isNotBlank(v.getFecha()) && date != null && "H".equals(v.getAplicacion())) ||
+				   (StringUtils.isNotBlank(v.getFecha()) && date != null && "P".equals(v.getAplicacion()) && date.after(new Date()));
 		};
 	}
 
@@ -326,8 +332,13 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> curp() {
 		return v -> {
-			return StringUtils.isBlank(v.getCurp())
-					|| (StringUtils.isNotBlank(v.getCurp()) && v.getCurp().length() == 18 && "PF".equals(v.getTipoPersona()));
+			boolean match = false;
+			if (StringUtils.isNotBlank(v.getCurp())) {
+				Matcher m = curpPattern.matcher(v.getCurp());
+				match = m.find();
+			}
+			return StringUtils.isBlank(v.getCurp()) || (StringUtils.isNotBlank(v.getCurp())
+					&& v.getCurp().length() == 18 && "00".equals(v.getTipoPersona()) && match);
 		};
 	}
 
@@ -336,7 +347,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> divisa() {
 		return v -> {
-			return (StringUtils.isNotBlank(v.getDivisa()) && v.getDivisa().matches("USD|MXP|EUR"));
+			return (StringUtils.isNotBlank(v.getDivisa()) && v.getDivisa().matches("USD|MXN"));
 		};
 	}
 
@@ -346,7 +357,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	public Predicate<Dispersion> importe() {
 		return v -> {
 			return (StringUtils.isNotBlank(v.getImporte()) && NumberUtils.isCreatable(v.getImporte())
-					&& Double.valueOf(v.getImporte()) <= 999999999999.99);
+					&& Double.valueOf(v.getImporte()) <= 999999999999.99 && Double.valueOf(v.getImporte()) > 0);
 		};
 	}
 
@@ -356,7 +367,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	public Predicate<Dispersion> iva() {
 		return v -> {
 			return (StringUtils.isNotBlank(v.getRfc()) && StringUtils.isNotBlank(v.getIva())
-					&& NumberUtils.isCreatable(v.getIva()) && Double.valueOf(v.getIva()) <= 999999999999.99 && Double.valueOf(v.getIva()) < Double.valueOf(v.getImporte()))
+					&& NumberUtils.isCreatable(v.getIva()) && Double.valueOf(v.getIva()) <= 999999999999.99 && Double.valueOf(v.getIva()) > 0 && StringUtils.isNotBlank(v.getImporte()) && NumberUtils.isCreatable(v.getImporte()) && Double.valueOf(v.getIva()) < Double.valueOf(v.getImporte()))
 					|| StringUtils.isBlank(v.getIva());
 		};
 	}
@@ -375,7 +386,8 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> referencia() {
 		return v -> {
-			return StringUtils.isNotBlank(v.getReferencia()) && StringUtils.isNumeric(v.getReferencia()) && v.getReferencia().length()>=7;
+			return (StringUtils.isNotBlank(v.getReferencia()) && StringUtils.isNumeric(v.getReferencia()) && "MXN".equals(v.getDivisa()) && v.getReferencia().length()==7) ||
+					(StringUtils.isNotBlank(v.getReferencia()) && StringUtils.isNumeric(v.getReferencia()) && "USD".equals(v.getDivisa()) && v.getReferencia().length()==20);
 		};
 	}
 	
@@ -395,7 +407,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> numeroTel() {
 		return v -> {
-			return (StringUtils.isEmpty(v.getNumeroCelular()) || (StringUtils.isNumeric(v.getNumeroCelular())));
+			return (StringUtils.isEmpty(v.getNumeroCelular()) || (v.getNumeroCelular().length()==10 && StringUtils.isNumeric(v.getNumeroCelular())));
 		};
 	}
 

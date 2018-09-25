@@ -131,7 +131,7 @@ public class Beneficiario {
 	 *            the numLinea to set
 	 */
 	public void setNumLinea(String numLinea) {
-		this.numLinea.set(numLinea);
+		this.numLinea.set("");
 	}
 
 	/**
@@ -300,7 +300,7 @@ public class Beneficiario {
 	 *            the apellidoMaterno to set
 	 */
 	public void setRfc(String rfc) {
-		this.rfc.set(rfc);
+		this.rfc.set(rfc.toUpperCase());
 	}
 
 	/**
@@ -315,7 +315,7 @@ public class Beneficiario {
 	 *            the apellidoMaterno to set
 	 */
 	public void setCurp(String curp) {
-		this.curp.set(curp);
+		this.curp.set(curp.toUpperCase());
 	}
 
 	/**

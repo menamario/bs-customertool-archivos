@@ -47,6 +47,11 @@ public class DispersionCSVExporter extends CSVExporter<Dispersion> {
 	protected String[] getHeader() {
 		return null;
 	}
+	
+	@Override
+	protected Character getCustomDelimiter() {
+		return '|';
+	}
 
 	
 }

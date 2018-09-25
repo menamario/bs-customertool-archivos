@@ -20,9 +20,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -34,7 +34,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -50,6 +52,8 @@ public class OpcionBeneficiarios extends Feature {
 	Button bCerrar = new Button();
 	ImageView error = new ImageView();
 	ImageView check = new ImageView();
+	double xOffset=0;
+	double yOffset=0;
 
 	private InputStream getImageInput(final String file) throws FileNotFoundException {
 		final InputStream input = getClass().getResourceAsStream(file);
@@ -63,7 +67,7 @@ public class OpcionBeneficiarios extends Feature {
 		NavRoute route = null;
 		try {
 			route = navRuoteBuilder
-					.addNode("Generacion de Archivos de Entrada", "Generacion de Archivos de Entrada", 0, false,
+					.addNode("Generación de Archivos de Entrada", "Generación de Archivos de Entrada", 0, false,
 							getImageInput("/img/archivos.png"))
 					.addNode("Alta de Beneficiarios", "Alta de Beneficiarios", 0, false,
 							getImageInput("/img/beneficiarios.png"))
@@ -105,6 +109,8 @@ public class OpcionBeneficiarios extends Feature {
 			check.setPreserveRatio(true);
 			check.setFitWidth(66);
 			atras = new ImageView(new Image(this.getImageInput("/img/atras.png")));
+			atras.setPreserveRatio(true);
+			atras.setFitWidth(40);
 			cerrar = new ImageView(new Image(this.getImageInput("/img/close.png")));
 			cerrar.setPreserveRatio(true);
 			cerrar.setFitWidth(25);
@@ -274,8 +280,8 @@ public class OpcionBeneficiarios extends Feature {
 		HBox hb = new HBox();
 		hb.setSpacing(10);
 		// hb.getChildren().addAll(lFormato, rbTxt, rbCsv);
-		Label mensajeCsv = new Label("El archivo se guardara en formato csv       ");
-		mensajeCsv.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;-fx-font-weight: bold");
+		Label mensajeCsv = new Label("El archivo se guardara en formato .csv       ");
+		mensajeCsv.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 24px;-fx-font-weight: bold");
 		mensajeCsv.setTextFill(Color.WHITE);
 
 		hb.getChildren().add(mensajeCsv);
@@ -299,76 +305,192 @@ public class OpcionBeneficiarios extends Feature {
 			}
 		});
 
+
 		bInstrucciones.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
+				
 
-				Stage stage = new Stage();
+				Stage stage = new Stage(StageStyle.UNDECORATED);
 
 				StackPane canvas = new StackPane();
 				canvas.setPadding(new Insets(10));
 				canvas.setStyle("-fx-background-color: #239d45;");
-				canvas.setPrefSize(1000, 60);
+				canvas.setPrefSize(800, 60);
 				canvas.setMinHeight(54);
+				canvas.setOnMousePressed(e -> {
+					xOffset = e.getSceneX();
+					yOffset = e.getSceneY();
+
+		        });
+				
+				canvas.setOnMouseDragged(e -> {
+					stage.setX(e.getScreenX() - xOffset);
+					stage.setY(e.getScreenY() - yOffset - 20);
+
+		        });
+				
+				canvas.getChildren().add(bCerrar);
+				StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
+
+				bCerrar.setOnMouseClicked(ev -> {
+					stage.hide();
+				});		
+				
 
 				Label instruccionesLabel = new Label(
 						"Banco Sabadell agradece su preferencia, a continuación se detallan los pasos que debes seguir para generar el layout de Beneficiarios.");
 				instruccionesLabel.setWrapText(true);
-				instruccionesLabel.setTextAlignment(TextAlignment.JUSTIFY);
+				instruccionesLabel.setTextAlignment(TextAlignment.CENTER);
+				instruccionesLabel.setMinHeight(40);
 				instruccionesLabel
 						.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-font-weight: bold");
 				instruccionesLabel.setTextFill(Color.web("#828488"));
 				StackPane p = new StackPane();
 				p.setPadding(new Insets(20,0,20,0));
-				p.setStyle("-fx-background-color: #d9d9d9");
+				p.setStyle("-fx-background-color: white");
 				p.getChildren().add(instruccionesLabel);
 
 				stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
 				stage.setTitle("Archivos Bantotal - Beneficiarios - Instrucciones");
 
+				ImageView lc1 = null;
+				ImageView lc2 = null;
+				ImageView lc3 = null;
+				ImageView lc4 = null;
+				ImageView lc5 = null;
 				ImageView insIv = null;
-				ImageView insGIv = null;
 
 				try {
-					insGIv = new ImageView(new Image(getImageInput("/img/instruccionesGeneralesBeneficiarios.png")));
-					insGIv.setPreserveRatio(true);
-					insGIv.setFitWidth(1000);
-					insGIv.setSmooth(true);
+					lc1 = new ImageView(new Image(getImageInput("/img/littleCheck.png")));
+					lc2 = new ImageView(new Image(getImageInput("/img/littleCheck.png")));
+					lc3 = new ImageView(new Image(getImageInput("/img/littleCheck.png")));
+					lc4 = new ImageView(new Image(getImageInput("/img/littleCheck.png")));
+					lc5 = new ImageView(new Image(getImageInput("/img/littleCheck.png")));
 					insIv = new ImageView(new Image(getImageInput("/img/instruccionesBeneficiarios.png")));
 					insIv.setPreserveRatio(true);
-					insIv.setFitWidth(1000);
+					insIv.setFitWidth(800);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
+				TextFlow flow = new TextFlow();
+								
+				Text t0 = new Text("Instrucciones Generales\n\n   ");
+				t0.setStyle("-fx-fill: #828488;-fx-font-weight: bold");
+				
+				Text t1 = new Text(" Podrás generar tus archivos para Beneficiarios capturando registro por registro o por medio de la importación\n        de archivos.\n   ");
+				t1.setStyle("-fx-fill: #828488");
+				Text t2 = new Text(" En caso de capturar algún dato erróneo, la aplicación marcará en color amarillo la celda correspondiente al error.\n   ");
+				t2.setStyle("-fx-fill: #828488");
+				Text t3 = new Text(" Las instrucciones para el llenado de cada uno de los campos que integran el layout están disponibles en la hoja\n        llamada \"Descripción de campos\"\n   ");
+				t3.setStyle("-fx-fill: #828488");
+				Text t4 = new Text(" La aplicación te permitirá capturar datos en mayúsculas y minúsculas.\n   ");
+				t4.setStyle("-fx-fill: #828488");
+				Text t5 = new Text(" Al guardar el archivo, la aplicación te solicitará que indiques la carpeta de tu preferencia, así como el nombre con\n        el que deseas guardarlo.\n\n");
+				t5.setStyle("-fx-fill: #828488");
+
+				Text t6 = new Text("Captura\n\n    ");
+				t6.setStyle("-fx-fill: #828488;-fx-font-weight: bold");
+				Text t7 = new Text("1. Para la captura registro por registro, deberás ingresar los datos de tus beneficiarios comenzando por el campo\n    ");
+				Text t70 = new Text("1. ");
+				t70.setStyle("-fx-fill: white");
+				Text t71 = new Text("\"Cuenta beneficiario\" con base en lo indicado en la hoja llamada \"Descripción de campos\".\n    ");
+				t71.setStyle("-fx-fill: #828488");
+				t7.setStyle("-fx-fill: #828488");
+				Text t8 = new Text("2. Para la importación de archivos, deberás oprimir el botón \"Importar Archivo\", la aplicación te mostrará el explorador\n    ");
+				Text t80 = new Text("1. ");
+				t80.setStyle("-fx-fill: white");
+				Text t81 = new Text("de archivos, a través del cual deberás elegir el archivo a importar.\n    ");
+				t81.setStyle("-fx-fill: #828488");
+				t8.setStyle("-fx-fill: #828488");
+				Text t9 = new Text("3. Ya habiendo capturado los datos registro por registro y una vez que la aplicación no detecte ningún error en los\n    ");
+				Text t90 = new Text("1. ");
+				t90.setStyle("-fx-fill: white");
+				Text t91 = new Text("campos, deberás oprimir el botón \"Guardar\".\n    ");
+				t91.setStyle("-fx-fill: #828488");
+				t9.setStyle("-fx-fill: #828488");
+				Text t10 = new Text("    Nota:  ");
+				t10.setStyle("-fx-fill: #828488;-fx-font-weight: bold");
+				Text t99 = new Text("En caso de que intentes guardar el archivo sin haber validado que los datos estén correctos la aplicación te\n    ");
+				Text t990 = new Text("1. ");
+				t990.setStyle("-fx-fill: white");
+				Text t991 = new Text("mostrará una ventana emergente que indique \"Error en los datos proporcionados\".\n    ");
+				t991.setStyle("-fx-fill: #828488");
+				t99.setStyle("-fx-fill: #828488");
+				Text t11 = new Text("4. Deberás indicar la carpeta en la cual deseas que el archivo quede alojado.\n    ");
+				t11.setStyle("-fx-fill: #828488");
+				Text t12 = new Text("5. Deberás también indicar el nombre con el que deseas que el archivo sea guardado.\n    ");
+				t12.setStyle("-fx-fill: #828488");
+				Text t13 = new Text("6. Oprime el botón \"Guardar\" en la ventana del explorador de archivos y la aplicación depositará el archivo en la\n    ");
+				Text t130 = new Text("1. ");
+				t130.setStyle("-fx-fill: white");
+				Text t131 = new Text("carpeta indicada.\n");
+				t131.setStyle("-fx-fill: #828488");
+				t13.setStyle("-fx-fill: #828488");
+				
+				flow.getChildren().add(t0);
+				
+				flow.getChildren().add(lc1);
+				flow.getChildren().add(t1);
+				flow.getChildren().add(lc2);
+				flow.getChildren().add(t2);
+				flow.getChildren().add(lc3);
+				flow.getChildren().add(t3);
+				flow.getChildren().add(lc4);
+				flow.getChildren().add(t4);
+				flow.getChildren().add(lc5);
+				flow.getChildren().add(t5);
+				flow.getChildren().addAll(t6,t7,t70,t71,t8,t80,t81,t9,t90,t91,t10,t99,t990,t991,t11,t12,t13,t130,t131);
+				flow.setStyle("-fx-background-color:white;-fx-font-family: FranklinGothicLT;-fx-font-size: 14px;-fx-fill: #828488");
+				flow.setMaxWidth(747);
+
+
+
 				ScrollPane scrollPaneGenerales = new ScrollPane();
 				scrollPaneGenerales.setPrefSize(800, 600);
 				scrollPaneGenerales.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 				scrollPaneGenerales.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-				scrollPaneGenerales.setContent(insGIv);
+				scrollPaneGenerales.setContent(flow);
+				scrollPaneGenerales.setStyle("-fx-background-color:white");
+				scrollPaneGenerales.setPadding(new Insets(35,30,0,30));
 				
 				ScrollPane scrollPane = new ScrollPane();
-				scrollPane.setPrefSize(1000, 600);
+				scrollPane.setPrefSize(800, 600);
 				scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 				scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 				scrollPane.setContent(insIv);
 
 				TabPane tabPane = new TabPane();
-				Tab tabInstrucciones = new Tab("Instrucciones");
-				Tab tabCampos = new Tab("Descripcion de campos");
+				Tab tabInstrucciones = new Tab("    Instrucciones    ");
+				tabInstrucciones.setClosable(false);
+				DropShadow ds = new DropShadow();
+		        ds.setOffsetY(3.0);
+		        ds.setOffsetX(3.0);
+		        ds.setColor(Color.GRAY);
+		        tabPane.setEffect(ds);
+	
+				
+				Tab tabCampos = new Tab("    Descripcion de campos    ");
 				tabInstrucciones.setContent(scrollPaneGenerales);
+				
 				tabCampos.setContent(scrollPane);
+				tabCampos.setClosable(false);
 				tabPane.getTabs().addAll(tabInstrucciones, tabCampos);
+				tabPane.getSelectionModel().select(0);
 
 				VBox vbox = new VBox();
-				vbox.setPrefSize(1020, 600);
+				vbox.setPrefSize(820, 600);
 				VBox.setVgrow(vbox, Priority.ALWAYS);
 				vbox.getChildren().add(canvas);
 				vbox.getChildren().add(p);
 				vbox.getChildren().add(tabPane);
+				vbox.setStyle("-fx-background-color:white;");
 				
 
-				stage.setScene(new Scene(vbox, 1020, 600));
+				Scene scene = new Scene(vbox,820,600);
+				scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+				stage.setScene(scene);
 				stage.setResizable(false);
 				stage.show();
 

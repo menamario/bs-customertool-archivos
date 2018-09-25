@@ -18,6 +18,7 @@ public class DispersionTable extends EditableLayoutTable<Dispersion>
 
 	public DispersionTable() throws IllegalArgumentException, InstantiationError {
 		super(Dispersion.class);
+		setIndexColumn();
 
 	}
 

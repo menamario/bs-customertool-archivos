@@ -107,8 +107,8 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 	 */
 	public Predicate<Beneficiario> cuenta() {
 		return v -> {
-			return (StringUtils.isNotBlank(v.getCuenta()) && v.getCuenta().length() <= 18
-					&& StringUtils.isNumeric(v.getCuenta()));
+			return (StringUtils.isNotBlank(v.getCuenta()) && StringUtils.isNumeric(v.getCuenta()) && "01".equals(v.getTipoCuenta()) && v.getCuenta().length() == 11) ||
+				   (StringUtils.isNotBlank(v.getCuenta()) && StringUtils.isNumeric(v.getCuenta()) && "40".equals(v.getTipoCuenta()) && v.getCuenta().length() == 18);
 		};
 	}
 
@@ -117,7 +117,8 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 	 */
 	public Predicate<Beneficiario> bancoParticipante() {
 		return v -> {
-			return (StringUtils.isBlank(v.getBancoParticipante()) || v.getBancoParticipante().length() == 3);
+			return (StringUtils.isBlank(v.getBancoParticipante())) ||
+					(StringUtils.isNotBlank(v.getBancoParticipante()) && v.getBancoParticipante().length() == 3);
 		};
 	}
 
@@ -127,7 +128,7 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 	public Predicate<Beneficiario> tipoCuenta() {
 		return v -> {
 			return (StringUtils.isNotBlank(v.getTipoCuenta()) && v.getTipoCuenta().length() == 2
-					&& v.getTipoCuenta().matches("00|40"));
+					&& v.getTipoCuenta().matches("01|40"));
 		};
 	}
 
@@ -136,7 +137,7 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 	 */
 	public Predicate<Beneficiario> moneda() {
 		return v -> {
-			return (StringUtils.isNotBlank(v.getMoneda()) && v.getMoneda().matches("USD|MXN|EUR"));
+			return (StringUtils.isNotBlank(v.getMoneda()) && v.getMoneda().matches("USD|MXN|MXP|EUR"));
 		};
 	}
 
@@ -146,7 +147,7 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 	public Predicate<Beneficiario> importeMaximo() {
 		return v -> {
 			return (StringUtils.isNotBlank(v.getImporteMaximo()) && NumberUtils.isCreatable(v.getImporteMaximo())
-					&& Double.valueOf(v.getImporteMaximo()) <= 9999999999999999.99);
+					&& Double.valueOf(v.getImporteMaximo()) <= 9999999999999999.99 && Double.valueOf(v.getImporteMaximo()) > 0);
 		};
 	}
 
@@ -280,7 +281,7 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 				desc = "Dato Obligatorio\n01 Cuentas Sabadell\n40 Cuenta Clabe";
 				break;
 			case Beneficiario.FIELD_MONEDA:
-				desc = "Dato Obligatorio\nMXN Pesos\nUSD Dólares\nEUR Euros";
+				desc = "Dato Obligatorio\nMXN o MXP Pesos\nUSD Dólares\nEUR Euros";
 				break;
 			case Beneficiario.FIELD_IMPORTE_MAXIMO_PAGAR:
 				desc = "Dato Obligatorio\nImporte Máximo por Operación\nDebe ser un dato numérico válido\nEl importe máximo es 9999999999999999.99";

@@ -60,22 +60,21 @@ public class DispersionGroupDataAdapter implements ExportSource<Dispersion> {
 			ha.setDetalleOperacion(splitKey[0]);
 			ha.setTipoMovimiento(splitKey[1]);
 			ha.setAplicacion(splitKey[2]);
-			ha.setFecha(splitKey[3]);
-			ha.setTipoTransaccion(splitKey[4]);
 			BigDecimal subtotal = BigDecimal.ZERO;
 			for (Dispersion d : map.get(k)) {
 				subtotal = subtotal.add(
 						NumberUtils.isCreatable(d.getImporte()) ? new BigDecimal(d.getImporte()) : BigDecimal.ZERO);
 			}
-			ha.setCuentaCargo(subtotal.toEngineeringString());
-			ha.setTipoCuentaBeneficiario(String.valueOf(map.get(k).size()));
+			
+			ha.setFecha((String.format("%015.2f", subtotal)).trim());
+			ha.setTipoTransaccion(String.format("%06d", map.get(k).size()).trim());
 			groupData.add(ha);
 			groupData.addAll(map.get(k));
 		}
 		final Dispersion hb = new Dispersion();
 		hb.setDetalleOperacion("HB");
-		hb.setTipoMovimiento((String.format("%12.2f", totalImporte)).trim());
-		hb.setAplicacion(String.valueOf(totalRegistros));
+		hb.setTipoMovimiento((String.format("%015.2f", totalImporte)).trim());
+		hb.setAplicacion((String.format("%06d", totalRegistros)).trim());
 		groupData.add(hb);
 		return groupData;
 	}
@@ -86,8 +85,7 @@ public class DispersionGroupDataAdapter implements ExportSource<Dispersion> {
 	 */
 	private String getGroupKey(final Dispersion dispersion) {
 		final StringBuffer key = new StringBuffer();
-		key.append("HA").append("|").append("1").append("|").append(dispersion.getFecha()).append("|")
-				.append(dispersion.getDivisa()).append("|").append(dispersion.getCuentaCargo());
+		key.append("HA").append("|").append(dispersion.getDivisa()).append("|").append(dispersion.getCuentaCargo());
 		return key.toString();
 	}
 
