@@ -67,9 +67,9 @@ public class OpcionBeneficiarios extends Feature {
 		NavRoute route = null;
 		try {
 			route = navRuoteBuilder
-					.addNode("Generación de Archivos de Entrada", "Generación de Archivos de Entrada", 0, false,
+					.addNode("Generación de archivos de entrada", "Generación de archivos de entrada", 0, false,
 							getImageInput("/img/archivos.png"))
-					.addNode("Alta de Beneficiarios", "Alta de Beneficiarios", 0, false,
+					.addNode("Alta de beneficiarios", "Alta de beneficiarios", 0, false,
 							getImageInput("/img/beneficiarios.png"))
 					.build();
 
@@ -145,7 +145,7 @@ public class OpcionBeneficiarios extends Feature {
 		bInstrucciones.setContentDisplay(ContentDisplay.TOP);
 
 		bImportarArchivo.setGraphic(importarArchivo);
-		bImportarArchivo.setText("Importar Archivo");
+		bImportarArchivo.setText("Importar archivo");
 		bImportarArchivo.setTextFill(Color.WHITE);
 		bImportarArchivo.setStyle(
 				"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 13px;-fx-background-color: transparent;");
@@ -249,7 +249,7 @@ public class OpcionBeneficiarios extends Feature {
 
 		headerBox1.getChildren().add(bAtras);
 		headerBox1.setSpacing(40);
-		Label l = new Label("    Alta de Beneficiarios    ");
+		Label l = new Label("    Alta de beneficiarios    ");
 		l.setTextFill(Color.WHITE);
 		l.setStyle(
 				"-fx-background-color: #b50055;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-border-radius: 0 0 5 5; -fx-background-radius: 0 0 4 4;");
@@ -280,7 +280,7 @@ public class OpcionBeneficiarios extends Feature {
 		HBox hb = new HBox();
 		hb.setSpacing(10);
 		// hb.getChildren().addAll(lFormato, rbTxt, rbCsv);
-		Label mensajeCsv = new Label("El archivo se guardara en formato .csv       ");
+		Label mensajeCsv = new Label("El archivo se guardará en formato .csv       ");
 		mensajeCsv.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 24px;-fx-font-weight: bold");
 		mensajeCsv.setTextFill(Color.WHITE);
 
@@ -338,7 +338,7 @@ public class OpcionBeneficiarios extends Feature {
 				
 
 				Label instruccionesLabel = new Label(
-						"Banco Sabadell agradece su preferencia, a continuación se detallan los pasos que debes seguir para generar el layout de Beneficiarios.");
+						"Banco Sabadell agradece su preferencia, a continuación se detallan los pasos que debes seguir para generar el layout de beneficiarios.");
 				instruccionesLabel.setWrapText(true);
 				instruccionesLabel.setTextAlignment(TextAlignment.CENTER);
 				instruccionesLabel.setMinHeight(40);
@@ -376,7 +376,7 @@ public class OpcionBeneficiarios extends Feature {
 
 				TextFlow flow = new TextFlow();
 								
-				Text t0 = new Text("Instrucciones Generales\n\n   ");
+				Text t0 = new Text("Instrucciones generales\n\n   ");
 				t0.setStyle("-fx-fill: #828488;-fx-font-weight: bold");
 				
 				Text t1 = new Text(" Podrás generar tus archivos para Beneficiarios capturando registro por registro o por medio de la importación\n        de archivos.\n   ");
@@ -398,7 +398,7 @@ public class OpcionBeneficiarios extends Feature {
 				Text t71 = new Text("\"Cuenta beneficiario\" con base en lo indicado en la hoja llamada \"Descripción de campos\".\n    ");
 				t71.setStyle("-fx-fill: #828488");
 				t7.setStyle("-fx-fill: #828488");
-				Text t8 = new Text("2. Para la importación de archivos, deberás oprimir el botón \"Importar Archivo\", la aplicación te mostrará el explorador\n    ");
+				Text t8 = new Text("2. Para la importación de archivos, deberás oprimir el botón \"Importar archivo\", la aplicación te mostrará el explorador\n    ");
 				Text t80 = new Text("1. ");
 				t80.setStyle("-fx-fill: white");
 				Text t81 = new Text("de archivos, a través del cual deberás elegir el archivo a importar.\n    ");
@@ -471,7 +471,7 @@ public class OpcionBeneficiarios extends Feature {
 		        tabPane.setEffect(ds);
 	
 				
-				Tab tabCampos = new Tab("    Descripcion de campos    ");
+				Tab tabCampos = new Tab("    Descripción de campos    ");
 				tabInstrucciones.setContent(scrollPaneGenerales);
 				
 				tabCampos.setContent(scrollPane);

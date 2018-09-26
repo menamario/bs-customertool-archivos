@@ -90,9 +90,9 @@ public class OpcionDispersion extends Feature {
 		NavRoute route = null;
 		try {
 			route = navRuoteBuilder
-					.addNode("Generación de Archivos de Entrada", "Generación de Archivos de Entrada", 0, false,
+					.addNode("Generación de archivos de entrada", "Generación de archivos de entrada", 0, false,
 							getImageInput("/img/archivos.png"))
-					.addNode("Dispersión de Pagos", "Dispersión de Pagos", 0, false,
+					.addNode("Dispersión de pagos", "Dispersión de pagos", 0, false,
 							getImageInput("/img/dispersion.png"))
 					.build();
 
@@ -165,7 +165,7 @@ public class OpcionDispersion extends Feature {
 		bInstrucciones.setContentDisplay(ContentDisplay.TOP);
 
 		bImportarArchivo.setGraphic(importarArchivo);
-		bImportarArchivo.setText("Importar Archivo");
+		bImportarArchivo.setText("Importar archivo");
 		bImportarArchivo.setTextFill(Color.WHITE);
 		bImportarArchivo.setStyle(
 				"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 13px;-fx-background-color: transparent;");
@@ -266,7 +266,7 @@ public class OpcionDispersion extends Feature {
 
 		headerBox1.getChildren().add(bAtras);
 		headerBox1.setSpacing(40);
-		Label l = new Label("    Dispersion de Pagos    ");
+		Label l = new Label("    Dispersión de pagos    ");
 		l.setTextFill(Color.WHITE);
 		l.setStyle(
 				"-fx-background-color: #b50055;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-border-radius: 0 0 5 5; -fx-background-radius: 0 0 4 4;");
@@ -371,7 +371,7 @@ public class OpcionDispersion extends Feature {
 				});	
 
 				Label instruccionesLabel = new Label(
-						"Banco Sabadell agradece su preferencia, a continuación se detallan los pasos que debes seguir para\ngenerar los layouts de Dispersión de Pagos. (CSV y TXT)");
+						"Banco Sabadell agradece su preferencia, a continuación se detallan los pasos que debes seguir para\ngenerar los layouts de dispersión de pagos. (CSV y TXT)");
 				instruccionesLabel.setWrapText(true);
 				instruccionesLabel.setTextAlignment(TextAlignment.CENTER);
 				instruccionesLabel
@@ -429,7 +429,7 @@ public class OpcionDispersion extends Feature {
 				
 				
 				
-				Text t0 = new Text("Instrucciones Generales\n\n    ");
+				Text t0 = new Text("Instrucciones generales\n\n    ");
 				t0.setStyle("-fx-fill: #828488;-fx-font-weight: bold");
 				
 
@@ -459,7 +459,7 @@ public class OpcionDispersion extends Feature {
 				
 				Text t11 = new Text("1. Para la captura registro por registro, deberás ingresar los datos de tus pagos comenzando por el \"Tipo de\n        Movimiento\" con base en lo indicado en la hoja llamada \"Descripción de campos\".\n    ");
 				t11.setStyle("-fx-fill: #828488");
-				Text t12 = new Text("2. Para la importación de archivos, deberás oprimir el botón \"Importar Archivo\", la aplicación te mostrará el explorador\n        de archivos, a través del cual deberás elegir el archivo a importar.\n    ");
+				Text t12 = new Text("2. Para la importación de archivos, deberás oprimir el botón \"Importar archivo\", la aplicación te mostrará el explorador\n        de archivos, a través del cual deberás elegir el archivo a importar.\n    ");
 				t12.setStyle("-fx-fill: #828488");
 				Text t13 = new Text("3. Indica por medio del radiobottom \"Formato\" el tipo de archivo que deseas generar (CSV o TXT).\n    ");
 				t13.setStyle("-fx-fill: #828488");
@@ -481,7 +481,7 @@ public class OpcionDispersion extends Feature {
 
 				Text t20 = new Text(" La aplicación generará el Header Alto en el que se muestran las cifras control por cada una de las cuentas de cargo\n         contenidas en el archivo en forma de bloques.\n    ");
 				t20.setStyle("-fx-fill: #828488");
-				Text t21 = new Text(" De la misma forma será generado un solo Header Bajo en el que se muestran las cifras control totales del archivo,\n         considerando la suma de cada uno de los headers altos.    ");
+				Text t21 = new Text(" De la misma forma será generado un solo Header Bajo en el que se muestran las cifras control totales del archivo,\n         considerando la suma de cada uno de los headers altos.    \n\n");
 				t21.setStyle("-fx-fill: #828488");
 				
 				flow.getChildren().add(t0);

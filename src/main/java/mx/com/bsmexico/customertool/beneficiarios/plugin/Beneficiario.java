@@ -44,7 +44,7 @@ public class Beneficiario {
 	@LayoutField(name = FIELD_CUENTA_BENEFICIARIO, title = "Cuenta beneficiario", length = 18)
 	private SimpleStringProperty cuenta;
 
-	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "Número de línea de telefono Móvil del Beneficiario", length = 10, disable = true, required = false)
+	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "Número de línea de telefono móvil del beneficiario", length = 10, disable = true, required = false)
 	private SimpleStringProperty numLinea;
 
 	@LayoutField(name = FIELD_BANCO_PARTICIPANTE, title = "Banco participante", length = 3, required = false)
@@ -62,7 +62,7 @@ public class Beneficiario {
 	@LayoutField(name = FIELD_TIPO_PERSONA, title = "Tipo persona", length = 3)
 	private SimpleStringProperty tipoPersona;
 
-	@LayoutField(name = FIELD_RAZON_SOCIAL, title = "Razón Social", length = 70)
+	@LayoutField(name = FIELD_RAZON_SOCIAL, title = "Razón social", length = 70)
 	private SimpleStringProperty razonSocial;
 
 	@LayoutField(name = FIELD_NOMBRE, title = "Nombre", length = 25)
@@ -83,7 +83,7 @@ public class Beneficiario {
 	@LayoutField(name = FIELD_CURP, title = "CURP", length = 18)
 	private SimpleStringProperty curp;
 
-	@LayoutField(name = FIELD_CORREO_ELECTRONICO, title = "Correo Electrónico", length = 50)
+	@LayoutField(name = FIELD_CORREO_ELECTRONICO, title = "Correo electrónico", length = 50)
 	private SimpleStringProperty email;
 
 	public Beneficiario() {

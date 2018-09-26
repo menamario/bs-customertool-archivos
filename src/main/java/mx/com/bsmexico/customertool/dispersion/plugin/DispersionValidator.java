@@ -20,7 +20,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	private SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
 	String regex = "^([A-Z,Ñ,&]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\\d]{3})$";
 	Pattern rfcPattern = Pattern.compile(regex);
-	String regexCurp = "^([A-Z][AEIOUX][A-Z]{2}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d])(\\d)$";
+	String regexCurp = "^([A-Z][AEIOUX][A-Z,Ñ]{2}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d])(\\d)$";
 	Pattern curpPattern = Pattern.compile(regexCurp);
 	
 	@Override
@@ -135,58 +135,58 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 		if (StringUtils.isNotBlank(fieldName)) {
 			switch (fieldName) {
 			case Dispersion.FIELD_APLICACION:
-				desc = "Dato Obligatorio\nH Mismo dia\nP Programado";
+				desc = "Dato obligatorio\nH Mismo día\nP Programado";
 				break;
 			case Dispersion.FIELD_CONCEPTO:
-				desc = "Dato Obligatorio\nDescripción del Pago\nMáximo 30 caracteres";
+				desc = "Dato obligatorio\nDescripción del pago\nMáximo 30 caracteres";
 				break;
 			case Dispersion.FIELD_CORREO_ELECTRONICO:
-				desc = "Dato Opcional\nDebe ser un correo electrónico válido\nMáximo 60 caracteres";
+				desc = "Dato opcional\nDebe ser un correo electrónico válido\nMáximo 60 caracteres";
 				break;
 			case Dispersion.FIELD_CUENTA_ABONO:
-				desc = "Dato Obligatorio\nClabe 18 posiciones\nSabadell 11 Posiciones";
+				desc = "Dato obligatorio\nClabe 18 posiciones\nSabadell 11 posiciones";
 				break;
 			case Dispersion.FIELD_CUENTA_CARGO:
-				desc = "Dato Obligatorio\nCuenta Sabadell 11 posiciones";
+				desc = "Dato obligatorio\nCuenta Sabadell 11 posiciones";
 				break;
 			case Dispersion.FIELD_CURP:
-				desc = "Dato Opcional\nDebe estar vacío si tipo de persona es PM-Persona Moral";
+				desc = "Dato opcional\nDebe estar vacío si tipo de persona es PM-Persona moral";
 				break;
 			case Dispersion.FIELD_FECHA:
-				desc = "Dato Obligatorio si la Aplicación es P-Programada\nEl formato debe ser aaaammdd";
+				desc = "En este campo se debe indicar la fecha en que se ingresa el archivo y será\nusada cuando se trata de operaciones programadas con el objetivo de\ndiferenciar la fecha de operación del archivo\nPara operaciones programadas debe ser posterior al día de hoy\nEl formato debe ser aaaammdd";
 				break;
 			case Dispersion.FIELD_IMPORTE:
-				desc = "Dato Obligatorio\nImporte de la Operación\nDebe ser un dato numérico válido";
+				desc = "Dato obligatorio\nImporte de la operación\nDebe ser un dato numérico válido";
 				break;
 			case Dispersion.FIELD_IVA:
-				desc = "Dato Opcional\nDebe ser un dato numérico válido\nSi se captura el IVA el RFC no debe estar en blanco\nEl IVA no puede exceder el importe";
+				desc = "Dato opcional\nDebe ser un dato numérico válido\nSi se captura el IVA, el RFC no debe estar en blanco\nEl IVA no puede exceder el importe";
 				break;
 			case Dispersion.FIELD_NOMBRE_BENEFICIARIO:
-				desc = "Dato Obligatorio\nNombre o Razón social del beneficiariode la transferencia\nMáximo 40 caracteres";
+				desc = "Dato obligatorio\nNombre o razón social del beneficiario de la transferencia\nMáximo 40 caracteres";
 				break;
 			case Dispersion.FIELD_NUMERO_CELULAR:
-				desc = "Dato Opcional\nDebe ser un dato numérico";
+				desc = "Dato opcional\nDebe ser un dato numérico";
 				break;
 			case Dispersion.FIELD_REFERENCIA:
-				desc = "Dato Obligatorio\nDebe ser un dato numérico\nDebe ser al menos 7 dígitos\nMaximo 20 dígitos";
+				desc = "Dato obligatorio\nDebe ser un dato numérico\nDebe ser al menos 7 dígitos\nMáximo 20 dígitos";
 				break;
 			case Dispersion.FIELD_RFC:
-				desc = "Dato Opcional\nDebe Cumplir con el Formato de RFC\nDebe ser de 12 posiciones si el tipo de persona es PM-Persona Moral\nDebe ser de 13 posiciones si el tipo de persona es PF-Persona Física";
+				desc = "Dato opcional\nDebe cumplir con el formato de RFC\nDebe ser de 12 posiciones si el tipo de persona es PM-Persona moral\nDebe ser de 13 posiciones si el tipo de persona es PF-Persona física";
 				break;
 			case Dispersion.FIELD_TIPO_CUENTA_BENEFICIARIO:
-				desc = "Dato Obligatorio\n01 Sabadell\n40 CLABE\n03 TDD/TDC\n10 LTM";
+				desc = "Dato obligatorio\n01 Sabadell\n40 CLABE\n03 TDD/TDC\n10 LTM";
 				break;
 			case Dispersion.FIELD_TIPO_MOVIMIENTO:
-				desc = "Dato Obligatorio\n0 Pago\n1 Cancelación";
+				desc = "Dato obligatorio\n0 Pago\n1 Cancelación";
 				break;
 			case Dispersion.FIELD_TIPO_PERSONA:
-				desc = "Dato Obligatorio\nPF Persona Física\nPM Persona Moral";
+				desc = "Dato obligatorio\nPF Persona física\nPM Persona moral";
 				break;
 			case Dispersion.FIELD_TIPO_TRANSACCION:
-				desc = "Dato Obligatorio\n00 Genérico\n01 Nómina\n02 Pago a Proveedores\n03 Pago de Viáticos";
+				desc = "Dato obligatorio\n00 Genérico\n01 Nómina\n02 Pago a proveedores\n03 Pago de viáticos";
 				break;
 			case Dispersion.FIELD_DIVISA:
-				desc = "Dato Obligatorio\nMXN Pesos\nUSD Dólares";
+				desc = "Dato obligatorio\nMXN Pesos\nUSD Dólares";
 				break;
 			default:
 				break;
@@ -338,7 +338,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 				match = m.find();
 			}
 			return StringUtils.isBlank(v.getCurp()) || (StringUtils.isNotBlank(v.getCurp())
-					&& v.getCurp().length() == 18 && "00".equals(v.getTipoPersona()) && match);
+					&& v.getCurp().length() == 18 && "PF".equals(v.getTipoPersona()) && match);
 		};
 	}
 

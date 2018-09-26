@@ -18,7 +18,7 @@ import mx.com.bsmexico.customertool.api.layouts.model.validation.LayoutModelVali
 public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 
 	String regex = "^([A-Z,Ñ,&]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\\d]{3})$";
-	String regexCurp = "^([A-Z][AEIOUX][A-Z]{2}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d])(\\d)$";
+	String regexCurp = "^([A-Z][AEIOUX][A-Z,Ñ]{2}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d])(\\d)$";
 	Pattern rfcPattern = Pattern.compile(regex);
 	Pattern curpPattern = Pattern.compile(regexCurp);
 
@@ -269,49 +269,49 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 		if (StringUtils.isNotBlank(fieldName)) {
 			switch (fieldName) {
 			case Beneficiario.FIELD_CUENTA_BENEFICIARIO:
-				desc = "Dato Obligatorio\nClabe 18 posiciones\nSabadell 11 Posiciones";
+				desc = "Dato obligatorio\nClabe 18 posiciones\nSabadell 11 posiciones";
 				break;
 			case Beneficiario.FIELD_NUMERO_LINEA_BENEFICIARIO:
 				desc = "Campo sin uso";
 				break;
 			case Beneficiario.FIELD_BANCO_PARTICIPANTE:
-				desc = "Vacio para cuenta Sabadell\n3 Primeros dígitos de la cuenta Clabe para otros bancos";
+				desc = "Vacío para cuenta Sabadell\n3 Primeros dígitos de la cuenta clabe para otros bancos";
 				break;
 			case Beneficiario.FIELD_TIPO_CUENTA:
-				desc = "Dato Obligatorio\n01 Cuentas Sabadell\n40 Cuenta Clabe";
+				desc = "Dato obligatorio\n01 Cuentas Sabadell\n40 Cuenta clabe";
 				break;
 			case Beneficiario.FIELD_MONEDA:
-				desc = "Dato Obligatorio\nMXN o MXP Pesos\nUSD Dólares\nEUR Euros";
+				desc = "Dato obligatorio\nMXN o MXP Pesos\nUSD Dólares\nEUR Euros";
 				break;
 			case Beneficiario.FIELD_IMPORTE_MAXIMO_PAGAR:
-				desc = "Dato Obligatorio\nImporte Máximo por Operación\nDebe ser un dato numérico válido\nEl importe máximo es 9999999999999999.99";
+				desc = "Dato obligatorio\nImporte máximo por operación\nDebe ser un dato numérico válido\nEl importe máximo es 9999999999999999.99";
 				break;
 			case Beneficiario.FIELD_TIPO_PERSONA:
-				desc = "Dato Obligatorio\n00 Persona física\n01 Persona moral";
+				desc = "Dato obligatorio\n00 Persona física\n01 Persona moral";
 				break;
 			case Beneficiario.FIELD_RAZON_SOCIAL:
-				desc = "Dato obligatorio si Tipo de Persona es 01-Persona Moral\nDebe estar vacío si tipo de persona es 00-Persona Física";
+				desc = "Dato obligatorio si tipo de Persona es 01-Persona moral\nDebe estar vacío si tipo de persona es 00-Persona física";
 				break;
 			case Beneficiario.FIELD_NOMBRE:
-				desc = "Dato obligatorio si Tipo de Persona es 00-Persona Física\nDebe estar vacio si tipo de persona es 01-Persona Moral";
+				desc = "Dato obligatorio si tipo de persona es 00-Persona física\nDebe estar vacío si tipo de persona es 01-Persona moral";
 				break;
 			case Beneficiario.FIELD_APELLIDO_PATERNO:
-				desc = "Dato obligatorio si Tipo de Persona es 00-Persona Física\nDebe estar vacio si tipo de persona es 01-Persona Moral";
+				desc = "Dato obligatorio si tipo de persona es 00-Persona física\nDebe estar vacío si tipo de persona es 01-Persona moral";
 				break;
 			case Beneficiario.FIELD_APELLIDO_MATERNO:
-				desc = "Dato obligatorio si Tipo de Persona es 00-Persona Física\nDebe estar vacio si tipo de persona es 01-Persona Moral";
+				desc = "Dato obligatorio si tipo de persona es 00-Persona física\nDebe estar vacío si tipo de persona es 01-Persona moral";
 				break;
 			case Beneficiario.FIELD_ALIAS:
-				desc = "Dato opcional\nDescripcion Corta del Beneficiario";
+				desc = "Dato opcional\nDescripción corta del beneficiario";
 				break;
 			case Beneficiario.FIELD_RFC:
-				desc = "Dato Opcional\nDebe Cumplir con el Formato de RFC\nDebe ser de 12 posiciones si el tipo de persona es 01-Persona Moral\nDebe ser de 13 posiciones si el tipo de persona es 00-Persona Física";
+				desc = "Dato opcional\nDebe Cumplir con el Formato de RFC\nDebe ser de 12 posiciones si el tipo de persona es 01-Persona moral\nDebe ser de 13 posiciones si el tipo de persona es 00-Persona física";
 				break;
 			case Beneficiario.FIELD_CURP:
-				desc = "Dato Opcional\nDebe estar vacío si tipo de persona es 01-Persona Moral\nDebe cumplir con el formato de un CURP";
+				desc = "Dato opcional\nDebe estar vacío si tipo de persona es 01-Persona moral\nDebe cumplir con el formato de un CURP";
 				break;
 			case Beneficiario.FIELD_CORREO_ELECTRONICO:
-				desc = "Dato obligatorio si Tipo de Persona es 00-Persona Física\nDebe estar vacio si tipo de persona es 01-Persona Moral";
+				desc = "Dato opcional";
 				break;
 			default:
 				break;
