@@ -459,7 +459,7 @@ public class OpcionBeneficiarios extends Feature {
 				scrollPane.setPrefSize(800, 600);
 				scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 				scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-				scrollPane.setContent(insIv);
+				scrollPane.setContent(new InstruccionLayoutTable());
 
 				TabPane tabPane = new TabPane();
 				Tab tabInstrucciones = new Tab("    Instrucciones    ");
