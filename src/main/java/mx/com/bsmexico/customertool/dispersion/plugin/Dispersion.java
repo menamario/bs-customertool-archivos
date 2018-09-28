@@ -222,7 +222,9 @@ public class Dispersion {
 	}
 
 	public void setImporte(String importe) {
-		if (NumberUtils.isCreatable(StringUtils.stripStart(importe,"0")) && Double.valueOf(StringUtils.stripStart(importe,"0")) < 9999999999999999.99) {
+		if (StringUtils.isNotBlank(importe) &&
+			((importe.lastIndexOf(".")>0 && importe.substring(importe.lastIndexOf(".")).length()<=3) || importe.lastIndexOf(".")==-1)
+			&& NumberUtils.isCreatable(StringUtils.stripStart(importe,"0")) && Double.valueOf(StringUtils.stripStart(importe,"0")) < 9999999999999999.99) {
 			importe = decimalFormat.format(new BigDecimal(StringUtils.stripStart(importe,"0")));
 		}
 		this.importe.set(importe);
@@ -233,7 +235,9 @@ public class Dispersion {
 	}
 
 	public void setIva(String iva) {
-		if (NumberUtils.isCreatable(StringUtils.stripStart(iva,"0")) && Double.valueOf(StringUtils.stripStart(iva,"0")) < 9999999999999999.99) {
+		if (StringUtils.isNotBlank(iva) &&
+			((iva.lastIndexOf(".")>0 && iva.substring(iva.lastIndexOf(".")).length()<=3) || iva.lastIndexOf(".")==-1)
+			&& NumberUtils.isCreatable(StringUtils.stripStart(iva,"0")) && Double.valueOf(StringUtils.stripStart(iva,"0")) < 9999999999999999.99) {
 			iva = decimalFormat.format(new BigDecimal(StringUtils.stripStart(iva,"0")));
 		}
 		this.iva.set(iva);

@@ -1,4 +1,4 @@
-package mx.com.bsmexico.customertool.beneficiarios.plugin;
+package mx.com.bsmexico.customertool.dispersion.plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,31 +19,31 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
 import mx.com.bsmexico.customertool.api.process.CSVImporter;
 import mx.com.bsmexico.customertool.api.process.ImportTarget;
-import mx.com.bsmexico.customertool.beneficiarios.plugin.InstruccionLayoutTable.DescriptionLayout;
+import mx.com.bsmexico.customertool.dispersion.plugin.LayoutDispersionTxt.DescriptionLayout;
 
-public class InstruccionLayoutTable extends TableView<DescriptionLayout> implements ImportTarget<DescriptionLayout> {
+
+public class LayoutDispersionTxt extends TableView<DescriptionLayout> implements ImportTarget<DescriptionLayout> {
 
 	private final ObservableList<DescriptionLayout> data = FXCollections.observableArrayList();
 
-	public InstruccionLayoutTable() {
+	public LayoutDispersionTxt() {
 		super();
 		setPrefSize(800, 600);
 		configColumns();
 		this.setEditable(true);
 		final ClassLoader classLoader = getClass().getClassLoader();
-		final InputStream input = getClass().getResourceAsStream("/instrucciones/instrucciones-layout-beneficiario.csv");
-		File file = new File("cfg/instrucciones-layout-beneficiario.csv");
+		final InputStream input = getClass().getResourceAsStream("/instrucciones/instrucciones-layout-dispersion-txt.csv");
+		File file = new File("cfg/instrucciones-layout-dispersion-txt.csv");
 	    try {
 			FileUtils.copyInputStreamToFile(input, file);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-	    String fileName = getJarDir()+"/../cfg/instrucciones-layout-beneficiario.csv";
+	    String fileName = getJarDir()+"/../cfg/instrucciones-layout-dispersion-txt.csv";
 		final File instrucciones = new File(fileName);
 		final CSVImporter<DescriptionLayout> importCsv = new CSVImporter<DescriptionLayout>(this) {
 
@@ -51,11 +51,10 @@ public class InstruccionLayoutTable extends TableView<DescriptionLayout> impleme
 			protected DescriptionLayout getInstance(List<String> records) {
 				final DescriptionLayout desc = new DescriptionLayout();
 				desc.setCampo(records.get(0));
-				desc.setNombre(records.get(1));
-				desc.setTipo(records.get(2));
-				desc.setLongitud(records.get(3));
+				desc.setCaracteristicas(records.get(1));
+				desc.setPosicion(records.get(2));
+				desc.setObservaciones(records.get(3));
 				desc.setObligatorio(records.get(4));
-				desc.setObservaciones(records.get(5));
 				return desc;
 			}
 
@@ -84,10 +83,9 @@ public class InstruccionLayoutTable extends TableView<DescriptionLayout> impleme
 	 */
 	@SuppressWarnings("unchecked")
 	private void configColumns() {
-		this.getColumns().addAll(getSimpleColumn("Campo", "campo", 20),
-				getSimpleColumn("Nombre de campo", "nombre", 200), getSimpleColumn("Tipo", "tipo", 100),
-				getSimpleColumn("Longitud", "longitud", 50), getSimpleColumn("Obligatorio", "obligatorio", 100),
-				getSimpleColumn("Observaciones", "observaciones", 280));
+		this.getColumns().addAll(getSimpleColumn("Campo", "campo", 150),
+				getSimpleColumn("Características", "caracteristicas", 170), getSimpleColumn("Posición", "posicion", 100),
+				getSimpleColumn("Observaciones", "observaciones", 288), getSimpleColumn("Obligatorio", "obligatorio", 100));
 	}
 
 	/**
@@ -120,20 +118,18 @@ public class InstruccionLayoutTable extends TableView<DescriptionLayout> impleme
 
 	public static class DescriptionLayout {
 		private final SimpleStringProperty campo;
-		private final SimpleStringProperty nombre;
-		private final SimpleStringProperty tipo;
-		private final SimpleStringProperty longitud;
-		private final SimpleStringProperty obligatorio;
+		private final SimpleStringProperty caracteristicas;
+		private final SimpleStringProperty posicion;
 		private final SimpleStringProperty observaciones;
+		private final SimpleStringProperty obligatorio;
 
 		/**
 		 * 
 		 */
 		DescriptionLayout() {
 			this.campo = new SimpleStringProperty();
-			this.nombre = new SimpleStringProperty();
-			this.tipo = new SimpleStringProperty();
-			this.longitud = new SimpleStringProperty();
+			this.caracteristicas = new SimpleStringProperty();
+			this.posicion = new SimpleStringProperty();
 			this.obligatorio = new SimpleStringProperty();
 			this.observaciones = new SimpleStringProperty();
 		}
@@ -152,47 +148,6 @@ public class InstruccionLayoutTable extends TableView<DescriptionLayout> impleme
 			this.campo.set(campo);
 		}
 
-		/**
-		 * @return the nombre
-		 */
-		public String getNombre() {
-			return nombre.get();
-		}
-
-		/**
-		 * @param nombre the nombre to set
-		 */
-		public void setNombre(String nombre) {
-			this.nombre.set(nombre);
-		}
-
-		/**
-		 * @return the tipo
-		 */
-		public String getTipo() {
-			return tipo.get();
-		}
-
-		/**
-		 * @param tipo the tipo to set
-		 */
-		public void setTipo(String tipo) {
-			this.tipo.set(tipo);
-		}
-
-		/**
-		 * @return the longitud
-		 */
-		public String getLongitud() {
-			return longitud.get();
-		}
-
-		/**
-		 * @param longitud the longitud to set
-		 */
-		public void setLongitud(String longitud) {
-			this.longitud.set(longitud);
-		}
 
 		/**
 		 * @return the obligatorio
@@ -222,12 +177,32 @@ public class InstruccionLayoutTable extends TableView<DescriptionLayout> impleme
 			this.observaciones.set(observaciones);
 		}
 
+		public String getCaracteristicas() {
+			return caracteristicas.get();
+		}
+		
+		public void setCaracteristicas(String caracteristicas) {
+			this.caracteristicas.set(caracteristicas);
+		}
+
+		public String getPosicion() {
+			return posicion.get();
+		}
+		
+		public void setPosicion(String posicion) {
+			this.posicion.set(posicion);
+		}
+		
+		
+
 	}
 
 	@Override
 	public void setData(List<DescriptionLayout> data) {
 		if (data != null) {
 			for(DescriptionLayout dl:data){
+				dl.setCampo(dl.getCampo().replace("\\n", "\n"));
+				dl.setCaracteristicas(dl.getCaracteristicas().replace("\\n", "\n"));
 				dl.setObservaciones(dl.getObservaciones().replace("\\n", "\n"));
 			}
 			this.data.addAll(data);

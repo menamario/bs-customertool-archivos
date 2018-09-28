@@ -191,7 +191,10 @@ public class Beneficiario {
 	 *            the importeMaximo to set
 	 */
 	public void setImporteMaximo(String importeMaximo) {
-		if (NumberUtils.isCreatable(StringUtils.stripStart(importeMaximo,"0")) && Double.valueOf(StringUtils.stripStart(importeMaximo,"0")) < 9999999999999999.99) {
+		System.out.println(importeMaximo.lastIndexOf("."));
+		if (StringUtils.isNotBlank(importeMaximo) && 
+			((importeMaximo.lastIndexOf(".")>0 && importeMaximo.substring(importeMaximo.lastIndexOf(".")).length()<=3) || importeMaximo.lastIndexOf(".")==-1)  
+			&& NumberUtils.isCreatable(StringUtils.stripStart(importeMaximo,"0")) && Double.valueOf(StringUtils.stripStart(importeMaximo,"0")) < 9999999999999999.99) {
 			importeMaximo = decimalFormat.format(new BigDecimal(StringUtils.stripStart(importeMaximo,"0")));
 		}
 		this.importeMaximo.set(importeMaximo);

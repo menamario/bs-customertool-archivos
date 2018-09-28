@@ -146,7 +146,7 @@ public class BeneficiarioValidator extends LayoutModelValidator<Beneficiario> {
 	 */
 	public Predicate<Beneficiario> importeMaximo() {
 		return v -> {
-			return (StringUtils.isNotBlank(v.getImporteMaximo()) && NumberUtils.isCreatable(v.getImporteMaximo())
+			return (StringUtils.isNotBlank(v.getImporteMaximo()) && v.getImporteMaximo().lastIndexOf(".")>0 && v.getImporteMaximo().substring(v.getImporteMaximo().lastIndexOf(".")).length()<=3 && NumberUtils.isCreatable(v.getImporteMaximo())
 					&& Double.valueOf(v.getImporteMaximo()) <= 9999999999999999.99 && Double.valueOf(v.getImporteMaximo()) > 0);
 		};
 	}

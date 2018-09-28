@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 
+import javax.swing.text.TableView;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -358,7 +360,6 @@ public class OpcionBeneficiarios extends Feature {
 				ImageView lc3 = null;
 				ImageView lc4 = null;
 				ImageView lc5 = null;
-				ImageView insIv = null;
 
 				try {
 					lc1 = new ImageView(new Image(getImageInput("/img/littleCheck.png")));
@@ -366,9 +367,6 @@ public class OpcionBeneficiarios extends Feature {
 					lc3 = new ImageView(new Image(getImageInput("/img/littleCheck.png")));
 					lc4 = new ImageView(new Image(getImageInput("/img/littleCheck.png")));
 					lc5 = new ImageView(new Image(getImageInput("/img/littleCheck.png")));
-					insIv = new ImageView(new Image(getImageInput("/img/instruccionesBeneficiarios.png")));
-					insIv.setPreserveRatio(true);
-					insIv.setFitWidth(800);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -377,57 +375,57 @@ public class OpcionBeneficiarios extends Feature {
 				TextFlow flow = new TextFlow();
 								
 				Text t0 = new Text("Instrucciones generales\n\n   ");
-				t0.setStyle("-fx-fill: #828488;-fx-font-weight: bold");
+				t0.setStyle("-fx-fill: black;-fx-font-weight: bold");
 				
 				Text t1 = new Text(" Podrás generar tus archivos para Beneficiarios capturando registro por registro o por medio de la importación\n        de archivos.\n   ");
-				t1.setStyle("-fx-fill: #828488");
+				t1.setStyle("-fx-fill: black");
 				Text t2 = new Text(" En caso de capturar algún dato erróneo, la aplicación marcará en color amarillo la celda correspondiente al error.\n   ");
-				t2.setStyle("-fx-fill: #828488");
+				t2.setStyle("-fx-fill: black");
 				Text t3 = new Text(" Las instrucciones para el llenado de cada uno de los campos que integran el layout están disponibles en la hoja\n        llamada \"Descripción de campos\"\n   ");
-				t3.setStyle("-fx-fill: #828488");
+				t3.setStyle("-fx-fill: black");
 				Text t4 = new Text(" La aplicación te permitirá capturar datos en mayúsculas y minúsculas.\n   ");
-				t4.setStyle("-fx-fill: #828488");
+				t4.setStyle("-fx-fill: black");
 				Text t5 = new Text(" Al guardar el archivo, la aplicación te solicitará que indiques la carpeta de tu preferencia, así como el nombre con\n        el que deseas guardarlo.\n\n");
-				t5.setStyle("-fx-fill: #828488");
+				t5.setStyle("-fx-fill: black");
 
 				Text t6 = new Text("Captura\n\n    ");
-				t6.setStyle("-fx-fill: #828488;-fx-font-weight: bold");
-				Text t7 = new Text("1. Para la captura registro por registro, deberás ingresar los datos de tus beneficiarios comenzando por el campo\n    ");
+				t6.setStyle("-fx-fill: black;-fx-font-weight: bold");
+				Text t7 = new Text("1.");Text t79 = new Text(" Para la captura registro por registro, deberás ingresar los datos de tus beneficiarios comenzando por el campo\n    ");
 				Text t70 = new Text("1. ");
 				t70.setStyle("-fx-fill: white");
 				Text t71 = new Text("\"Cuenta beneficiario\" con base en lo indicado en la hoja llamada \"Descripción de campos\".\n    ");
-				t71.setStyle("-fx-fill: #828488");
-				t7.setStyle("-fx-fill: #828488");
-				Text t8 = new Text("2. Para la importación de archivos, deberás oprimir el botón \"Importar archivo\", la aplicación te mostrará el explorador\n    ");
+				t71.setStyle("-fx-fill: black");
+				t7.setStyle("-fx-fill: black;-fx-font-weight: bold");
+				Text t8 = new Text("2.");Text t89 = new Text(" Para la importación de archivos, deberás oprimir el botón \"Importar archivo\", la aplicación te mostrará el explorador\n    ");
 				Text t80 = new Text("1. ");
 				t80.setStyle("-fx-fill: white");
 				Text t81 = new Text("de archivos, a través del cual deberás elegir el archivo a importar.\n    ");
-				t81.setStyle("-fx-fill: #828488");
-				t8.setStyle("-fx-fill: #828488");
-				Text t9 = new Text("3. Ya habiendo capturado los datos registro por registro y una vez que la aplicación no detecte ningún error en los\n    ");
+				t81.setStyle("-fx-fill: black");
+				t8.setStyle("-fx-fill: black;-fx-font-weight: bold");
+				Text t9 = new Text("3.");Text t99 = new Text(" Ya habiendo capturado los datos registro por registro y una vez que la aplicación no detecte ningún error en los\n    ");
 				Text t90 = new Text("1. ");
 				t90.setStyle("-fx-fill: white");
 				Text t91 = new Text("campos, deberás oprimir el botón \"Guardar\".\n    ");
-				t91.setStyle("-fx-fill: #828488");
-				t9.setStyle("-fx-fill: #828488");
+				t91.setStyle("-fx-fill: black");
+				t9.setStyle("-fx-fill: black;-fx-font-weight: bold");
 				Text t10 = new Text("    Nota:  ");
-				t10.setStyle("-fx-fill: #828488;-fx-font-weight: bold");
-				Text t99 = new Text("En caso de que intentes guardar el archivo sin haber validado que los datos estén correctos la aplicación te\n    ");
+				t10.setStyle("-fx-fill: black;-fx-font-weight: bold");
+				Text t999 = new Text("En caso de que intentes guardar el archivo sin haber validado que los datos estén correctos la aplicación te\n    ");
 				Text t990 = new Text("1. ");
 				t990.setStyle("-fx-fill: white");
 				Text t991 = new Text("mostrará una ventana emergente que indique \"Error en los datos proporcionados\".\n    ");
-				t991.setStyle("-fx-fill: #828488");
-				t99.setStyle("-fx-fill: #828488");
-				Text t11 = new Text("4. Deberás indicar la carpeta en la cual deseas que el archivo quede alojado.\n    ");
-				t11.setStyle("-fx-fill: #828488");
-				Text t12 = new Text("5. Deberás también indicar el nombre con el que deseas que el archivo sea guardado.\n    ");
-				t12.setStyle("-fx-fill: #828488");
-				Text t13 = new Text("6. Oprime el botón \"Guardar\" en la ventana del explorador de archivos y la aplicación depositará el archivo en la\n    ");
+				t991.setStyle("-fx-fill: black");
+				t99.setStyle("-fx-fill: black");
+				Text t11 = new Text("4.");Text t119 = new Text(" Deberás indicar la carpeta en la cual deseas que el archivo quede alojado.\n    ");
+				t11.setStyle("-fx-fill: black;-fx-font-weight: bold");
+				Text t12 = new Text("5.");Text t129 = new Text(" Deberás también indicar el nombre con el que deseas que el archivo sea guardado.\n    ");
+				t12.setStyle("-fx-fill: black;-fx-font-weight: bold");
+				Text t13 = new Text("6.");Text t139 = new Text(" Oprime el botón \"Guardar\" en la ventana del explorador de archivos y la aplicación depositará el archivo en la\n    ");
 				Text t130 = new Text("1. ");
 				t130.setStyle("-fx-fill: white");
 				Text t131 = new Text("carpeta indicada.\n");
-				t131.setStyle("-fx-fill: #828488");
-				t13.setStyle("-fx-fill: #828488");
+				t131.setStyle("-fx-fill: black");
+				t13.setStyle("-fx-fill: black;-fx-font-weight: bold");
 				
 				flow.getChildren().add(t0);
 				
@@ -441,9 +439,9 @@ public class OpcionBeneficiarios extends Feature {
 				flow.getChildren().add(t4);
 				flow.getChildren().add(lc5);
 				flow.getChildren().add(t5);
-				flow.getChildren().addAll(t6,t7,t70,t71,t8,t80,t81,t9,t90,t91,t10,t99,t990,t991,t11,t12,t13,t130,t131);
-				flow.setStyle("-fx-background-color:white;-fx-font-family: FranklinGothicLT;-fx-font-size: 14px;-fx-fill: #828488");
-				flow.setMaxWidth(747);
+				flow.getChildren().addAll(t6,t7,t79,t70,t71,t8,t89,t80,t81,t9,t99,t90,t91,t10,t999,t990,t991,t11,t119,t12,t129,t13,t139,t130,t131);
+				flow.setStyle("-fx-background-color:white;-fx-font-family: FranklinGothicLT;-fx-font-size: 14px;-fx-fill: black");
+				flow.setMinWidth(746);
 
 
 
@@ -459,7 +457,7 @@ public class OpcionBeneficiarios extends Feature {
 				scrollPane.setPrefSize(800, 600);
 				scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 				scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-				scrollPane.setContent(new InstruccionLayoutTable());
+				
 
 				TabPane tabPane = new TabPane();
 				Tab tabInstrucciones = new Tab("    Instrucciones    ");
@@ -474,7 +472,9 @@ public class OpcionBeneficiarios extends Feature {
 				Tab tabCampos = new Tab("    Descripción de campos    ");
 				tabInstrucciones.setContent(scrollPaneGenerales);
 				
-				tabCampos.setContent(scrollPane);
+				InstruccionLayoutTable tv  = new InstruccionLayoutTable();
+				
+				tabCampos.setContent(tv);
 				tabCampos.setClosable(false);
 				tabPane.getTabs().addAll(tabInstrucciones, tabCampos);
 				tabPane.getSelectionModel().select(0);

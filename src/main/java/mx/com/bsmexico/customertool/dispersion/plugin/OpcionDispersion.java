@@ -48,6 +48,7 @@ import mx.com.bsmexico.customertool.api.Layout;
 import mx.com.bsmexico.customertool.api.NavRoute;
 import mx.com.bsmexico.customertool.api.process.Exporter;
 import mx.com.bsmexico.customertool.api.process.Importer;
+import mx.com.bsmexico.customertool.beneficiarios.plugin.InstruccionLayoutTable;
 
 public class OpcionDispersion extends Feature {
 
@@ -414,12 +415,6 @@ public class OpcionDispersion extends Feature {
 					lc9 = new ImageView(new Image(getImageInput("/img/littleCheck.png")));
 					lc10 = new ImageView(new Image(getImageInput("/img/littleCheck.png")));
 					lc11 = new ImageView(new Image(getImageInput("/img/littleCheck.png")));
-					insIv = new ImageView(new Image(getImageInput("/img/instruccionesDispersion.png")));
-					insIv.setPreserveRatio(true);
-					insIv.setFitWidth(800);
-					insIv2 = new ImageView(new Image(getImageInput("/img/instruccionesDispersionTxt.png")));
-					insIv2.setPreserveRatio(true);
-					insIv2.setFitWidth(800);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -430,59 +425,59 @@ public class OpcionDispersion extends Feature {
 				
 				
 				Text t0 = new Text("Instrucciones generales\n\n    ");
-				t0.setStyle("-fx-fill: #828488;-fx-font-weight: bold");
+				t0.setStyle("-fx-fill: black;-fx-font-weight: bold");
 				
 
 				Text t1 = new Text(" Podrás generar tus archivos para Dispersión de Pagos capturando registro por registro o por medio de la\n         importación de archivos.\n    ");
-				t1.setStyle("-fx-fill: #828488");
+				t1.setStyle("-fx-fill: #black");
 				Text t2 = new Text(" En caso de capturar algún dato erróneo, la aplicación marcará en color amarillo la celda correspondiente al error.\n    ");
-				t2.setStyle("-fx-fill: #828488");
+				t2.setStyle("-fx-fill: black");
 				Text t3 = new Text(" Las instrucciones para el llenado de cada uno de los campos que integran el layout están disponibles en la hoja\n         llamada \"Descripción de campos\"\n    ");
-				t3.setStyle("-fx-fill: #828488");
+				t3.setStyle("-fx-fill: black");
 				Text t4 = new Text(" La aplicación te permitirá capturar datos en mayúsculas y minúsculas.\n    ");
-				t4.setStyle("-fx-fill: #828488");
+				t4.setStyle("-fx-fill: black");
 				Text t5 = new Text(" Al guardar el archivo, la aplicación te solicitará que indiques la carpeta de tu preferencia.\n    ");
-				t5.setStyle("-fx-fill: #828488");
+				t5.setStyle("-fx-fill: black");
 				Text t6 = new Text(" La aplicación te indicará la nomenclatura con la que debes asignarle el nombre al archivo. Comenzando por la\n         fecha en formato AAAAMMDD, tu número de cliente a 9 dígitos XXXXXXXXX y un consecutivo a 3 dígitos XXX,\n         separados por guiones. Solo deberás sustituir las X por tu número de cliente a 9 dígitos (anteponer ceros a la\n         izquierda en caso necesario) y las N por el consecutivo de tu archivo anteponiendo ceros a la izquierda hasta\n         completar los 3 dígitos.\n    ");
-				t6.setStyle("-fx-fill: #828488");
+				t6.setStyle("-fx-fill: black");
 				Text t7 = new Text(" Los archivos que generes no podrán tener combinación monedas, por lo que deberán generarse por separado.\n    ");
-				t7.setStyle("-fx-fill: #828488");
+				t7.setStyle("-fx-fill: black");
 				Text t8 = new Text(" Solo podrán hacerse dispersiones en dólares entre cuentas Sabadell, tanto propias como terceros.\n    ");
-				t8.setStyle("-fx-fill: #828488");
+				t8.setStyle("-fx-fill: black");
 				Text t9 = new Text(" No se podrá operar SPID masivo.\n\n");
-				t9.setStyle("-fx-fill: #828488");
+				t9.setStyle("-fx-fill: black");
 				
 				Text t10 = new Text("Captura\n\n    ");
-				t10.setStyle("-fx-fill: #828488;-fx-font-weight: bold");
+				t10.setStyle("-fx-fill: black;-fx-font-weight: bold");
 
 				
 				
-				Text t11 = new Text("1. Para la captura registro por registro, deberás ingresar los datos de tus pagos comenzando por el \"Tipo de\n        Movimiento\" con base en lo indicado en la hoja llamada \"Descripción de campos\".\n    ");
-				t11.setStyle("-fx-fill: #828488");
-				Text t12 = new Text("2. Para la importación de archivos, deberás oprimir el botón \"Importar archivo\", la aplicación te mostrará el explorador\n        de archivos, a través del cual deberás elegir el archivo a importar.\n    ");
-				t12.setStyle("-fx-fill: #828488");
-				Text t13 = new Text("3. Indica por medio del radiobottom \"Formato\" el tipo de archivo que deseas generar (CSV o TXT).\n    ");
-				t13.setStyle("-fx-fill: #828488");
-				Text t14 = new Text("4. Ya habiendo capturado los datos registro por registro y una vez que la aplicación no detecte ningún error en los\n        campos, deberás oprimir el botón \"Guardar\".\n    ");
-				t14.setStyle("-fx-fill: #828488");
+				Text t11 = new Text("1.");Text t111 = new Text(" Para la captura registro por registro, deberás ingresar los datos de tus pagos comenzando por el \"Tipo de\n        Movimiento\" con base en lo indicado en la hoja llamada \"Descripción de campos\".\n    ");
+				t11.setStyle("-fx-fill: black;-fx-font-weight:bold");
+				Text t12 = new Text("2.");Text t121 = new Text(" Para la importación de archivos, deberás oprimir el botón \"Importar archivo\", la aplicación te mostrará el explorador\n        de archivos, a través del cual deberás elegir el archivo a importar.\n    ");
+				t12.setStyle("-fx-fill: black;-fx-font-weight:bold");
+				Text t13 = new Text("3.");Text t131 = new Text(" Indica por medio del radiobottom \"Formato\" el tipo de archivo que deseas generar (CSV o TXT).\n    ");
+				t13.setStyle("-fx-fill: black;-fx-font-weight:bold");
+				Text t14 = new Text("4.");Text t141 = new Text(" Ya habiendo capturado los datos registro por registro y una vez que la aplicación no detecte ningún error en los\n        campos, deberás oprimir el botón \"Guardar\".\n    ");
+				t14.setStyle("-fx-fill: black;-fx-font-weight:bold");
 				Text t99 = new Text("    Nota: ");
-				t99.setStyle("-fx-fill: #828488;-fx-font-weight: bold");
+				t99.setStyle("-fx-fill: black;-fx-font-weight: bold");
 				Text t15 = new Text("En caso de que intentes guardar el archivo sin haber validado que los datos estén correctos la aplicación te\n        mostrará una ventana emergente que indique \"Error en los datos proporcionados\".\n    ");
-				t15.setStyle("-fx-fill: #828488");
-				Text t16 = new Text("5. Deberás indicar la carpeta en la cual deseas que el archivo quede alojado.\n    ");
-				t16.setStyle("-fx-fill: #828488");
-			    Text t17 = new Text("6. Deberás también indicar el nombre (nomenclatura) del archivo con base en la indicada por la misma aplicación.\n        (AAAAMMDD_XXXXXXXXX_NNN)\n    ");
-			    t17.setStyle("-fx-fill: #828488");
-	            Text t18 = new Text("7. Oprime el botón \"Guardar\" en la ventana del explorador de archivos y la aplicación depositará el archivo en la\n        carpeta indicada.\n\n");
-	            t18.setStyle("-fx-fill: #828488");
+				t15.setStyle("-fx-fill: black;");
+				Text t16 = new Text("5.");Text t161 = new Text(" Deberás indicar la carpeta en la cual deseas que el archivo quede alojado.\n    ");
+				t16.setStyle("-fx-fill: black;-fx-font-weight:bold");
+			    Text t17 = new Text("6.");Text t171 = new Text(" Deberás también indicar el nombre (nomenclatura) del archivo con base en la indicada por la misma aplicación.\n        (AAAAMMDD_XXXXXXXXX_NNN)\n    ");
+			    t17.setStyle("-fx-fill: black;-fx-font-weight:bold");
+	            Text t18 = new Text("7.");Text t181 = new Text(" Oprime el botón \"Guardar\" en la ventana del explorador de archivos y la aplicación depositará el archivo en la\n        carpeta indicada.\n\n");
+	            t18.setStyle("-fx-fill: black;-fx-font-weight:bold");
 		 
 	            Text t19 = new Text("Notas:\n\n    ");
-				t19.setStyle("-fx-fill: #828488;-fx-font-weight: bold");
+				t19.setStyle("-fx-fill: black;-fx-font-weight: bold");
 
 				Text t20 = new Text(" La aplicación generará el Header Alto en el que se muestran las cifras control por cada una de las cuentas de cargo\n         contenidas en el archivo en forma de bloques.\n    ");
-				t20.setStyle("-fx-fill: #828488");
+				t20.setStyle("-fx-fill: black");
 				Text t21 = new Text(" De la misma forma será generado un solo Header Bajo en el que se muestran las cifras control totales del archivo,\n         considerando la suma de cada uno de los headers altos.    \n\n");
-				t21.setStyle("-fx-fill: #828488");
+				t21.setStyle("-fx-fill: black");
 				
 				flow.getChildren().add(t0);
 				
@@ -504,9 +499,9 @@ public class OpcionDispersion extends Feature {
 				flow.getChildren().add(t8);
 				flow.getChildren().add(lc9);
 				flow.getChildren().add(t9);
-				flow.getChildren().addAll(t10,t11,t12,t13,t14,t99,t15,t16,t17,t18,t19,lc10,t20,lc11,t21);
-				flow.setStyle("-fx-background-color:white;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-fill:#828488");
-				flow.setMaxWidth(746);
+				flow.getChildren().addAll(t10,t11,t111,t12,t121,t13,t131,t14,t141,t99,t15,t16,t161,t17,t171,t18,t181,t19,lc10,t20,lc11,t21);
+				flow.setStyle("-fx-background-color:white;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-fill:black");
+				flow.setMinWidth(746);
 				
 
 				ScrollPane scrollPaneGenerales = new ScrollPane();
@@ -530,6 +525,8 @@ public class OpcionDispersion extends Feature {
 				scrollPane2.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 				scrollPane2.setContent(insIv2);
 				
+				LayoutDispersionCsv tvcsv  = new LayoutDispersionCsv();
+				LayoutDispersionTxt tvtxt  = new LayoutDispersionTxt();
 				
 				TabPane tabPane = new TabPane();
 				Tab tabInstrucciones = new Tab("    Instrucciones    ");
@@ -537,9 +534,9 @@ public class OpcionDispersion extends Feature {
 				Tab tabCamposTxt = new Tab("    Descripción de campos txt    ");
 				tabInstrucciones.setContent(scrollPaneGenerales);
 				tabInstrucciones.setClosable(false);
-				tabCampos.setContent(scrollPane);
+				tabCampos.setContent(tvcsv);
 				tabCampos.setClosable(false);
-				tabCamposTxt.setContent(scrollPane2);
+				tabCamposTxt.setContent(tvtxt);
 				tabCamposTxt.setClosable(false);
 				tabPane.getTabs().addAll(tabInstrucciones, tabCampos,tabCamposTxt);
 

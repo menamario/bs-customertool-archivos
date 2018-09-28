@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.validator.GenericValidator;
@@ -135,7 +136,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 		if (StringUtils.isNotBlank(fieldName)) {
 			switch (fieldName) {
 			case Dispersion.FIELD_APLICACION:
-				desc = "Dato obligatorio\nH Mismo día\nP Programado";
+				desc = "Dato obligatorio\nH Mismo día\nP Programado (ND)";
 				break;
 			case Dispersion.FIELD_CONCEPTO:
 				desc = "Dato obligatorio\nDescripción del pago\nMáximo 30 caracteres";
@@ -153,7 +154,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 				desc = "Dato opcional\nDebe estar vacío si tipo de persona es PM-Persona moral";
 				break;
 			case Dispersion.FIELD_FECHA:
-				desc = "En este campo se debe indicar la fecha en que se ingresa el archivo y será\nusada cuando se trata de operaciones programadas con el objetivo de\ndiferenciar la fecha de operación del archivo\nPara operaciones programadas debe ser posterior al día de hoy\nEl formato debe ser aaaammdd";
+				desc = " En este campo se debe indicar la fecha en que se deberá \naplicar el pago y será usada cuando se trate de operaciones programadas y \ncon el objetivo de diferenciar la fecha de operación del archivo.\nEl formato debe ser aaaammdd";
 				break;
 			case Dispersion.FIELD_IMPORTE:
 				desc = "Dato obligatorio\nImporte de la operación\nDebe ser un dato numérico válido";
@@ -226,7 +227,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> aplicacion() {
 		return v -> {
-			return (StringUtils.isNotBlank(v.getAplicacion()) && v.getAplicacion().matches("[HP]"));
+			return (StringUtils.isNotBlank(v.getAplicacion()) && v.getAplicacion().matches("[H]"));
 		};
 	}
 
@@ -236,7 +237,6 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	public Predicate<Dispersion> fecha() {
 		return v -> {
 			Date date = null;
-			System.out.println(v.getFecha());
 			if (StringUtils.isNotBlank(v.getFecha()) && GenericValidator.isDate(v.getFecha(), "yyyyMMdd", true)) {
 				try {
 					date = df.parse(v.getFecha());
@@ -244,8 +244,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 				} catch (ParseException e) {
 				}
 			}
-			return (StringUtils.isBlank(v.getFecha()) && "H".equals(v.getAplicacion())) || 
-				   (StringUtils.isNotBlank(v.getFecha()) && date != null && "H".equals(v.getAplicacion())) ||
+			return (StringUtils.isNotBlank(v.getFecha()) && date != null && "H".equals(v.getAplicacion()) && DateUtils.isSameDay(date, new Date())) ||
 				   (StringUtils.isNotBlank(v.getFecha()) && date != null && "P".equals(v.getAplicacion()) && date.after(new Date()));
 		};
 	}
@@ -356,7 +355,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	 */
 	public Predicate<Dispersion> importe() {
 		return v -> {
-			return (StringUtils.isNotBlank(v.getImporte()) && NumberUtils.isCreatable(v.getImporte())
+			return (StringUtils.isNotBlank(v.getImporte()) && v.getImporte().lastIndexOf(".")>0 && v.getImporte().substring(v.getImporte().lastIndexOf(".")).length()<=3 && NumberUtils.isCreatable(v.getImporte())
 					&& Double.valueOf(v.getImporte()) <= 999999999999.99 && Double.valueOf(v.getImporte()) > 0);
 		};
 	}
@@ -367,7 +366,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	public Predicate<Dispersion> iva() {
 		return v -> {
 			return (StringUtils.isNotBlank(v.getRfc()) && StringUtils.isNotBlank(v.getIva())
-					&& NumberUtils.isCreatable(v.getIva()) && Double.valueOf(v.getIva()) <= 999999999999.99 && Double.valueOf(v.getIva()) > 0 && StringUtils.isNotBlank(v.getImporte()) && NumberUtils.isCreatable(v.getImporte()) && Double.valueOf(v.getIva()) < Double.valueOf(v.getImporte()))
+					&& v.getIva().lastIndexOf(".")>0 && v.getIva().substring(v.getIva().lastIndexOf(".")).length()<=3 && NumberUtils.isCreatable(v.getIva()) && Double.valueOf(v.getIva()) <= 999999999999.99 && Double.valueOf(v.getIva()) > 0 && StringUtils.isNotBlank(v.getImporte()) && NumberUtils.isCreatable(v.getImporte()) && Double.valueOf(v.getIva()) <= Double.valueOf(v.getImporte()))
 					|| StringUtils.isBlank(v.getIva());
 		};
 	}
