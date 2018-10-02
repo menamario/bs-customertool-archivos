@@ -190,8 +190,7 @@ public class Beneficiario {
 	 * @param importeMaximo
 	 *            the importeMaximo to set
 	 */
-	public void setImporteMaximo(String importeMaximo) {
-		System.out.println(importeMaximo.lastIndexOf("."));
+	public void setImporteMaximo(String importeMaximo) {		
 		if (StringUtils.isNotBlank(importeMaximo) && 
 			((importeMaximo.lastIndexOf(".")>0 && importeMaximo.substring(importeMaximo.lastIndexOf(".")).length()<=3) || importeMaximo.lastIndexOf(".")==-1)  
 			&& NumberUtils.isCreatable(StringUtils.stripStart(importeMaximo,"0")) && Double.valueOf(StringUtils.stripStart(importeMaximo,"0")) < 9999999999999999.99) {
