@@ -100,6 +100,8 @@ public class InstruccionLayoutTable extends TableView<DescriptionLayout> impleme
 			final int width) {
 		TableColumn<DescriptionLayout, String> column = new TableColumn<>(title);
 		column.setMinWidth(width);
+		column.impl_setReorderable(false);
+		column.setSortable(false);
 		column.setCellValueFactory(new PropertyValueFactory<DescriptionLayout, String>(property));
 		column.setCellFactory(new Callback<TableColumn<DescriptionLayout, String>, TableCell<DescriptionLayout, String>>() {
 	        @Override

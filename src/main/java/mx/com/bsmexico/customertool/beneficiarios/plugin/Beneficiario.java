@@ -44,7 +44,7 @@ public class Beneficiario {
 	@LayoutField(name = FIELD_CUENTA_BENEFICIARIO, title = "Cuenta beneficiario", length = 18)
 	private SimpleStringProperty cuenta;
 
-	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "Número de línea de telefono móvil del beneficiario", length = 10, disable = true, required = false)
+	@LayoutField(name = FIELD_NUMERO_LINEA_BENEFICIARIO, title = "Número de línea de telefono móvil del beneficiario", length = 0, disable = true, required = false, editable=false)
 	private SimpleStringProperty numLinea;
 
 	@LayoutField(name = FIELD_BANCO_PARTICIPANTE, title = "Banco participante", length = 3, required = false)
@@ -176,7 +176,8 @@ public class Beneficiario {
 	 *            the moneda to set
 	 */
 	public void setMoneda(String moneda) {
-		this.moneda.set(moneda.toUpperCase());
+		if (moneda != null)
+			this.moneda.set(moneda.toUpperCase());
 	}
 
 	/**
@@ -191,11 +192,13 @@ public class Beneficiario {
 	 *            the importeMaximo to set
 	 */
 	public void setImporteMaximo(String importeMaximo) {
-		System.out.println(importeMaximo.lastIndexOf("."));
-		if (StringUtils.isNotBlank(importeMaximo) && 
-			((importeMaximo.lastIndexOf(".")>0 && importeMaximo.substring(importeMaximo.lastIndexOf(".")).length()<=3) || importeMaximo.lastIndexOf(".")==-1)  
-			&& NumberUtils.isCreatable(StringUtils.stripStart(importeMaximo,"0")) && Double.valueOf(StringUtils.stripStart(importeMaximo,"0")) < 9999999999999999.99) {
-			importeMaximo = decimalFormat.format(new BigDecimal(StringUtils.stripStart(importeMaximo,"0")));
+		if (StringUtils.isNotBlank(importeMaximo)
+				&& ((importeMaximo.lastIndexOf(".") > 0
+						&& importeMaximo.substring(importeMaximo.lastIndexOf(".")).length() <= 3)
+						|| importeMaximo.lastIndexOf(".") == -1)
+				&& NumberUtils.isCreatable(StringUtils.stripStart(importeMaximo, "0"))
+				&& Double.valueOf(StringUtils.stripStart(importeMaximo, "0")) < 9999999999999999.99) {
+			importeMaximo = decimalFormat.format(new BigDecimal(StringUtils.stripStart(importeMaximo, "0")));
 		}
 		this.importeMaximo.set(importeMaximo);
 
@@ -303,7 +306,8 @@ public class Beneficiario {
 	 *            the apellidoMaterno to set
 	 */
 	public void setRfc(String rfc) {
-		this.rfc.set(rfc.toUpperCase());
+		if (rfc != null)
+			this.rfc.set(rfc.toUpperCase());
 	}
 
 	/**
@@ -318,7 +322,8 @@ public class Beneficiario {
 	 *            the apellidoMaterno to set
 	 */
 	public void setCurp(String curp) {
-		this.curp.set(curp.toUpperCase());
+		if (curp != null)
+			this.curp.set(curp.toUpperCase());
 	}
 
 	/**

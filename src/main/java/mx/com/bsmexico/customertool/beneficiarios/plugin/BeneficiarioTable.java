@@ -100,9 +100,6 @@ public class BeneficiarioTable extends EditableLayoutTable<Beneficiario>
 		boolean isValid = true;
 		if (this.metamodel.getValidator() != null) {
 			isValid = ((LayoutModelValidator<Beneficiario>) this.metamodel.getValidator()).isActive(model);
-			if (!isValid) {
-				refresh();
-			}
 		}
 		return isValid;
 	}

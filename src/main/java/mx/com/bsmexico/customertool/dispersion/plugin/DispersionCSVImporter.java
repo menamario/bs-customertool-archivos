@@ -20,6 +20,14 @@ public class DispersionCSVImporter extends CSVImporter<Dispersion> {
 		Dispersion dispersion = null;
 		if (record != null && record.size() > 0) {			
 			if("DE".equals(record.get(0))) {
+				for(int i=0;i<=18;i++){
+					try{
+						record.get(i);
+					}catch(IndexOutOfBoundsException ex){
+						record.add(i, "");
+					}
+				}
+				
 				dispersion = new Dispersion();
 				dispersion.setTipoMovimiento(record.get(1));
 				dispersion.setAplicacion(record.get(2));

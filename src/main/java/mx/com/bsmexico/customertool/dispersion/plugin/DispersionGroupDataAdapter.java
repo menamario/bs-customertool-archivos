@@ -3,6 +3,7 @@ package mx.com.bsmexico.customertool.dispersion.plugin;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +36,8 @@ public class DispersionGroupDataAdapter implements ExportSource<Dispersion> {
 	private List<Dispersion> groupData(final ExportSource<Dispersion> source) {
 		final List<Dispersion> data = source.getData();
 		final List<Dispersion> groupData = new ArrayList<>();
-		final Map<String, List<Dispersion>> map = new HashMap<>();
+		final Map<String, List<Dispersion>> map = new HashMap<>(); 
+		final Set<String> keys = new LinkedHashSet<>();
 		long totalRegistros = 0L;
 		BigDecimal totalImporte = BigDecimal.ZERO;
 		String key = StringUtils.EMPTY;
@@ -45,13 +47,14 @@ public class DispersionGroupDataAdapter implements ExportSource<Dispersion> {
 				map.put(key.toString(), new ArrayList<Dispersion>());
 			}
 			map.get(key.toString()).add(dispersion);
+			keys.add(key);
 			totalRegistros++;
 			totalImporte = totalImporte
 					.add(NumberUtils.isCreatable(dispersion.getImporte()) ? new BigDecimal(dispersion.getImporte())
 							: BigDecimal.ZERO);
 		}
 
-		final Set<String> keys = map.keySet();
+		//final Set<String> keys = map.keySet();
 		String[] splitKey = null;
 		Dispersion ha = null;
 		for (String k : keys) {
@@ -66,15 +69,15 @@ public class DispersionGroupDataAdapter implements ExportSource<Dispersion> {
 						NumberUtils.isCreatable(d.getImporte()) ? new BigDecimal(d.getImporte()) : BigDecimal.ZERO);
 			}
 			
-			ha.setFecha((String.format("%015.2f", subtotal)).trim());
-			ha.setTipoTransaccion(String.format("%06d", map.get(k).size()).trim());
+			ha.setFecha((String.format("%.2f", subtotal)).trim());
+			ha.setTipoTransaccion(String.format("%d", map.get(k).size()).trim());
 			groupData.add(ha);
 			groupData.addAll(map.get(k));
 		}
 		final Dispersion hb = new Dispersion();
 		hb.setDetalleOperacion("HB");
-		hb.setTipoMovimiento((String.format("%015.2f", totalImporte)).trim());
-		hb.setAplicacion((String.format("%06d", totalRegistros)).trim());
+		hb.setTipoMovimiento((String.format("%.2f", totalImporte)).trim());
+		hb.setAplicacion((String.format("%d", totalRegistros)).trim());
 		groupData.add(hb);
 		return groupData;
 	}

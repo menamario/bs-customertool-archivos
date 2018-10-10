@@ -1,5 +1,6 @@
 package mx.com.bsmexico.customertool.dispersion.plugin;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,25 +33,28 @@ public class DispersionTXTExporter extends FixPositionExporter<Dispersion> {
 			record.add(new RecordPosition(12, 14, dispersion.getTipoTransaccion()));
 			record.add(new RecordPosition(14, 25, dispersion.getCuentaCargo()));
 			record.add(new RecordPosition(25, 27, dispersion.getTipoCuentaBeneficiario()));
-			record.add(new RecordPosition(27, 45, dispersion.getCuentaAbono()));
+			record.add(new RecordPosition(27, 45, StringUtils.leftPad(dispersion.getCuentaAbono(),18)));
 			record.add(new RecordPosition(45, 47, dispersion.getTipoPersona()));
-			record.add(new RecordPosition(47, 87, dispersion.getNombre()));
-			record.add(new RecordPosition(87, 100, dispersion.getRfc()));
-			record.add(new RecordPosition(100, 118, dispersion.getCurp()));
+			record.add(new RecordPosition(47, 87, dispersion.getNombre()!=null?dispersion.getNombre().trim():null));
+			record.add(new RecordPosition(87, 100, dispersion.getRfc()!=null?dispersion.getRfc().trim():null));
+			record.add(new RecordPosition(100, 118, dispersion.getCurp()!=null?dispersion.getCurp().trim():null));
 			record.add(new RecordPosition(118, 121, dispersion.getDivisa()));
-			record.add(new RecordPosition(121, 136, dispersion.getImporte()));
-			record.add(new RecordPosition(136, 151, dispersion.getIva()));
-			record.add(new RecordPosition(151, 191, dispersion.getConcepto()));
-			record.add(new RecordPosition(191, 211, dispersion.getReferencia()));
-			record.add(new RecordPosition(211, 271, dispersion.getCorreoElectronico()));
+			record.add(new RecordPosition(121, 136, (String.format("%015.2f", new BigDecimal(dispersion.getImporte()))).trim()));
+			record.add(new RecordPosition(136, 151, StringUtils.isEmpty(dispersion.getIva())?dispersion.getIva():(String.format("%015.2f", new BigDecimal(dispersion.getIva()))).trim()));
+			record.add(new RecordPosition(151, 191, dispersion.getConcepto()!=null?dispersion.getConcepto().trim():null));
+			record.add(new RecordPosition(191, 211, StringUtils.leftPad(dispersion.getReferencia(),20)));
+			record.add(new RecordPosition(211, 271, dispersion.getCorreoElectronico()!=null?dispersion.getCorreoElectronico().trim():null));
 			record.add(new RecordPosition(271, 281, dispersion.getNumeroCelular()));
 		} else {
-			if (dop.equals("HA")) {
+			if (dop.equals("HA")) {				
 				final String ha = dop + dispersion.getTipoMovimiento() + dispersion.getAplicacion()
-						+ dispersion.getFecha() + dispersion.getTipoTransaccion();
+						+ String.format("%015.2f", new BigDecimal(dispersion.getFecha())).trim() 
+						+ String.format("%06d", new Long(dispersion.getTipoTransaccion())).trim();
 				record.add(new RecordPosition(0, ha.length(), ha));
 			} else {
-				final String hb = dop + dispersion.getTipoMovimiento() + dispersion.getAplicacion();
+				final String hb = dop +
+						String.format("%015.2f", new BigDecimal(dispersion.getTipoMovimiento())).trim()+
+						String.format("%06d", new Long(dispersion.getAplicacion())).trim(); 
 				record.add(new RecordPosition(0, hb.length(), hb));
 			}
 		}

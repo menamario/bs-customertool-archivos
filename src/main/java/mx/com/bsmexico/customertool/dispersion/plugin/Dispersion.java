@@ -21,7 +21,7 @@ import mx.com.bsmexico.customertool.api.layouts.model.LayoutModelType;
  */
 @LayoutModel(type = LayoutModelType.PROPERTY_JAVABEANS, validatorClass = DispersionValidator.class)
 public class Dispersion {
-	
+
 	String pattern = "###############0.00";
 	DecimalFormat decimalFormat = new DecimalFormat(pattern);
 
@@ -119,7 +119,7 @@ public class Dispersion {
 		referencia = new SimpleStringProperty();
 		correoElectronico = new SimpleStringProperty();
 		numeroCelular = new SimpleStringProperty();
-	}	
+	}
 
 	public String getTipoMovimiento() {
 		return tipoMovimiento.get();
@@ -134,7 +134,8 @@ public class Dispersion {
 	}
 
 	public void setAplicacion(String aplicacion) {
-		this.aplicacion.set(aplicacion.toUpperCase());
+		if (aplicacion != null)
+			this.aplicacion.set(aplicacion.toUpperCase());
 	}
 
 	public String getFecha() {
@@ -182,7 +183,8 @@ public class Dispersion {
 	}
 
 	public void setTipoPersona(String tipoPersona) {
-		this.tipoPersona.set(tipoPersona.toUpperCase());
+		if (tipoPersona != null)
+			this.tipoPersona.set(tipoPersona.toUpperCase());
 	}
 
 	public String getNombre() {
@@ -198,7 +200,8 @@ public class Dispersion {
 	}
 
 	public void setRfc(String rfc) {
-		this.rfc.set(rfc.toUpperCase());
+		if (rfc != null)
+			this.rfc.set(rfc.toUpperCase());
 	}
 
 	public String getCurp() {
@@ -206,7 +209,8 @@ public class Dispersion {
 	}
 
 	public void setCurp(String curp) {
-		this.curp.set(curp.toUpperCase());
+		if (curp != null)
+			this.curp.set(curp.toUpperCase());
 	}
 
 	public String getDivisa() {
@@ -214,7 +218,8 @@ public class Dispersion {
 	}
 
 	public void setDivisa(String divisa) {
-		this.divisa.set(divisa.toUpperCase());
+		if (divisa != null)
+			this.divisa.set(divisa.toUpperCase());
 	}
 
 	public String getImporte() {
@@ -222,10 +227,12 @@ public class Dispersion {
 	}
 
 	public void setImporte(String importe) {
-		if (StringUtils.isNotBlank(importe) &&
-			((importe.lastIndexOf(".")>0 && importe.substring(importe.lastIndexOf(".")).length()<=3) || importe.lastIndexOf(".")==-1)
-			&& NumberUtils.isCreatable(StringUtils.stripStart(importe,"0")) && Double.valueOf(StringUtils.stripStart(importe,"0")) < 9999999999999999.99) {
-			importe = decimalFormat.format(new BigDecimal(StringUtils.stripStart(importe,"0")));
+		if (StringUtils.isNotBlank(importe)
+				&& ((importe.lastIndexOf(".") > 0 && importe.substring(importe.lastIndexOf(".")).length() <= 3)
+						|| importe.lastIndexOf(".") == -1)
+				&& NumberUtils.isCreatable(StringUtils.stripStart(importe, "0"))
+				&& Double.valueOf(StringUtils.stripStart(importe, "0")) < 9999999999999999.99) {
+			importe = decimalFormat.format(new BigDecimal(StringUtils.stripStart(importe, "0")));
 		}
 		this.importe.set(importe);
 	}
@@ -235,10 +242,12 @@ public class Dispersion {
 	}
 
 	public void setIva(String iva) {
-		if (StringUtils.isNotBlank(iva) &&
-			((iva.lastIndexOf(".")>0 && iva.substring(iva.lastIndexOf(".")).length()<=3) || iva.lastIndexOf(".")==-1)
-			&& NumberUtils.isCreatable(StringUtils.stripStart(iva,"0")) && Double.valueOf(StringUtils.stripStart(iva,"0")) < 9999999999999999.99) {
-			iva = decimalFormat.format(new BigDecimal(StringUtils.stripStart(iva,"0")));
+		if (StringUtils.isNotBlank(iva)
+				&& ((iva.lastIndexOf(".") > 0 && iva.substring(iva.lastIndexOf(".")).length() <= 3)
+						|| iva.lastIndexOf(".") == -1)
+				&& NumberUtils.isCreatable(StringUtils.stripStart(iva, "0"))
+				&& Double.valueOf(StringUtils.stripStart(iva, "0")) < 9999999999999999.99) {
+			iva = decimalFormat.format(new BigDecimal(StringUtils.stripStart(iva, "0")));
 		}
 		this.iva.set(iva);
 	}
@@ -273,8 +282,8 @@ public class Dispersion {
 
 	public void setNumeroCelular(String numeroCelular) {
 		this.numeroCelular.set(numeroCelular);
-	}	
-	
+	}
+
 	public String getDetalleOperacion() {
 		return detalleOperacion;
 	}
@@ -283,31 +292,81 @@ public class Dispersion {
 		this.detalleOperacion = detalleOperacion;
 	}
 
-	
-	
-	public StringProperty tipoMovimientoProperty(){return tipoMovimiento;}
-	public StringProperty aplicacionProperty(){return aplicacion;}
-	public StringProperty fechaProperty(){return fecha;}
-	public StringProperty tipoTransaccionProperty(){return tipoTransaccion;}
-	public StringProperty cuentaCargoProperty(){return cuentaCargo;}
-	public StringProperty tipoCuentaBeneficiarioProperty(){return tipoCuentaBeneficiario;}
-	public StringProperty cuentaAbonoProperty(){return cuentaAbono;}
-	public StringProperty tipoPersonaProperty(){return tipoPersona;}
-	public StringProperty nombreProperty(){return nombre;}
-	public StringProperty rfcProperty(){return rfc;}
-	public StringProperty curpProperty(){return curp;}
-	public StringProperty divisaProperty(){return divisa;}
-	public StringProperty importeProperty(){return importe;}
-	public StringProperty ivaProperty(){return iva;}
-	public StringProperty conceptoProperty(){return concepto;}
-	public StringProperty referenciaProperty(){return referencia;}
-	public StringProperty correoElectronicoProperty(){return correoElectronico;}
-	public StringProperty numeroCelularProperty(){return numeroCelular;}
-	
-	
-	
-	
-	/* (non-Javadoc)
+	public StringProperty tipoMovimientoProperty() {
+		return tipoMovimiento;
+	}
+
+	public StringProperty aplicacionProperty() {
+		return aplicacion;
+	}
+
+	public StringProperty fechaProperty() {
+		return fecha;
+	}
+
+	public StringProperty tipoTransaccionProperty() {
+		return tipoTransaccion;
+	}
+
+	public StringProperty cuentaCargoProperty() {
+		return cuentaCargo;
+	}
+
+	public StringProperty tipoCuentaBeneficiarioProperty() {
+		return tipoCuentaBeneficiario;
+	}
+
+	public StringProperty cuentaAbonoProperty() {
+		return cuentaAbono;
+	}
+
+	public StringProperty tipoPersonaProperty() {
+		return tipoPersona;
+	}
+
+	public StringProperty nombreProperty() {
+		return nombre;
+	}
+
+	public StringProperty rfcProperty() {
+		return rfc;
+	}
+
+	public StringProperty curpProperty() {
+		return curp;
+	}
+
+	public StringProperty divisaProperty() {
+		return divisa;
+	}
+
+	public StringProperty importeProperty() {
+		return importe;
+	}
+
+	public StringProperty ivaProperty() {
+		return iva;
+	}
+
+	public StringProperty conceptoProperty() {
+		return concepto;
+	}
+
+	public StringProperty referenciaProperty() {
+		return referencia;
+	}
+
+	public StringProperty correoElectronicoProperty() {
+		return correoElectronico;
+	}
+
+	public StringProperty numeroCelularProperty() {
+		return numeroCelular;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -328,13 +387,12 @@ public class Dispersion {
 		result = prime * result + ((numeroCelular.get() == null) ? 0 : numeroCelular.get().hashCode());
 		result = prime * result + ((referencia.get() == null) ? 0 : referencia.get().hashCode());
 		result = prime * result + ((rfc.get() == null) ? 0 : rfc.get().hashCode());
-		result = prime * result + ((tipoCuentaBeneficiario.get() == null) ? 0 : tipoCuentaBeneficiario.get().hashCode());
+		result = prime * result
+				+ ((tipoCuentaBeneficiario.get() == null) ? 0 : tipoCuentaBeneficiario.get().hashCode());
 		result = prime * result + ((tipoMovimiento.get() == null) ? 0 : tipoMovimiento.get().hashCode());
 		result = prime * result + ((tipoPersona.get() == null) ? 0 : tipoPersona.get().hashCode());
 		result = prime * result + ((tipoTransaccion.get() == null) ? 0 : tipoTransaccion.get().hashCode());
 		return result;
 	}
-	
-	
 
 }

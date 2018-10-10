@@ -36,15 +36,15 @@ public class DispersionCSVExporter extends CSVExporter<Dispersion> {
 			record.add(dispersion.getTipoCuentaBeneficiario());
 			record.add(dispersion.getCuentaAbono());
 			record.add(dispersion.getTipoPersona());
-			record.add(dispersion.getNombre());
-			record.add(dispersion.getRfc());
-			record.add(dispersion.getCurp());
+			record.add(dispersion.getNombre()!=null?dispersion.getNombre().trim():null);
+			record.add(dispersion.getRfc()!=null?dispersion.getRfc().trim():null);
+			record.add(dispersion.getCurp()!=null?dispersion.getCurp().trim():null);
 			record.add(dispersion.getDivisa());
 			record.add(dispersion.getImporte());
 			record.add(dispersion.getIva());
-			record.add(dispersion.getConcepto());
+			record.add(dispersion.getConcepto()!=null?dispersion.getConcepto().trim():null);
 			record.add(dispersion.getReferencia());
-			record.add(dispersion.getCorreoElectronico());
+			record.add(dispersion.getCorreoElectronico()!=null?dispersion.getCorreoElectronico().trim():null);
 			record.add(dispersion.getNumeroCelular());
 		}
 		return record.toArray();

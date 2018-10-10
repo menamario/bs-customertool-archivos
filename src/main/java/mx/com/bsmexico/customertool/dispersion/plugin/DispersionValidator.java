@@ -21,7 +21,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	private SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
 	String regex = "^([A-Z,Ñ,&]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\\d]{3})$";
 	Pattern rfcPattern = Pattern.compile(regex);
-	String regexCurp = "^([A-Z][AEIOUX][A-Z,Ñ]{2}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d])(\\d)$";
+	String regexCurp = "^([A-Z,Ñ][AEIOUX][A-Z,Ñ]{2}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d])(\\d)$";
 	Pattern curpPattern = Pattern.compile(regexCurp);
 	
 	@Override
@@ -99,7 +99,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 	@Override
 	public boolean isValid(Dispersion model) {
 		boolean isValid = true;
-		if (!isEmptyModel(model)) {
+		if (isActive(model)) {
 			isValid = model != null && aplicacion().test(model) && concepto().test(model) && email().test(model)
 					&& cuentaAbono().test(model) && cuentaCargo().test(model) && curp().test(model)
 					&& fecha().test(model) && importe().test(model) && iva().test(model)
