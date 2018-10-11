@@ -367,7 +367,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 		return v -> {
 			return (StringUtils.isNotBlank(v.getRfc()) && StringUtils.isNotBlank(v.getIva())
 					&& v.getIva().lastIndexOf(".")>0 && v.getIva().substring(v.getIva().lastIndexOf(".")).length()<=3 && NumberUtils.isCreatable(v.getIva()) && Double.valueOf(v.getIva()) <= 999999999999.99 && Double.valueOf(v.getIva()) > 0 && StringUtils.isNotBlank(v.getImporte()) && NumberUtils.isCreatable(v.getImporte()) && Double.valueOf(v.getIva()) <= Double.valueOf(v.getImporte()))
-					|| StringUtils.isBlank(v.getIva());
+					|| v.getIva() ==  null || v.getIva().length()==0;
 		};
 	}
 

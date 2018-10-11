@@ -565,8 +565,8 @@ public class OpcionBeneficiarios extends Feature {
 		final BeneficiarioSpreadsheet spreadsheet = new BeneficiarioSpreadsheet(); 
 		t.prefWidthProperty().bind(mainPane.widthProperty().add(-60));
 
-		//((BorderPane) mainPane).setCenter(t);
-		((BorderPane) mainPane).setCenter(spreadsheet);
+		((BorderPane) mainPane).setCenter(t);
+		//((BorderPane) mainPane).setCenter(spreadsheet);
 		BorderPane.setMargin(t, new Insets(25, 25, 50, 0));
 
 		bImportarArchivo.setOnAction(new EventHandler<ActionEvent>() {
@@ -576,8 +576,8 @@ public class OpcionBeneficiarios extends Feature {
 				fileChooser.setInitialDirectory(new File(currentPath));
 				File file = fileChooser.showOpenDialog(getDesktop().getStage());
 				if (file != null) {
-					//BeneficiariosImporter benImporter = new BeneficiariosImporter(t);
-					BeneficiariosImporter benImporter = new BeneficiariosImporter(spreadsheet);
+					BeneficiariosImporter benImporter = new BeneficiariosImporter(t);
+					//BeneficiariosImporter benImporter = new BeneficiariosImporter(spreadsheet);
 					try {
 						benImporter.importFile(file);
 					} catch (Exception e1) {
