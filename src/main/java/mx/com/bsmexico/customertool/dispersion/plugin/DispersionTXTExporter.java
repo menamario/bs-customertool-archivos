@@ -40,7 +40,7 @@ public class DispersionTXTExporter extends FixPositionExporter<Dispersion> {
 			record.add(new RecordPosition(100, 118, dispersion.getCurp()!=null?dispersion.getCurp().trim():null));
 			record.add(new RecordPosition(118, 121, dispersion.getDivisa()));
 			record.add(new RecordPosition(121, 136, (String.format("%015.2f", new BigDecimal(dispersion.getImporte()))).trim()));
-			record.add(new RecordPosition(136, 151, StringUtils.isEmpty(dispersion.getIva())?dispersion.getIva():(String.format("%015.2f", new BigDecimal(dispersion.getIva()))).trim()));
+			record.add(new RecordPosition(136, 151, StringUtils.isEmpty(dispersion.getIva())?String.format("%015.2f", new BigDecimal(0)):(String.format("%015.2f", new BigDecimal(dispersion.getIva()))).trim()));
 			record.add(new RecordPosition(151, 191, dispersion.getConcepto()!=null?dispersion.getConcepto().trim():null));
 			record.add(new RecordPosition(191, 211, StringUtils.leftPad(dispersion.getReferencia(),20)));
 			record.add(new RecordPosition(211, 271, dispersion.getCorreoElectronico()!=null?dispersion.getCorreoElectronico().trim():null));

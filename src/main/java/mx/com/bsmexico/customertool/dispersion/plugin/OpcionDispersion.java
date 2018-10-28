@@ -138,19 +138,19 @@ public class OpcionDispersion extends Feature {
 			check = new ImageView(new Image(this.getImageInput("/img/check.png")));
 			check.setPreserveRatio(true);
 			check.setFitWidth(66);
-			atras = new ImageView(new Image(this.getImageInput("/img/atras.png")));
-			atras.setPreserveRatio(true);
-			atras.setFitWidth(40);
+//			atras = new ImageView(new Image(this.getImageInput("/img/atras.png")));
+//			atras.setPreserveRatio(true);
+//			atras.setFitWidth(40);
 			cerrar = new ImageView(new Image(this.getImageInput("/img/close.png")));
 			cerrar.setPreserveRatio(true);
 			cerrar.setFitWidth(25);
-			importarArchivo = new ImageView(new Image(this.getImageInput("/img/importarArchivo.png")));
-			importarArchivo.setPreserveRatio(true);
-			importarArchivo.setFitWidth(70);
-			importarArchivo.setSmooth(true);
-			instrucciones = new ImageView(new Image(this.getImageInput("/img/instrucciones.jpg")));
-			instrucciones.setPreserveRatio(true);
-			instrucciones.setFitWidth(70);
+//			importarArchivo = new ImageView(new Image(this.getImageInput("/img/importarArchivo.png")));
+//			importarArchivo.setPreserveRatio(true);
+//			importarArchivo.setFitWidth(70);
+//			importarArchivo.setSmooth(true);
+//			instrucciones = new ImageView(new Image(this.getImageInput("/img/instrucciones.jpg")));
+//			instrucciones.setPreserveRatio(true);
+//			instrucciones.setFitWidth(70);
 			
 			
 			String htmlImportarArchivo = null;
@@ -158,8 +158,8 @@ public class OpcionDispersion extends Feature {
 			String htmlRegresar = null;
 			
 			try {
-				htmlImportarArchivo = this.getHtml(65, 45, "#006dff", readFile(getClass().getResourceAsStream("/img/importarArchivo.svg"), Charset.defaultCharset()));
-				htmlInstrucciones = this.getHtml(65, 45, "#006dff", readFile(getClass().getResourceAsStream("/img/instrucciones.svg"), Charset.defaultCharset()));
+				htmlImportarArchivo = this.getHtml(65, readFile(getClass().getResourceAsStream("/img/importarArchivo.svg"), Charset.defaultCharset()));
+				htmlInstrucciones = this.getHtml(65, readFile(getClass().getResourceAsStream("/img/instrucciones.svg"), Charset.defaultCharset()));
 				htmlRegresar = this.getHtml(40, readFile(getClass().getResourceAsStream("/img/atras.svg"), Charset.defaultCharset()));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

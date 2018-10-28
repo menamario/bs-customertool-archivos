@@ -40,6 +40,7 @@ public class DispersionTXTImporter extends FixPositionImporter<Dispersion> {
 				dispersion.setDivisa(record.get(12));
 				dispersion.setImporte(NumberUtils.isCreatable(record.get(13))?decimalFormat.format(Double.parseDouble(record.get(13))):record.get(13));
 				dispersion.setIva(NumberUtils.isCreatable(record.get(14))?decimalFormat.format(Double.parseDouble(record.get(14))):record.get(14));
+				if("0.00".equals(dispersion.getIva())) dispersion.setIva("");
 				dispersion.setConcepto(record.get(15));
 				dispersion.setReferencia(record.get(16));
 				dispersion.setCorreoElectronico(record.get(17));

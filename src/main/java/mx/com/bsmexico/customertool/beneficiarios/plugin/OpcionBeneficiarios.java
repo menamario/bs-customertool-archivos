@@ -116,19 +116,19 @@ public class OpcionBeneficiarios extends Feature {
 			check = new ImageView(new Image(this.getImageInput("/img/check.png")));
 			check.setPreserveRatio(true);
 			check.setFitWidth(66);
-			atras = new ImageView(new Image(this.getImageInput("/img/atras.png")));
-			atras.setPreserveRatio(true);
-			atras.setFitWidth(40);
+//			atras = new ImageView(new Image(this.getImageInput("/img/atras.png")));
+//			atras.setPreserveRatio(true);
+//			atras.setFitWidth(40);
 			cerrar = new ImageView(new Image(this.getImageInput("/img/close.png")));
 			cerrar.setPreserveRatio(true);
 			cerrar.setFitWidth(25);
-			importarArchivo = new ImageView(new Image(this.getImageInput("/img/importarArchivo.png")));
-			importarArchivo.setPreserveRatio(true);
-			importarArchivo.setFitWidth(70);
-			importarArchivo.setSmooth(true);
-			instrucciones = new ImageView(new Image(this.getImageInput("/img/instrucciones.jpg")));
-			instrucciones.setPreserveRatio(true);
-			instrucciones.setFitWidth(70);
+//			importarArchivo = new ImageView(new Image(this.getImageInput("/img/importarArchivo.png")));
+//			importarArchivo.setPreserveRatio(true);
+//			importarArchivo.setFitWidth(70);
+//			importarArchivo.setSmooth(true);
+//			instrucciones = new ImageView(new Image(this.getImageInput("/img/instrucciones.jpg")));
+//			instrucciones.setPreserveRatio(true);
+//			instrucciones.setFitWidth(70);
 			
 			
 			String htmlImportarArchivo = null;
@@ -136,8 +136,8 @@ public class OpcionBeneficiarios extends Feature {
 			String htmlRegresar = null;
 			
 			try {
-				htmlImportarArchivo = this.getHtml(65, 45, "#006dff", readFile(getClass().getResourceAsStream("/img/importarArchivo.svg"), Charset.defaultCharset()));
-				htmlInstrucciones = this.getHtml(65, 45, "#006dff", readFile(getClass().getResourceAsStream("/img/instrucciones.svg"), Charset.defaultCharset()));
+				htmlImportarArchivo = this.getHtml(65, readFile(getClass().getResourceAsStream("/img/importarArchivo.svg"), Charset.defaultCharset()));
+				htmlInstrucciones = this.getHtml(65, readFile(getClass().getResourceAsStream("/img/instrucciones.svg"), Charset.defaultCharset()));
 				htmlRegresar = this.getHtml(40, readFile(getClass().getResourceAsStream("/img/atras.svg"), Charset.defaultCharset()));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -491,7 +491,7 @@ public class OpcionBeneficiarios extends Feature {
 					flow.getChildren().add(lc5);
 					flow.getChildren().add(t5);
 					flow.getChildren().addAll(t6,t7,t79,t70,t71,t8,t89,t80,t81,t9,t99,t90,t91,t10,t999,t990,t991,t11,t119,t12,t129,t13,t139,t130,t131);
-					flow.setStyle("-fx-background-color:white;-fx-font-family: FranklinGothicLT;-fx-font-size: 14px;-fx-fill: black");
+					flow.setStyle("-fx-background-color:white;-fx-font-family: Franky;-fx-font-size: 14px;-fx-fill: black");
 					flow.setMinWidth(746);
 
 

@@ -154,7 +154,7 @@ public class DispersionValidator extends LayoutModelValidator<Dispersion> {
 				desc = "Dato opcional\nDebe estar vacío si tipo de persona es PM-Persona moral";
 				break;
 			case Dispersion.FIELD_FECHA:
-				desc = " En este campo se debe indicar la fecha en que se deberá \naplicar el pago y será usada cuando se trate de operaciones programadas y \ncon el objetivo de diferenciar la fecha de operación del archivo.\nEl formato debe ser aaaammdd";
+				desc = "En este campo se debe indicar la fecha en que se deberá \naplicar el pago y será usada cuando se trate de operaciones programadas y \ncon el objetivo de diferenciar la fecha de operación del archivo.\nEl formato debe ser aaaammdd";
 				break;
 			case Dispersion.FIELD_IMPORTE:
 				desc = "Dato obligatorio\nImporte de la operación\nDebe ser un dato numérico válido";
