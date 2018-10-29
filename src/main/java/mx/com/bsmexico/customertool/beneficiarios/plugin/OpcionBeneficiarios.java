@@ -136,8 +136,8 @@ public class OpcionBeneficiarios extends Feature {
 			String htmlRegresar = null;
 			
 			try {
-				htmlImportarArchivo = this.getHtml(65, readFile(getClass().getResourceAsStream("/img/importarArchivo.svg"), Charset.defaultCharset()));
-				htmlInstrucciones = this.getHtml(65, readFile(getClass().getResourceAsStream("/img/instrucciones.svg"), Charset.defaultCharset()));
+				htmlImportarArchivo = this.getHtml(65, 45, "#006dff", readFile(getClass().getResourceAsStream("/img/importarArchivo.svg"), Charset.defaultCharset()));
+				htmlInstrucciones = this.getHtml(65, 45, "#006dff", readFile(getClass().getResourceAsStream("/img/instrucciones.svg"), Charset.defaultCharset()));
 				htmlRegresar = this.getHtml(40, readFile(getClass().getResourceAsStream("/img/atras.svg"), Charset.defaultCharset()));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
