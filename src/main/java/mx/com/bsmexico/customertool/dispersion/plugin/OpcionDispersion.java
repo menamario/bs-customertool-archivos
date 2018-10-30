@@ -434,7 +434,7 @@ public class OpcionDispersion extends Feature {
 					instruccionesLabel.setMinHeight(40);
 					StackPane p = new StackPane();
 					p.setPadding(new Insets(20, 0, 20, 0));
-					p.setStyle("-fx-background-color: #white");
+					p.setStyle("-fx-background-color: white");
 					p.getChildren().add(instruccionesLabel);
 
 					stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
@@ -478,11 +478,11 @@ public class OpcionDispersion extends Feature {
 					
 					
 					Text t0 = new Text("Instrucciones generales\n\n    ");
-					t0.setStyle("-fx-fill: black;-fx-font-weight: bold");
+					t0.setStyle("-fx-fill: black;-fx-font-family: 'Franklin Gothic Demi'");
 					
 
 					Text t1 = new Text(" Podrás generar tus archivos para Dispersión de Pagos capturando registro por registro o por medio de la\n         importación de archivos.\n    ");
-					t1.setStyle("-fx-fill: #black");
+					t1.setStyle("-fx-fill: black");
 					Text t2 = new Text(" En caso de capturar algún dato erróneo, la aplicación marcará en color amarillo la celda correspondiente al error.\n    ");
 					t2.setStyle("-fx-fill: black");
 					Text t3 = new Text(" Las instrucciones para el llenado de cada uno de los campos que integran el layout están disponibles en la hoja\n         llamada \"Descripción de campos\"\n    ");
@@ -501,31 +501,31 @@ public class OpcionDispersion extends Feature {
 					t9.setStyle("-fx-fill: black");
 					
 					Text t10 = new Text("Captura\n\n    ");
-					t10.setStyle("-fx-fill: black;-fx-font-weight: bold");
+					t10.setStyle("-fx-fill: black;-fx-font-family: 'Franklin Gothic Demi'");
 
 					
 					
 					Text t11 = new Text("1.");Text t111 = new Text(" Para la captura registro por registro, deberás ingresar los datos de tus pagos comenzando por el \"Tipo de\n        Movimiento\" con base en lo indicado en la hoja llamada \"Descripción de campos\".\n    ");
-					t11.setStyle("-fx-fill: black;-fx-font-weight:bold");
+					t11.setStyle("-fx-fill: black;-fx-font-family: 'Franklin Gothic Demi'");
 					Text t12 = new Text("2.");Text t121 = new Text(" Para la importación de archivos, deberás oprimir el botón \"Importar archivo\", la aplicación te mostrará el explorador\n        de archivos, a través del cual deberás elegir el archivo a importar.\n    ");
-					t12.setStyle("-fx-fill: black;-fx-font-weight:bold");
+					t12.setStyle("-fx-fill: black;-fx-font-family: 'Franklin Gothic Demi'");
 					Text t13 = new Text("3.");Text t131 = new Text(" Indica por medio del radiobottom \"Formato\" el tipo de archivo que deseas generar (CSV o TXT).\n    ");
-					t13.setStyle("-fx-fill: black;-fx-font-weight:bold");
+					t13.setStyle("-fx-fill: black;-fx-font-family: 'Franklin Gothic Demi'");
 					Text t14 = new Text("4.");Text t141 = new Text(" Ya habiendo capturado los datos registro por registro y una vez que la aplicación no detecte ningún error en los\n        campos, deberás oprimir el botón \"Guardar\".\n    ");
-					t14.setStyle("-fx-fill: black;-fx-font-weight:bold");
+					t14.setStyle("-fx-fill: black;-fx-font-family: 'Franklin Gothic Demi'");
 					Text t99 = new Text("    Nota: ");
-					t99.setStyle("-fx-fill: black;-fx-font-weight: bold");
+					t99.setStyle("-fx-fill: black;-fx-font-family: 'Franklin Gothic Demi'");
 					Text t15 = new Text("En caso de que intentes guardar el archivo sin haber validado que los datos estén correctos la aplicación te\n        mostrará una ventana emergente que indique \"Error en los datos proporcionados\".\n    ");
 					t15.setStyle("-fx-fill: black;");
 					Text t16 = new Text("5.");Text t161 = new Text(" Deberás indicar la carpeta en la cual deseas que el archivo quede alojado.\n    ");
-					t16.setStyle("-fx-fill: black;-fx-font-weight:bold");
+					t16.setStyle("-fx-fill: black;-fx-font-family: 'Franklin Gothic Demi'");
 				    Text t17 = new Text("6.");Text t171 = new Text(" Deberás también indicar el nombre (nomenclatura) del archivo con base en la indicada por la misma aplicación.\n        (AAAAMMDD_XXXXXXXXX_NNN)\n    ");
-				    t17.setStyle("-fx-fill: black;-fx-font-weight:bold");
+				    t17.setStyle("-fx-fill: black;-fx-font-family: 'Franklin Gothic Demi'");
 		            Text t18 = new Text("7.");Text t181 = new Text(" Oprime el botón \"Guardar\" en la ventana del explorador de archivos y la aplicación depositará el archivo en la\n        carpeta indicada.\n\n");
-		            t18.setStyle("-fx-fill: black;-fx-font-weight:bold");
+		            t18.setStyle("-fx-fill: black;-fx-font-family: 'Franklin Gothic Demi'");
 			 
 		            Text t19 = new Text("Notas:\n\n    ");
-					t19.setStyle("-fx-fill: black;-fx-font-weight: bold");
+					t19.setStyle("-fx-fill: black;-fx-font-family: 'Franklin Gothic Demi'");
 
 					Text t20 = new Text(" La aplicación generará el Header Alto en el que se muestran las cifras control por cada una de las cuentas de cargo\n         contenidas en el archivo en forma de bloques.\n    ");
 					t20.setStyle("-fx-fill: black");
@@ -553,7 +553,8 @@ public class OpcionDispersion extends Feature {
 					flow.getChildren().add(lc9);
 					flow.getChildren().add(t9);
 					flow.getChildren().addAll(t10,t11,t111,t12,t121,t13,t131,t14,t141,t99,t15,t16,t161,t17,t171,t18,t181,t19,lc10,t20,lc11,t21);
-					flow.setStyle("-fx-background-color:white;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-fill:black");
+					flow.setStyle("-fx-background-color:white;-fx-font-size: 14px;-fx-fill:black");
+					flow.getStyleClass().add("flowFrank");
 					flow.setMinWidth(746);
 					
 
